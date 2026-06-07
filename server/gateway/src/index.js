@@ -1,0 +1,90 @@
+import 'dotenv/config';
+import express from 'express';
+import helmet from 'helmet';
+import { createProxyMiddleware } from 'http-proxy-middleware';
+import authMiddleware from './middlewares/auth.js';
+import rateLimiterMiddleware from './middlewares/rateLimiter.js';
+import redis from './utils/redis.js';
+
+const app = express();
+const PORT = process.env.PORT || 4000;
+
+// Security Middleware (Note: Helmet is configured, but we disable contentSecurityPolicy for API proxying if needed.
+// However, since it is an API Gateway, simple Helmet is fine.
+app.use(helmet());
+
+// Health Check
+app.get('/health', (req, res) => {
+  res.json({ status: 'ok', service: 'gateway-proxy' });
+});
+
+// Proxy Request Logging Middleware (Analytics)
+app.use('/api/:apiName', (req, res, next) => {
+  const startTime = Date.now();
+
+  res.on('finish', () => {
+    // Only log if auth context was established
+    if (req.gatewayContext) {
+      const latencyMs = Date.now() - startTime;
+      const analyticsLog = {
+        apiName: req.gatewayContext.apiName,
+        subscriptionId: req.gatewayContext.subscriptionId,
+        statusCode: res.statusCode,
+        latencyMs,
+        timestamp: new Date().toISOString(),
+        path: req.originalUrl,
+        method: req.method,
+      };
+
+      // Push to Redis List queue asynchronously
+      redis.lpush('queue:analytics', JSON.stringify(analyticsLog)).catch((err) => {
+        console.error('Failed to enqueue analytics log:', err);
+      });
+    }
+  });
+
+  next();
+});
+
+// Dynamic HTTP Proxy Middleware
+const apiProxy = createProxyMiddleware({
+  router: (req) => {
+    if (req.gatewayContext && req.gatewayContext.upstreamUrl) {
+      return req.gatewayContext.upstreamUrl;
+    }
+    return null;
+  },
+  pathRewrite: (path, req) => {
+    // Strip '/api/:apiName' from the start of the path
+    // e.g. /api/weather-service/v1/forecast -> /v1/forecast
+    const match = path.match(/^\/api\/[^/]+/);
+    if (match) {
+      const rewritten = path.replace(match[0], '');
+      return rewritten || '/';
+    }
+    return path;
+  },
+  changeOrigin: true,
+  // Handle proxy errors
+  onError: (err, req, res) => {
+    console.error('Proxy Error:', err.message);
+    if (!res.headersSent) {
+      res.status(502).json({ error: 'Bad Gateway', message: 'Failed to connect to the target upstream service.' });
+    }
+  },
+});
+
+// Mount routes
+app.use('/api/:apiName', authMiddleware, rateLimiterMiddleware, apiProxy);
+
+// Error Handler
+app.use((err, req, res, next) => {
+  console.error('Unhandled Gateway Error:', err.stack);
+  if (!res.headersSent) {
+    res.status(500).json({ error: 'Internal Gateway Error' });
+  }
+});
+
+app.listen(PORT, () => {
+  console.log(`Gateway Proxy Service running on port ${PORT}`);
+});

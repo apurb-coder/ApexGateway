@@ -1,0 +1,72 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: apex-postgres
+    restart: always
+    environment:
+      POSTGRES_DB: apex_gateway
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password123
+    ports:
+      - "5433:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - apex-network
+
+  redis:
+    image: redis:7-alpine
+    container_name: apex-redis
+    restart: always
+    ports:
+      - "6379:6379"
+    volumes:
+      - redisdata:/data
+    networks:
+      - apex-network
+
+  marketplace-api:
+    build:
+      context: ./server/marketplace
+      dockerfile: Dockerfile
+    container_name: apex-marketplace
+    restart: always
+    environment:
+      - DATABASE_URL=postgresql://postgres:password123@postgres:5432/apex_gateway?schema=public
+      - REDIS_URL=redis://redis:6379
+      - PORT=3000
+    ports:
+      - "3000:3000"
+    depends_on:
+      - postgres
+      - redis
+    networks:
+      - apex-network
+
+  gateway-api:
+    build:
+      context: ./server/gateway
+      dockerfile: Dockerfile
+    container_name: apex-gateway-proxy
+    restart: always
+    environment:
+      - DATABASE_URL=postgresql://postgres:password123@postgres:5432/apex_gateway?schema=public
+      - REDIS_URL=redis://redis:6379
+      - PORT=4000
+    ports:
+      - "4000:4000"
+    depends_on:
+      - postgres
+      - redis
+    networks:
+      - apex-network
+
+volumes:
+  pgdata:
+  redisdata:
+
+networks:
+  apex-network:
+    driver: bridge

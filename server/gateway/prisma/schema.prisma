@@ -1,0 +1,80 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+enum Role {
+  PROVIDER
+  CONSUMER
+  ADMIN
+}
+
+enum ApiStatus {
+  ACTIVE
+  INACTIVE
+  DEGRADED
+}
+
+model User {
+  id           String         @id @default(uuid())
+  email        String         @unique
+  passwordHash String
+  role         Role           @default(CONSUMER)
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+  apis         Api[]
+  subscriptions Subscription[]
+}
+
+model Api {
+  id           String        @id @default(uuid())
+  name         String
+  description  String?
+  upstreamUrl  String
+  status       ApiStatus     @default(ACTIVE)
+  providerId   String
+  provider     User          @relation(fields: [providerId], references: [id], onDelete: Cascade)
+  plans        Plan[]
+  healthChecks HealthCheck[]
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+}
+
+model Plan {
+  id             String         @id @default(uuid())
+  apiId          String
+  api            Api            @relation(fields: [apiId], references: [id], onDelete: Cascade)
+  name           String
+  requestsPerMin Int
+  price          Decimal        @db.Decimal(10, 2)
+  subscriptions  Subscription[]
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+}
+
+model Subscription {
+  id          String   @id @default(uuid())
+  consumerId  String
+  consumer    User     @relation(fields: [consumerId], references: [id], onDelete: Cascade)
+  planId      String
+  plan        Plan     @relation(fields: [planId], references: [id], onDelete: Cascade)
+  apiKeyHash  String   @unique
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model HealthCheck {
+  id         String   @id @default(uuid())
+  apiId      String
+  api        Api      @relation(fields: [apiId], references: [id], onDelete: Cascade)
+  statusCode Int
+  latencyMs  Int
+  timestamp  DateTime @default(now())
+
+  @@index([apiId, timestamp])
+}
