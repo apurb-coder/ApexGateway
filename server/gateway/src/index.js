@@ -5,6 +5,7 @@ import { createProxyMiddleware } from 'http-proxy-middleware';
 import authMiddleware from './middlewares/auth.js';
 import rateLimiterMiddleware from './middlewares/rateLimiter.js';
 import redis from './utils/redis.js';
+import { errorHandler } from './middlewares/errorHandler.js';
 
 const app = express();
 const PORT = process.env.PORT || 4000;
@@ -75,15 +76,21 @@ const apiProxy = createProxyMiddleware({
 });
 
 // Mount routes
-app.use('/api/:apiName', authMiddleware, rateLimiterMiddleware, apiProxy);
+app.use(
+  '/api/:apiName',
+  authMiddleware,
+  rateLimiterMiddleware,
+  (req, res, next) => {
+    // Strip gateway-specific headers before proxying to prevent upstream errors
+    delete req.headers['x-api-key'];
+    delete req.headers['authorization'];
+    next();
+  },
+  apiProxy
+);
 
 // Error Handler
-app.use((err, req, res, next) => {
-  console.error('Unhandled Gateway Error:', err.stack);
-  if (!res.headersSent) {
-    res.status(500).json({ error: 'Internal Gateway Error' });
-  }
-});
+app.use(errorHandler);
 
 app.listen(PORT, () => {
   console.log(`Gateway Proxy Service running on port ${PORT}`);

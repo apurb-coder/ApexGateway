@@ -1,0 +1,436 @@
+{
+  "info": {
+    "_postman_id": "7a3562a1-fa89-4b68-b80c-2db8c0e6284f",
+    "name": "ApexGateway API Collection",
+    "description": "Postman collection for ApexGateway services (Marketplace API on port 3000 and Gateway Proxy on port 4000).",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Marketplace API",
+      "item": [
+        {
+          "name": "Health Check",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{marketplace_url}}/health",
+              "host": [
+                "{{marketplace_url}}"
+              ],
+              "path": [
+                "health"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Authentication",
+          "item": [
+            {
+              "name": "Register",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"email\": \"provider@example.com\",\n  \"password\": \"password123\",\n  \"role\": \"PROVIDER\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{marketplace_url}}/auth/register",
+                  "host": [
+                    "{{marketplace_url}}"
+                  ],
+                  "path": [
+                    "auth",
+                    "register"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Login",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "const response = pm.response.json();",
+                      "if (response.token) {",
+                      "    pm.collectionVariables.set(\"token\", response.token);",
+                      "}"
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"email\": \"provider@example.com\",\n  \"password\": \"password123\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{marketplace_url}}/auth/login",
+                  "host": [
+                    "{{marketplace_url}}"
+                  ],
+                  "path": [
+                    "auth",
+                    "login"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "APIs",
+          "item": [
+            {
+              "name": "Create API",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"weather-service\",\n  \"description\": \"Provides live weather updates\",\n  \"upstreamUrl\": \"https://api.open-meteo.com\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{marketplace_url}}/apis",
+                  "host": [
+                    "{{marketplace_url}}"
+                  ],
+                  "path": [
+                    "apis"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "List APIs",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{marketplace_url}}/apis",
+                  "host": [
+                    "{{marketplace_url}}"
+                  ],
+                  "path": [
+                    "apis"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get API By ID",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{marketplace_url}}/apis/:id",
+                  "host": [
+                    "{{marketplace_url}}"
+                  ],
+                  "path": [
+                    "apis",
+                    ":id"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "api-id-here",
+                      "description": "The unique ID of the API"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Create Plan",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"Basic Free\",\n  \"requestsPerMin\": 60,\n  \"price\": 0.0\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{marketplace_url}}/apis/:apiId/plans",
+                  "host": [
+                    "{{marketplace_url}}"
+                  ],
+                  "path": [
+                    "apis",
+                    ":apiId",
+                    "plans"
+                  ],
+                  "variable": [
+                    {
+                      "key": "apiId",
+                      "value": "api-id-here",
+                      "description": "The unique ID of the API to add a plan to"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Subscriptions",
+          "item": [
+            {
+              "name": "Subscribe to Plan",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "const response = pm.response.json();",
+                      "if (response.apiKey) {",
+                      "    pm.collectionVariables.set(\"api_key\", response.apiKey);",
+                      "}"
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"planId\": \"plan-id-here\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{marketplace_url}}/subscriptions",
+                  "host": [
+                    "{{marketplace_url}}"
+                  ],
+                  "path": [
+                    "subscriptions"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get Subscriptions",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{marketplace_url}}/subscriptions",
+                  "host": [
+                    "{{marketplace_url}}"
+                  ],
+                  "path": [
+                    "subscriptions"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Gateway Proxy",
+      "item": [
+        {
+          "name": "Health Check",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{gateway_url}}/health",
+              "host": [
+                "{{gateway_url}}"
+              ],
+              "path": [
+                "health"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Proxy Request",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "x-api-key",
+                "value": "{{api_key}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{gateway_url}}/api/:apiName/v1/forecast?latitude=52.52&longitude=13.41&current_weather=true",
+              "host": [
+                "{{gateway_url}}"
+              ],
+              "path": [
+                "api",
+                ":apiName",
+                "v1",
+                "forecast"
+              ],
+              "query": [
+                {
+                  "key": "latitude",
+                  "value": "52.52"
+                },
+                {
+                  "key": "longitude",
+                  "value": "13.41"
+                },
+                {
+                  "key": "current_weather",
+                  "value": "true"
+                }
+              ],
+              "variable": [
+                {
+                  "key": "apiName",
+                  "value": "weather-service",
+                  "description": "Registered API name/slug on the gateway"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "marketplace_url",
+      "value": "http://localhost:3000",
+      "type": "string"
+    },
+    {
+      "key": "gateway_url",
+      "value": "http://localhost:4000",
+      "type": "string"
+    },
+    {
+      "key": "token",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "api_key",
+      "value": "",
+      "type": "string"
+    }
+  ]
+}

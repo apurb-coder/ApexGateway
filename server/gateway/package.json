@@ -6,7 +6,10 @@
   "scripts": {
     "dev": "nodemon src/index.js",
     "start": "node src/index.js",
-    "db:generate": "prisma generate"
+    "db:generate": "prisma generate",
+    "test": "node --test tests/e2e.test.js tests/rateLimiter.test.js",
+    "test:e2e": "node --test tests/e2e.test.js",
+    "test:ratelimit": "node --test tests/rateLimiter.test.js"
   },
   "dependencies": {
     "@prisma/client": "^5.14.0",

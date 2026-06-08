@@ -34,7 +34,7 @@ services:
     container_name: apex-marketplace
     restart: always
     environment:
-      - DATABASE_URL=postgresql://postgres:password123@postgres:5432/apex_gateway?schema=public
+      - DATABASE_URL=postgresql://postgres:password123@postgres:5432/apex_gateway?schema=public&connection_limit=15
       - REDIS_URL=redis://redis:6379
       - PORT=3000
     ports:
@@ -52,7 +52,7 @@ services:
     container_name: apex-gateway-proxy
     restart: always
     environment:
-      - DATABASE_URL=postgresql://postgres:password123@postgres:5432/apex_gateway?schema=public
+      - DATABASE_URL=postgresql://postgres:password123@postgres:5432/apex_gateway?schema=public&connection_limit=30
       - REDIS_URL=redis://redis:6379
       - PORT=4000
     ports:
