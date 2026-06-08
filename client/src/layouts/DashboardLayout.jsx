@@ -46,25 +46,32 @@ export default function DashboardLayout() {
   ];
 
   return (
-    <div className="min-h-screen bg-bg-dark flex text-gray-200">
+    <div className="min-h-screen bg-bg-dark flex text-gray-200 relative overflow-hidden">
+      {/* Background grid overlay */}
+      <div className="absolute inset-0 bg-grid-pattern opacity-10 bg-grid-mask pointer-events-none z-0"></div>
+      
+      {/* Ambient background glows */}
+      <div className="absolute -top-40 -right-40 w-96 h-96 bg-primary-500/5 rounded-full blur-[120px] pointer-events-none pulse-glow z-0"></div>
+      <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-accent-500/5 rounded-full blur-[120px] pointer-events-none pulse-glow z-0" style={{ animationDelay: '-2s' }}></div>
+
       {/* Sidebar */}
       <aside 
-        className={`bg-card-dark/40 border-r border-border-dark flex flex-col transition-all duration-300 backdrop-blur-md z-20 ${
+        className={`bg-card-dark/40 border-r border-border-dark flex flex-col transition-all duration-300 backdrop-blur-md z-20 relative ${
           sidebarCollapsed ? 'w-20' : 'w-64'
         }`}
       >
         {/* Brand */}
         <div className="h-16 flex items-center px-6 border-b border-border-dark gap-3 justify-between">
           {!sidebarCollapsed && (
-            <Link to="/" className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-lg bg-linear-to-tr from-primary-600 to-accent-400 flex items-center justify-center font-bold text-white shadow-[0_0_15px_rgba(139,92,246,0.3)]">
+            <Link to="/" className="flex items-center gap-2.5">
+              <div className="w-8 h-8 rounded-lg bg-linear-to-tr from-primary-600 to-accent-500 flex items-center justify-center font-bold text-white shadow-[0_0_15px_rgba(139,92,246,0.35)] font-display text-base">
                 A
               </div>
-              <span className="font-extrabold text-white text-lg tracking-wider">APEX</span>
+              <span className="font-extrabold text-white text-base tracking-wider font-display">APEX</span>
             </Link>
           )}
           {sidebarCollapsed && (
-            <div className="w-8 h-8 mx-auto rounded-lg bg-linear-to-tr from-primary-600 to-accent-400 flex items-center justify-center font-bold text-white shadow-[0_0_15px_rgba(139,92,246,0.3)]">
+            <div className="w-8 h-8 mx-auto rounded-lg bg-linear-to-tr from-primary-600 to-accent-500 flex items-center justify-center font-bold text-white shadow-[0_0_15px_rgba(139,92,246,0.35)] font-display text-base">
               A
             </div>
           )}
@@ -72,14 +79,14 @@ export default function DashboardLayout() {
             onClick={toggleSidebar}
             className="text-gray-400 hover:text-white transition-colors p-1.5 hover:bg-white/5 rounded-lg cursor-pointer"
           >
-            {sidebarCollapsed ? <Menu className="w-5 h-5" /> : <ChevronLeft className="w-5 h-5" />}
+            {sidebarCollapsed ? <Menu className="w-4 h-4" /> : <ChevronLeft className="w-4 h-4" />}
           </button>
         </div>
 
         {/* Navigation */}
         <nav className="flex-1 px-4 py-6 space-y-1.5 overflow-y-auto">
-          <div className="px-2 py-1 text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">
-            {!sidebarCollapsed ? (isProvider ? 'Provider Menu' : 'Consumer Menu') : '...'}
+          <div className="px-2.5 py-1 text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-2 font-display">
+            {!sidebarCollapsed ? (isProvider ? 'Provider Controls' : 'Developer Console') : '...'}
           </div>
           {menuItems.map((item) => {
             const Icon = item.icon;
@@ -90,12 +97,12 @@ export default function DashboardLayout() {
                 to={item.path}
                 className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all group ${
                   isActive 
-                    ? 'bg-primary-500/10 text-primary-400 border border-primary-500/30' 
+                    ? 'bg-primary-500/10 text-primary-400 border border-primary-500/20' 
                     : 'text-gray-400 hover:text-white hover:bg-white/5 border border-transparent'
                 }`}
               >
-                <Icon className={`w-5 h-5 transition-transform group-hover:scale-105 ${isActive ? 'text-primary-400' : 'text-gray-500 group-hover:text-gray-300'}`} />
-                {!sidebarCollapsed && <span>{item.name}</span>}
+                <Icon className={`w-4 h-4 transition-transform group-hover:scale-105 ${isActive ? 'text-primary-400' : 'text-gray-500 group-hover:text-gray-300'}`} />
+                {!sidebarCollapsed && <span className="font-sans text-xs">{item.name}</span>}
               </Link>
             );
           })}
@@ -112,12 +119,12 @@ export default function DashboardLayout() {
                 to={item.path}
                 className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all group ${
                   isActive 
-                    ? 'bg-primary-500/10 text-primary-400 border border-primary-500/30' 
+                    ? 'bg-primary-500/10 text-primary-400 border border-primary-500/20' 
                     : 'text-gray-400 hover:text-white hover:bg-white/5 border border-transparent'
                 }`}
               >
-                <Icon className="w-5 h-5 text-gray-500 group-hover:text-gray-300" />
-                {!sidebarCollapsed && <span>{item.name}</span>}
+                <Icon className={`w-4 h-4 text-gray-500 group-hover:text-gray-300 ${isActive ? 'text-primary-400' : ''}`} />
+                {!sidebarCollapsed && <span className="font-sans text-xs">{item.name}</span>}
               </Link>
             );
           })}
@@ -125,37 +132,37 @@ export default function DashboardLayout() {
             onClick={handleLogout}
             className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-rose-400 hover:bg-rose-500/10 transition-all cursor-pointer group"
           >
-            <LogOut className="w-5 h-5 text-rose-500" />
-            {!sidebarCollapsed && <span>Sign Out</span>}
+            <LogOut className="w-4 h-4 text-rose-500" />
+            {!sidebarCollapsed && <span className="font-sans text-xs">Sign Out</span>}
           </button>
         </div>
       </aside>
 
       {/* Main Content Area */}
-      <div className="flex-1 flex flex-col min-h-screen">
+      <div className="flex-1 flex flex-col min-h-screen relative z-10">
         {/* Header */}
         <header className="h-16 border-b border-border-dark bg-card-dark/20 backdrop-blur-md px-8 flex items-center justify-between">
-          <div className="flex items-center gap-2 text-sm text-gray-400">
-            <LayoutDashboard className="w-4 h-4" />
+          <div className="flex items-center gap-2 text-xs font-mono text-gray-500">
+            <LayoutDashboard className="w-3.5 h-3.5" />
             <span>/</span>
-            <span className="text-gray-200 capitalize font-medium">
+            <span className="text-gray-300 capitalize font-medium">
               {location.pathname.split('/').filter(Boolean).pop()?.replace(/-/g, ' ') || 'Dashboard'}
             </span>
           </div>
 
           <div className="flex items-center gap-4">
             <div className="text-right">
-              <div className="text-sm font-semibold text-white">{user?.email}</div>
-              <div className="text-xs text-primary-400 font-bold uppercase tracking-wider">{user?.role}</div>
+              <div className="text-sm font-bold text-white font-sans">{user?.email}</div>
+              <div className="text-[10px] text-primary-400 font-bold uppercase tracking-wider font-mono">{user?.role}</div>
             </div>
-            <div className="w-10 h-10 rounded-xl bg-primary-500/10 border border-primary-500/30 flex items-center justify-center text-primary-400 shadow-[0_0_10px_rgba(139,92,246,0.15)]">
-              <User className="w-5 h-5" />
+            <div className="w-10 h-10 rounded-xl bg-primary-500/10 border border-primary-500/20 flex items-center justify-center text-primary-400 shadow-[0_0_12px_rgba(139,92,246,0.15)]">
+              <User className="w-4 h-4" />
             </div>
           </div>
         </header>
 
         {/* Content Body */}
-        <main className="flex-1 p-8 overflow-y-auto max-w-7xl w-full mx-auto">
+        <main className="flex-1 p-8 overflow-y-auto max-w-7xl w-full mx-auto relative z-10">
           <Outlet />
         </main>
       </div>

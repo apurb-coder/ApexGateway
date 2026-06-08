@@ -22,12 +22,12 @@ import Landing from './pages/Landing';
 
 function DashboardRedirect() {
   const { user } = useAuthStore();
-  if (!user) return <Navigate to="/login" replace />;
-  if (user.role === 'PROVIDER') {
+  if (user?.role === 'PROVIDER') {
     return <Navigate to="/dashboard/provider/apis" replace />;
   }
   return <Navigate to="/marketplace" replace />;
 }
+
 
 export default function App() {
   return (

@@ -128,6 +128,8 @@ export default function ApiDetails() {
     }
   };
 
+  const gatewayUrl = import.meta.env.VITE_GATEWAY_API_URL || 'http://localhost:4000';
+
   if (loading) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[400px] gap-4">
@@ -140,38 +142,44 @@ export default function ApiDetails() {
   if (!api) {
     return (
       <div className="text-center py-12">
-        <h3 className="text-lg font-semibold text-white">API Not Found</h3>
-        <p className="text-gray-400 mt-2">The API you are looking for does not exist or has been removed.</p>
-        <Link to="/marketplace" className="inline-block mt-4 text-primary-400 hover:underline">Back to Marketplace</Link>
+        <h3 className="text-lg font-bold text-white font-display">API Not Found</h3>
+        <p className="text-gray-400 mt-2 text-sm">The API you are looking for does not exist or has been removed.</p>
+        <Link to="/marketplace" className="inline-block mt-4 text-primary-400 hover:underline text-sm font-semibold">Back to Marketplace</Link>
       </div>
     );
   }
 
   return (
-    <div className="space-y-8 relative">
+    <div className="space-y-8 relative animate-fadeIn">
       <div>
         <Link to="/marketplace" className="inline-flex items-center gap-2 text-gray-400 hover:text-white transition-colors text-sm cursor-pointer group">
           <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
-          <span>Back to Marketplace</span>
+          <span className="font-semibold">Back to Marketplace</span>
         </Link>
       </div>
 
-      <div className="bg-card-dark/40 border border-border-dark rounded-2xl p-8 backdrop-blur-md relative overflow-hidden flex flex-col md:flex-row md:items-center justify-between gap-6">
-        <div className="flex items-start gap-4">
-          <div className="w-14 h-14 bg-primary-500/10 border border-primary-500/30 rounded-xl flex items-center justify-center text-primary-400 shrink-0">
+      {/* API Intro block */}
+      <div className="bg-card-dark/40 border border-border-dark rounded-2xl p-8 backdrop-blur-md relative overflow-hidden flex flex-col md:flex-row md:items-center justify-between gap-6 gradient-border-glow">
+        <div className="flex items-start gap-5 relative z-10">
+          <div className="w-14 h-14 bg-primary-500/10 border border-primary-500/20 rounded-xl flex items-center justify-center text-primary-400 shrink-0 shadow-[0_0_15px_rgba(139,92,246,0.1)]">
             <Cpu className="w-8 h-8" />
           </div>
           <div>
-            <h1 className="text-3xl font-bold text-white">{api.name}</h1>
-            <p className="text-gray-400 mt-2 max-w-2xl">{api.description || 'No description provided.'}</p>
-            <div className="flex flex-wrap gap-4 mt-4 text-xs font-mono text-gray-500">
-              <div>
-                <span className="text-gray-400">Gateway Route:</span>{' '}
-                <span className="text-primary-400 font-semibold bg-bg-dark/60 px-2 py-1 rounded">/api/{api.name}</span>
+            <h1 className="text-3xl font-extrabold text-white font-display tracking-wide">{api.name}</h1>
+            <p className="text-gray-400 mt-2 max-w-2xl text-sm leading-relaxed">{api.description || 'No description provided.'}</p>
+            
+            <div className="flex flex-wrap gap-x-6 gap-y-2 mt-5 text-[11px] font-mono">
+              <div className="flex items-center gap-2">
+                <span className="text-gray-500">Gateway Route:</span>
+                <span className="text-primary-400 font-semibold bg-bg-dark/80 border border-border-dark px-2 py-0.5 rounded">
+                  /api/{api.name}
+                </span>
               </div>
-              <div>
-                <span className="text-gray-400">Upstream:</span>{' '}
-                <span className="bg-bg-dark/60 px-2 py-1 rounded">{api.upstreamUrl}</span>
+              <div className="flex items-center gap-2">
+                <span className="text-gray-500">Upstream Destination:</span>
+                <span className="text-gray-300 bg-bg-dark/80 border border-border-dark px-2 py-0.5 rounded">
+                  {api.upstreamUrl}
+                </span>
               </div>
             </div>
           </div>
@@ -179,14 +187,15 @@ export default function ApiDetails() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        {/* Plans Column */}
         <div className="lg:col-span-1 space-y-6">
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 pb-2 border-b border-border-dark">
             <CreditCard className="w-5 h-5 text-primary-400" />
-            <h2 className="text-xl font-bold text-white">Subscription Plans</h2>
+            <h2 className="text-xl font-bold text-white font-display tracking-wide">Pricing Tiers</h2>
           </div>
 
           {api.plans?.length === 0 ? (
-            <div className="bg-card-dark/20 border border-border-dark rounded-2xl p-6 text-center text-gray-400 text-sm">
+            <div className="bg-card-dark/20 border border-border-dark rounded-2xl p-6 text-center text-gray-500 text-sm">
               No pricing plans defined for this API.
             </div>
           ) : (
@@ -194,16 +203,18 @@ export default function ApiDetails() {
               {api.plans.map((plan) => (
                 <div 
                   key={plan.id}
-                  className="bg-card-dark/40 border border-border-dark hover:border-primary-500/30 rounded-2xl p-6 transition-all flex flex-col justify-between gap-4"
+                  className="bg-card-dark/40 border border-border-dark hover:border-primary-500/30 rounded-2xl p-6 transition-all duration-300 flex flex-col justify-between gap-5 relative overflow-hidden group"
                 >
-                  <div>
-                    <h3 className="text-base font-bold text-white">{plan.name}</h3>
-                    <div className="text-2xl font-extrabold text-primary-400 mt-2">
+                  <div className="absolute inset-0 bg-radial-gradient from-primary-500/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
+                  <div className="relative z-10">
+                    <h3 className="text-base font-bold text-white font-display">{plan.name}</h3>
+                    <div className="text-3xl font-black text-primary-400 mt-2 font-display">
                       ${plan.price}
-                      <span className="text-xs text-gray-500 font-normal"> /mo</span>
+                      <span className="text-xs text-gray-500 font-normal font-sans"> /mo</span>
                     </div>
-                    <div className="text-xs text-gray-400 mt-3 font-mono">
-                      Limit: <span className="text-white font-semibold">{plan.requestsPerMin}</span> requests/min
+                    <div className="text-xs text-gray-400 mt-4 font-mono flex items-center justify-between bg-bg-dark/50 border border-border-dark px-3 py-2 rounded-xl">
+                      <span className="text-gray-500">Rate Limit:</span>
+                      <span className="text-white font-semibold">{plan.requestsPerMin} req/min</span>
                     </div>
                   </div>
                   
@@ -211,9 +222,9 @@ export default function ApiDetails() {
                     <button
                       onClick={() => handleSubscribe(plan.id)}
                       disabled={subscribingPlanId === plan.id}
-                      className="w-full bg-primary-500 hover:bg-primary-600 disabled:opacity-50 text-white font-semibold py-2.5 px-4 rounded-xl text-sm transition-all cursor-pointer shadow-[0_2px_10px_rgba(139,92,246,0.2)]"
+                      className="w-full bg-primary-500 hover:bg-primary-600 disabled:opacity-50 text-white font-bold py-2.5 px-4 rounded-xl text-xs transition-all cursor-pointer shadow-[0_4px_15px_rgba(139,92,246,0.25)] relative z-10"
                     >
-                      {subscribingPlanId === plan.id ? 'Subscribing...' : 'Subscribe'}
+                      {subscribingPlanId === plan.id ? 'Subscribing...' : 'Subscribe to Tier'}
                     </button>
                   )}
                 </div>
@@ -222,20 +233,21 @@ export default function ApiDetails() {
           )}
         </div>
 
+        {/* Tester Column */}
         <div className="lg:col-span-2 space-y-6">
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 pb-2 border-b border-border-dark">
             <Terminal className="w-5 h-5 text-primary-400" />
-            <h2 className="text-xl font-bold text-white">Interactive API Tester</h2>
+            <h2 className="text-xl font-bold text-white font-display tracking-wide">Gateway Playground</h2>
           </div>
 
-          <div className="bg-card-dark/40 border border-border-dark rounded-2xl p-6 backdrop-blur-md space-y-6">
+          <div className="bg-card-dark/40 border border-border-dark rounded-2xl p-6 backdrop-blur-md space-y-6 relative overflow-hidden">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div>
-                <label className="block text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">HTTP Method</label>
+                <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-2 font-display">HTTP Method</label>
                 <select
                   value={testMethod}
                   onChange={(e) => setTestMethod(e.target.value)}
-                  className="w-full bg-bg-dark/50 border border-border-dark focus:border-primary-500 text-white rounded-xl py-2 px-3 outline-none text-sm cursor-pointer"
+                  className="w-full bg-bg-dark/60 border border-border-dark focus:border-primary-500 text-white rounded-xl py-2.5 px-3.5 outline-none text-xs cursor-pointer font-mono"
                 >
                   <option value="GET">GET</option>
                   <option value="POST">POST</option>
@@ -245,50 +257,50 @@ export default function ApiDetails() {
               </div>
 
               <div className="md:col-span-2">
-                <label className="block text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2 flex justify-between items-center">
-                  <span>X-API-Key</span>
+                <div className="flex justify-between items-center mb-2">
+                  <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-wider font-display">X-API-Key Header</label>
                   <button 
                     onClick={() => setShowApiKey(!showApiKey)}
-                    className="text-[10px] text-primary-400 hover:underline cursor-pointer"
+                    className="text-[10px] text-primary-400 hover:text-primary-300 font-semibold cursor-pointer transition-colors"
                   >
-                    {showApiKey ? 'Hide Key' : 'Show Key'}
+                    {showApiKey ? 'Hide Key' : 'Reveal Key'}
                   </button>
-                </label>
+                </div>
                 <div className="relative">
                   <input
                     type={showApiKey ? 'text' : 'password'}
-                    placeholder="apx_live_..."
+                    placeholder="Enter subscription key (apx_live_...)"
                     value={testApiKey}
                     onChange={(e) => setTestApiKey(e.target.value)}
-                    className="w-full bg-bg-dark/50 border border-border-dark focus:border-primary-500 text-white rounded-xl py-2.5 px-4 outline-none text-sm font-mono"
+                    className="w-full bg-bg-dark/60 border border-border-dark focus:border-primary-500 focus:ring-1 focus:ring-primary-500 text-white rounded-xl py-2.5 px-4 outline-none text-xs font-mono placeholder:text-gray-600"
                   />
                 </div>
               </div>
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Request Endpoint Path</label>
-              <div className="flex items-center gap-1 bg-bg-dark/50 border border-border-dark rounded-xl px-4 py-2 font-mono text-sm">
-                <span className="text-gray-500 select-none">http://localhost:4000/api/{api.name}/</span>
+              <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-2 font-display">Gateway Request URL</label>
+              <div className="flex items-center gap-1.5 bg-bg-dark/60 border border-border-dark rounded-xl px-4 py-3 font-mono text-xs overflow-x-auto scrollbar-thin">
+                <span className="text-gray-500 select-none shrink-0">{gatewayUrl}/api/{api.name}/</span>
                 <input
                   type="text"
-                  placeholder="v1/forecast"
+                  placeholder="v1/data-endpoint"
                   value={testPath}
                   onChange={(e) => setTestPath(e.target.value)}
-                  className="flex-1 bg-transparent text-white outline-none border-none p-0 focus:ring-0 text-sm font-mono"
+                  className="flex-1 bg-transparent text-white outline-none border-none p-0 focus:ring-0 text-xs font-mono min-w-[150px]"
                 />
               </div>
             </div>
 
             {testMethod !== 'GET' && (
               <div>
-                <label className="block text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Request Body (JSON)</label>
+                <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-2 font-display">Request Body (JSON)</label>
                 <textarea
-                  placeholder='{ "key": "value" }'
+                  placeholder='{ "query": "hello world" }'
                   value={testBody}
                   onChange={(e) => setTestBody(e.target.value)}
                   rows={4}
-                  className="w-full bg-bg-dark/50 border border-border-dark focus:border-primary-500 text-white rounded-xl p-3 outline-none text-sm font-mono"
+                  className="w-full bg-bg-dark/60 border border-border-dark focus:border-primary-500 focus:ring-1 focus:ring-primary-500 text-white rounded-xl p-3.5 outline-none text-xs font-mono placeholder:text-gray-600"
                 />
               </div>
             )}
@@ -296,17 +308,17 @@ export default function ApiDetails() {
             <button
               onClick={runTest}
               disabled={testing}
-              className="w-full bg-primary-500 hover:bg-primary-600 disabled:opacity-50 text-white font-semibold py-3 px-4 rounded-xl text-sm transition-all flex items-center justify-center gap-2 cursor-pointer shadow-[0_4px_20px_rgba(139,92,246,0.3)]"
+              className="w-full bg-primary-500 hover:bg-primary-600 disabled:opacity-50 text-white font-bold py-3 px-4 rounded-xl text-xs transition-all flex items-center justify-center gap-2 cursor-pointer shadow-[0_4px_20px_rgba(139,92,246,0.3)] hover:shadow-[0_4px_25px_rgba(139,92,246,0.45)]"
             >
-              <Play className="w-4 h-4" />
-              <span>{testing ? 'Sending Request...' : 'Send Test Request'}</span>
+              <Play className="w-4 h-4 fill-current" />
+              <span>{testing ? 'Routing Request...' : 'Trigger Proxy Route'}</span>
             </button>
 
             {testResponse && (
-              <div className="space-y-4 border-t border-border-dark pt-6 animate-in fade-in duration-300">
-                <div className="flex items-center justify-between text-xs font-semibold font-mono">
+              <div className="space-y-4 border-t border-border-dark pt-6 animate-fadeIn">
+                <div className="flex items-center justify-between text-[11px] font-semibold font-mono">
                   <div className="flex items-center gap-2">
-                    <span>Status:</span>
+                    <span className="text-gray-500">Status Code:</span>
                     <span className={`px-2.5 py-0.5 rounded-full ${
                       testResponse.status >= 200 && testResponse.status < 300 
                         ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20' 
@@ -316,13 +328,13 @@ export default function ApiDetails() {
                     </span>
                   </div>
                   <div>
-                    <span>Latency:</span> <span className="text-primary-400">{testResponse.latency}ms</span>
+                    <span className="text-gray-500">Roundtrip:</span> <span className="text-primary-400 font-bold">{testResponse.latency}ms</span>
                   </div>
                 </div>
 
-                <div className="bg-bg-dark/60 border border-border-dark rounded-xl p-4 overflow-x-auto max-h-80 scrollbar-thin">
-                  <div className="text-xs text-gray-500 font-semibold uppercase mb-2">Response Body</div>
-                  <pre className="text-xs font-mono text-emerald-400 select-all">{JSON.stringify(testResponse.data, null, 2)}</pre>
+                <div className="bg-bg-dark/80 border border-border-dark rounded-xl p-4 overflow-x-auto max-h-80 scrollbar-thin relative font-mono text-xs">
+                  <div className="text-[10px] text-gray-500 font-bold uppercase tracking-wider mb-2 font-sans">Gateway Response Body</div>
+                  <pre className="text-emerald-400 select-all leading-relaxed whitespace-pre-wrap">{JSON.stringify(testResponse.data, null, 2)}</pre>
                 </div>
               </div>
             )}
@@ -331,19 +343,19 @@ export default function ApiDetails() {
       </div>
 
       {apiKeyModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm p-4 animate-in fade-in duration-200">
-          <div className="w-full max-w-lg bg-card-dark border border-border-dark rounded-2xl p-8 shadow-[0_8px_32px_rgba(0,0,0,0.6)] relative z-10 animate-in zoom-in-95 duration-200">
-            <div className="flex items-center gap-3 text-rose-400 mb-4">
-              <AlertTriangle className="w-8 h-8 shrink-0 animate-bounce" />
-              <h2 className="text-xl font-bold text-white">One-Time API Key Delivery</h2>
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 animate-fadeIn">
+          <div className="w-full max-w-lg bg-card-dark border border-primary-500/30 rounded-2xl p-8 shadow-[0_0_50px_rgba(139,92,246,0.15)] relative z-10">
+            <div className="flex items-center gap-3 text-rose-400 mb-4 pb-2 border-b border-border-dark">
+              <AlertTriangle className="w-7 h-7 shrink-0 text-amber-500 animate-pulse" />
+              <h2 className="text-lg font-bold text-white font-display tracking-wide">One-Time Secure Key Delivery</h2>
             </div>
             
-            <p className="text-sm text-gray-400 mb-6 leading-relaxed">
-              Below is your secure API key for this subscription. To protect your credentials, ApexGateway hashes this key and **will never show it to you again**. Please copy and store it somewhere safe immediately.
+            <p className="text-xs text-gray-400 mb-6 leading-relaxed">
+              Below is the raw API key for this subscription. To protect your backend, ApexGateway hashes this key and **will never display it to you again**. Please copy and store it securely now.
             </p>
 
-            <div className="flex items-center gap-2 bg-bg-dark/60 border border-border-dark rounded-xl p-3 font-mono text-sm text-white mb-6 select-all">
-              <span className="flex-1 break-all pr-2">{apiKeyModal.apiKey}</span>
+            <div className="flex items-center gap-2 bg-bg-dark/80 border border-border-dark rounded-xl p-3.5 font-mono text-xs text-white mb-6 select-all">
+              <span className="flex-1 break-all pr-2 tracking-wide font-semibold text-primary-400">{apiKeyModal.apiKey}</span>
               <button
                 onClick={copyToClipboard}
                 className="shrink-0 p-2 bg-primary-500/10 hover:bg-primary-500/20 border border-primary-500/30 text-primary-400 rounded-lg transition-all cursor-pointer"
@@ -358,7 +370,7 @@ export default function ApiDetails() {
                 setApiKeyModal(null);
                 addToast('Modal dismissed. Key has been auto-filled in the tester console.', 'info');
               }}
-              className="w-full bg-primary-500 hover:bg-primary-600 text-white font-semibold py-3 px-4 rounded-xl text-sm transition-all cursor-pointer shadow-[0_4px_20px_rgba(139,92,246,0.3)] text-center font-bold"
+              className="w-full bg-primary-500 hover:bg-primary-600 text-white font-bold py-3 px-4 rounded-xl text-xs transition-all cursor-pointer shadow-[0_4px_15px_rgba(139,92,246,0.25)] text-center"
             >
               I have saved it, close modal
             </button>

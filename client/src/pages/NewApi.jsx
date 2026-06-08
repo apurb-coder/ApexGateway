@@ -33,20 +33,22 @@ export default function NewApi() {
   };
 
   return (
-    <div className="space-y-6 max-w-2xl">
+    <div className="space-y-8 max-w-2xl animate-fadeIn">
       <div>
-        <Link to="/dashboard/provider/apis" className="inline-flex items-center gap-2 text-gray-400 hover:text-white transition-colors text-sm cursor-pointer group mb-4">
+        <Link to="/dashboard/provider/apis" className="inline-flex items-center gap-2 text-gray-400 hover:text-white transition-colors text-xs font-bold uppercase tracking-wider font-display cursor-pointer group mb-4">
           <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
           <span>Back to My APIs</span>
         </Link>
-        <h1 className="text-3xl font-bold tracking-tight text-white">Register Upstream API</h1>
-        <p className="text-gray-400 mt-1">Deploy and route traffic to your microservices via ApexGateway.</p>
+        <h1 className="text-3xl font-extrabold tracking-tight text-white font-display">Register Upstream API</h1>
+        <p className="text-gray-400 mt-1 text-sm">Deploy and route traffic to your microservices via ApexGateway.</p>
       </div>
 
-      <div className="bg-card-dark/40 border border-border-dark rounded-2xl p-6 backdrop-blur-md">
-        <form onSubmit={handleSubmit} className="space-y-6">
+      <div className="bg-card-dark/40 border border-border-dark rounded-2xl p-6 backdrop-blur-md relative overflow-hidden group">
+        <div className="absolute inset-0 bg-radial-gradient from-primary-500/5 via-transparent to-transparent opacity-100 pointer-events-none" />
+        
+        <form onSubmit={handleSubmit} className="space-y-6 relative z-10">
           <div>
-            <label className="block text-sm font-medium text-gray-300 mb-2">API Service Name</label>
+            <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-2 font-display">API Service Name</label>
             <div className="relative">
               <input
                 type="text"
@@ -54,14 +56,14 @@ export default function NewApi() {
                 value={name}
                 onChange={(e) => setName(e.target.value.toLowerCase().replace(/[^a-z0-9-_]/g, ''))}
                 placeholder="weather-service"
-                className="w-full bg-bg-dark/50 border border-border-dark focus:border-primary-500 focus:ring-1 focus:ring-primary-500 text-white rounded-xl py-2.5 px-4 outline-none transition-all placeholder:text-gray-600 text-sm font-mono"
+                className="w-full bg-bg-dark/60 border border-border-dark focus:border-primary-500 focus:ring-1 focus:ring-primary-500 text-white rounded-xl py-2.5 px-4 outline-none transition-all placeholder:text-gray-600 text-xs font-mono"
               />
             </div>
-            <p className="text-xs text-gray-500 mt-1">Lowercase alphanumeric, hyphens, and underscores only. This dictates your gateway endpoint prefix.</p>
+            <p className="text-[10px] text-gray-500 mt-2">Lowercase alphanumeric, hyphens, and underscores only. This dictates your gateway endpoint prefix.</p>
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-300 mb-2">Upstream Destination URL</label>
+            <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-2 font-display">Upstream Destination URL</label>
             <div className="relative">
               <input
                 type="url"
@@ -69,34 +71,34 @@ export default function NewApi() {
                 value={upstreamUrl}
                 onChange={(e) => setUpstreamUrl(e.target.value)}
                 placeholder="https://api.weather.com"
-                className="w-full bg-bg-dark/50 border border-border-dark focus:border-primary-500 focus:ring-1 focus:ring-primary-500 text-white rounded-xl py-2.5 px-4 outline-none transition-all placeholder:text-gray-600 text-sm font-mono"
+                className="w-full bg-bg-dark/60 border border-border-dark focus:border-primary-500 focus:ring-1 focus:ring-primary-500 text-white rounded-xl py-2.5 px-4 outline-none transition-all placeholder:text-gray-600 text-xs font-mono"
               />
             </div>
-            <p className="text-xs text-gray-500 mt-1">The destination target servers where gateway proxies requests.</p>
+            <p className="text-[10px] text-gray-500 mt-2">The destination target servers where gateway proxies requests.</p>
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-300 mb-2">Description</label>
+            <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-2 font-display">Description</label>
             <textarea
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               placeholder="Retrieves live global weather metrics, forecasts, and historical metrics."
               rows={4}
-              className="w-full bg-bg-dark/50 border border-border-dark focus:border-primary-500 focus:ring-1 focus:ring-primary-500 text-white rounded-xl p-3 outline-none transition-all placeholder:text-gray-600 text-sm"
+              className="w-full bg-bg-dark/60 border border-border-dark focus:border-primary-500 focus:ring-1 focus:ring-primary-500 text-white rounded-xl p-3 outline-none transition-all placeholder:text-gray-600 text-xs font-sans"
             />
           </div>
 
-          <div className="pt-4 border-t border-border-dark flex justify-end gap-4">
+          <div className="pt-6 border-t border-border-dark flex justify-end gap-4 font-display">
             <Link
               to="/dashboard/provider/apis"
-              className="px-4 py-2.5 rounded-xl border border-border-dark hover:bg-white/5 transition-all text-sm font-semibold text-gray-300 cursor-pointer"
+              className="px-4 py-2.5 rounded-xl border border-border-dark hover:bg-white/5 transition-all text-xs font-bold text-gray-400 hover:text-white cursor-pointer uppercase tracking-wider"
             >
               Cancel
             </Link>
             <button
               type="submit"
               disabled={loading}
-              className="bg-primary-500 hover:bg-primary-600 text-white font-semibold py-2.5 px-6 rounded-xl shadow-[0_4px_15px_rgba(139,92,246,0.3)] transition-all flex items-center gap-2 cursor-pointer disabled:opacity-50 text-sm"
+              className="bg-primary-500 hover:bg-primary-600 text-white font-bold py-2.5 px-6 rounded-xl shadow-[0_4px_15px_rgba(139,92,246,0.25)] hover:shadow-[0_4px_20px_rgba(139,92,246,0.4)] transition-all flex items-center gap-2 cursor-pointer disabled:opacity-50 text-xs uppercase tracking-wider"
             >
               {loading ? 'Registering...' : 'Register API'}
             </button>
