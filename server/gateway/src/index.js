@@ -13,6 +13,15 @@ const PORT = process.env.PORT || 4000;
 // Security Middleware (Note: Helmet is configured, but we disable contentSecurityPolicy for API proxying if needed.
 // However, since it is an API Gateway, simple Helmet is fine.
 app.use(helmet());
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization, X-API-Key');
+  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+  if (req.method === 'OPTIONS') {
+    return res.sendStatus(200);
+  }
+  next();
+});
 
 // Health Check
 app.get('/health', (req, res) => {
