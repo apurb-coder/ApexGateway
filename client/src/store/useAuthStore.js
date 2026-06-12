@@ -13,7 +13,12 @@ export const useAuthStore = create((set, get) => ({
     // Check active session
     supabase.auth.getSession().then(({ data: { session } }) => {
       if (session) {
-        get().handleSession(session);
+        const isEmailUnconfirmed = session.user?.email && !session.user?.email_confirmed_at && !session.user?.confirmed_at;
+        if (isEmailUnconfirmed) {
+          set({ user: null, token: null, isAuthenticated: false, loading: false });
+        } else {
+          get().handleSession(session);
+        }
       } else {
         set({ user: null, token: null, isAuthenticated: false, loading: false });
       }
@@ -22,6 +27,11 @@ export const useAuthStore = create((set, get) => ({
     // Listen to changes
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
       if (session) {
+        const isEmailUnconfirmed = session.user?.email && !session.user?.email_confirmed_at && !session.user?.confirmed_at;
+        if (isEmailUnconfirmed) {
+          set({ user: null, token: null, isAuthenticated: false, loading: false });
+          return;
+        }
         await get().handleSession(session);
       } else {
         set({ user: null, token: null, isAuthenticated: false, loading: false });

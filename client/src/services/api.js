@@ -30,8 +30,11 @@ apiClient.interceptors.response.use(
 
     if (status === 401) {
       // Token expired or invalid -> clear store and redirect
+      const wasAuthenticated = useAuthStore.getState().isAuthenticated;
       useAuthStore.getState().logout();
-      addToast('Session expired. Please log in again.', 'error');
+      if (wasAuthenticated) {
+        addToast('Session expired. Please log in again.', 'error');
+      }
     } else if (status === 429) {
       addToast('Rate limit exceeded! Please wait a moment.', 'warning');
     } else {

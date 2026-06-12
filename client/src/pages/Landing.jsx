@@ -120,11 +120,7 @@ export default function Landing() {
               Playground
               <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-primary-500 transition-all duration-300 group-hover:w-full"></span>
             </a>
-            <a href="#pricing" className="text-gray-400 hover:text-white transition-colors text-sm font-medium relative py-1.5 group">
-              Pricing
-              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-primary-500 transition-all duration-300 group-hover:w-full"></span>
-            </a>
-            <a href="#faq" className="text-gray-400 hover:text-white transition-colors text-sm font-medium relative py-1.5 group">
+            <a href="#faq" className="text-gray-400 hover:text-white transition-colors text-sm font-medium relative py-1.5 group font-semibold">
               FAQs
               <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-primary-500 transition-all duration-300 group-hover:w-full"></span>
             </a>
@@ -168,7 +164,6 @@ export default function Landing() {
           <div className="md:hidden bg-bg-dark border-b border-border-dark px-6 py-4 space-y-4">
             <a href="#features" onClick={() => setMobileMenuOpen(false)} className="block text-gray-400 hover:text-white transition-colors py-2 text-sm font-medium">Features</a>
             <a href="#playground" onClick={() => setMobileMenuOpen(false)} className="block text-gray-400 hover:text-white transition-colors py-2 text-sm font-medium">Playground</a>
-            <a href="#pricing" onClick={() => setMobileMenuOpen(false)} className="block text-gray-400 hover:text-white transition-colors py-2 text-sm font-medium">Pricing</a>
             <a href="#faq" onClick={() => setMobileMenuOpen(false)} className="block text-gray-400 hover:text-white transition-colors py-2 text-sm font-medium">FAQs</a>
             <hr className="border-border-dark" />
             <div className="flex flex-col gap-3 pt-2">
@@ -525,137 +520,6 @@ export default function Landing() {
         </div>
       </section>
 
-      {/* Pricing Tiers Section */}
-      <section id="pricing" className="py-28 bg-card-dark/15 border-t border-border-dark/60">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="text-center max-w-2xl mx-auto mb-20">
-            <h2 className="font-display text-3xl font-bold tracking-tight text-white sm:text-4xl">
-              Transparent, Developer-Friendly Plans
-            </h2>
-            <p className="mt-4 text-gray-400">
-              No hidden fees. Pick a pricing tier matching your API consumption scale, or configure custom limits.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto items-stretch">
-            {/* Free Plan */}
-            <div className="bg-card-dark/30 border border-border-dark/60 rounded-2xl p-8 flex flex-col justify-between hover:border-border-hover transition-all duration-300 hover:translate-y-[-2px] gradient-border-glow">
-              <div>
-                <h3 className="font-display text-lg font-bold text-white">Basic Starter</h3>
-                <p className="text-sm text-gray-500 mt-1.5">For testing and personal side projects.</p>
-                <div className="mt-6 flex items-baseline">
-                  <span className="text-4xl font-extrabold text-white font-display">$0</span>
-                  <span className="text-xs text-gray-500 ml-2 font-mono uppercase tracking-wider font-semibold">/ month</span>
-                </div>
-                <ul className="mt-8 space-y-4 text-sm text-gray-400">
-                  <li className="flex items-center gap-3">
-                    <Check className="w-4 h-4 text-emerald-400 shrink-0" />
-                    <span>Up to 10 Requests / Minute</span>
-                  </li>
-                  <li className="flex items-center gap-3">
-                    <Check className="w-4 h-4 text-emerald-400 shrink-0" />
-                    <span>3 Active API Subscriptions</span>
-                  </li>
-                  <li className="flex items-center gap-3">
-                    <Check className="w-4 h-4 text-emerald-400 shrink-0" />
-                    <span>Standard Latency Logs</span>
-                  </li>
-                </ul>
-              </div>
-              <div className="mt-8">
-                <Link
-                  to="/signup"
-                  className="block text-center bg-bg-dark/60 hover:bg-card-dark text-white font-semibold py-2.5 px-4 rounded-xl border border-border-dark text-sm transition-all duration-300 cursor-pointer"
-                >
-                  Start Testing
-                </Link>
-              </div>
-            </div>
-
-            {/* Pro Plan */}
-            <div className="bg-card-dark/60 border-2 border-primary-500 rounded-2xl p-8 flex flex-col justify-between relative shadow-[0_10px_40px_rgba(139,92,246,0.15)] md:scale-105 z-10 gradient-border-glow-featured">
-              <div className="absolute top-0 right-6 -translate-y-1/2 bg-linear-to-r from-primary-500 to-primary-400 text-white text-[9px] uppercase tracking-widest font-black px-3.5 py-1 rounded-full shadow-[0_4px_12px_rgba(139,92,246,0.3)]">
-                Most Popular
-              </div>
-              <div>
-                <h3 className="font-display text-lg font-bold text-white flex items-center gap-2">
-                  Pro Developer
-                </h3>
-                <p className="text-sm text-primary-300 mt-1.5">For production web apps & active builders.</p>
-                <div className="mt-6 flex items-baseline">
-                  <span className="text-4xl font-extrabold text-white font-display">$29</span>
-                  <span className="text-xs text-primary-400 ml-2 font-mono uppercase tracking-wider font-semibold">/ month</span>
-                </div>
-                <ul className="mt-8 space-y-4 text-sm text-gray-300">
-                  <li className="flex items-center gap-3">
-                    <Check className="w-4 h-4 text-primary-400 shrink-0" />
-                    <span className="font-semibold">Up to 120 Requests / Minute</span>
-                  </li>
-                  <li className="flex items-center gap-3">
-                    <Check className="w-4 h-4 text-primary-400 shrink-0" />
-                    <span>Unlimited Subscriptions</span>
-                  </li>
-                  <li className="flex items-center gap-3">
-                    <Check className="w-4 h-4 text-primary-400 shrink-0" />
-                    <span>Priority Redis Rate-Limiting Queue</span>
-                  </li>
-                  <li className="flex items-center gap-3">
-                    <Check className="w-4 h-4 text-primary-400 shrink-0" />
-                    <span>14-day Analytics Storage</span>
-                  </li>
-                </ul>
-              </div>
-              <div className="mt-8">
-                <Link
-                  to="/signup"
-                  className="block text-center bg-primary-500 hover:bg-primary-600 text-white font-semibold py-3 px-4 rounded-xl text-sm transition-all duration-300 shadow-[0_4px_15px_rgba(139,92,246,0.25)] cursor-pointer"
-                >
-                  Get Pro Access
-                </Link>
-              </div>
-            </div>
-
-            {/* Enterprise Plan */}
-            <div className="bg-card-dark/30 border border-border-dark/60 rounded-2xl p-8 flex flex-col justify-between hover:border-border-hover transition-all duration-300 hover:translate-y-[-2px] gradient-border-glow">
-              <div>
-                <h3 className="font-display text-lg font-bold text-white">Enterprise Scaling</h3>
-                <p className="text-sm text-gray-500 mt-1.5">Custom limits for enterprise scale.</p>
-                <div className="mt-6 flex items-baseline">
-                  <span className="text-4xl font-extrabold text-white font-display">$99</span>
-                  <span className="text-xs text-gray-500 ml-2 font-mono uppercase tracking-wider font-semibold">/ month</span>
-                </div>
-                <ul className="mt-8 space-y-4 text-sm text-gray-400">
-                  <li className="flex items-center gap-3">
-                    <Check className="w-4 h-4 text-emerald-400 shrink-0" />
-                    <span className="font-semibold">Custom RPM Limits</span>
-                  </li>
-                  <li className="flex items-center gap-3">
-                    <Check className="w-4 h-4 text-emerald-400 shrink-0" />
-                    <span>Dedicated Cluster Upstream Proxy</span>
-                  </li>
-                  <li className="flex items-center gap-3">
-                    <Check className="w-4 h-4 text-emerald-400 shrink-0" />
-                    <span>Unlimited Hashed Keys</span>
-                  </li>
-                  <li className="flex items-center gap-3">
-                    <Check className="w-4 h-4 text-emerald-400 shrink-0" />
-                    <span>Real-Time Webhooks Integration</span>
-                  </li>
-                </ul>
-              </div>
-              <div className="mt-8">
-                <Link
-                  to="/signup"
-                  className="block text-center bg-bg-dark/60 hover:bg-card-dark text-white font-semibold py-2.5 px-4 rounded-xl border border-border-dark text-sm transition-all duration-300 cursor-pointer"
-                >
-                  Contact Sales
-                </Link>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* FAQ Accordion Section */}
       <section id="faq" className="py-28 px-6 max-w-4xl mx-auto">
         <div className="text-center mb-16">
@@ -752,7 +616,6 @@ export default function Landing() {
             <ul className="space-y-2 text-xs text-gray-500">
               <li><a href="#features" className="hover:text-gray-300 transition-colors">Features</a></li>
               <li><a href="#playground" className="hover:text-gray-300 transition-colors">Interactive Playground</a></li>
-              <li><a href="#pricing" className="hover:text-gray-300 transition-colors">Pricing Plans</a></li>
             </ul>
           </div>
 

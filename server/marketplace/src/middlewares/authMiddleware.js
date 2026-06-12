@@ -43,20 +43,56 @@ export const authenticateUser = async (req, res, next) => {
     const id = payload.sub; // Supabase user ID (UUID)
     const email = payload.email;
 
-    // Check if the user exists in our local database, auto-provision using upsert
     const metadataRole = payload.user_metadata?.role;
     const userRole = metadataRole === 'PROVIDER' ? 'PROVIDER' : 'CONSUMER';
 
-    const user = await prisma.user.upsert({
-      where: { id: id },
-      update: {},
-      create: {
-        id: id,
-        email: email || '',
-        passwordHash: '', // external login
-        role: userRole
-      }
+    let user = await prisma.user.findUnique({
+      where: { id: id }
     });
+
+    if (!user && email) {
+      const existingUserByEmail = await prisma.user.findUnique({
+        where: { email }
+      });
+
+      if (existingUserByEmail) {
+        try {
+          // Attempt to update ID and cascade to relations using transaction
+          await prisma.$transaction([
+            prisma.$executeRaw`UPDATE "User" SET id = ${id} WHERE id = ${existingUserByEmail.id}`,
+            prisma.$executeRaw`UPDATE "Api" SET "providerId" = ${id} WHERE "providerId" = ${existingUserByEmail.id}`,
+            prisma.$executeRaw`UPDATE "Subscription" SET "consumerId" = ${id} WHERE "consumerId" = ${existingUserByEmail.id}`
+          ]);
+        } catch (txError) {
+          console.warn('Failed to update user ID in transaction, falling back to delete & recreate:', txError.message);
+          await prisma.user.delete({
+            where: { id: existingUserByEmail.id }
+          });
+        }
+
+        user = await prisma.user.findUnique({
+          where: { id: id }
+        });
+      }
+    }
+
+    if (!user) {
+      user = await prisma.user.create({
+        data: {
+          id: id,
+          email: email || '',
+          passwordHash: '', // external login
+          role: userRole
+        }
+      });
+    } else {
+      if (metadataRole && user.role !== userRole) {
+        user = await prisma.user.update({
+          where: { id: id },
+          data: { role: userRole }
+        });
+      }
+    }
 
     // Attach user to request context
     req.user = {
