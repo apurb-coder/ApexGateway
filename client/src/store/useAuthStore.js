@@ -36,14 +36,18 @@ export const useAuthStore = create((set, get) => ({
   // Helper to sync session state
   handleSession: async (session) => {
     const token = session.access_token;
+    if (get().token === token && get().isAuthenticated) {
+      return;
+    }
+
+    // Preemptively set token to block concurrent requests and supply to interceptor
+    set({ token });
+
     try {
       // Fetch user profile (with role) from backend using Supabase JWT
-      const res = await apiClient.get('/auth/me', {
-        headers: { Authorization: `Bearer ${token}` }
-      });
+      const res = await apiClient.get('/auth/me');
       set({
         user: res.data.user,
-        token,
         isAuthenticated: true,
         loading: false
       });
@@ -58,7 +62,6 @@ export const useAuthStore = create((set, get) => ({
           email: session.user.email,
           role
         },
-        token,
         isAuthenticated: true,
         loading: false
       });
@@ -118,23 +121,7 @@ export const useAuthStore = create((set, get) => ({
     }
   },
 
-  // Google OAuth Login
-  loginWithGoogle: async () => {
-    set({ loading: true });
-    try {
-      const { data, error } = await supabase.auth.signInWithOAuth({
-        provider: 'google',
-        options: {
-          redirectTo: `${window.location.origin}/dashboard`
-        }
-      });
-      if (error) throw error;
-      return { data, error: null };
-    } catch (err) {
-      set({ loading: false });
-      return { data: null, error: err };
-    }
-  },
+
 
   // Forgot Password email trigger
   forgotPassword: async (email) => {

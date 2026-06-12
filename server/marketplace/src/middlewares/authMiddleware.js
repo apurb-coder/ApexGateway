@@ -15,6 +15,7 @@ try {
 }
 
 export const authenticateUser = async (req, res, next) => {
+  let payload;
   try {
     const authHeader = req.headers.authorization;
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
@@ -28,32 +29,34 @@ export const authenticateUser = async (req, res, next) => {
     }
 
     // Verify Supabase JWT locally using jose
-    const { payload } = await jose.jwtVerify(token, JWKS, {
+    const decoded = await jose.jwtVerify(token, JWKS, {
       issuer: jwtIssuer,
       audience: jwtAudience,
     });
+    payload = decoded.payload;
+  } catch (error) {
+    console.error('Supabase JWT verification failed:', error.message);
+    return res.status(401).json({ error: 'Invalid or expired token' });
+  }
 
+  try {
     const id = payload.sub; // Supabase user ID (UUID)
     const email = payload.email;
 
-    // Check if the user exists in our local database, auto-provision if not
-    let user = await prisma.user.findUnique({
-      where: { id: id }
-    });
+    // Check if the user exists in our local database, auto-provision using upsert
+    const metadataRole = payload.user_metadata?.role;
+    const userRole = metadataRole === 'PROVIDER' ? 'PROVIDER' : 'CONSUMER';
 
-    if (!user) {
-      // Auto-provision with metadata role or fallback to 'CONSUMER'
-      const metadataRole = payload.user_metadata?.role;
-      const userRole = metadataRole === 'PROVIDER' ? 'PROVIDER' : 'CONSUMER';
-      user = await prisma.user.create({
-        data: {
-          id: id,
-          email: email || '',
-          passwordHash: '', // external login
-          role: userRole
-        }
-      });
-    }
+    const user = await prisma.user.upsert({
+      where: { id: id },
+      update: {},
+      create: {
+        id: id,
+        email: email || '',
+        passwordHash: '', // external login
+        role: userRole
+      }
+    });
 
     // Attach user to request context
     req.user = {
@@ -64,8 +67,8 @@ export const authenticateUser = async (req, res, next) => {
 
     next();
   } catch (error) {
-    console.error('Supabase JWT verification failed:', error.message);
-    return res.status(401).json({ error: 'Invalid or expired token' });
+    console.error('Database user check/provisioning failed:', error.message);
+    return res.status(500).json({ error: 'Internal server error during user syncing' });
   }
 };
 
