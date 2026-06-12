@@ -68,8 +68,10 @@ export default function NewPlan() {
 
         <form onSubmit={handleSubmit} className="space-y-6 relative z-10">
           <div>
-            <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-2 font-display">Plan Title</label>
+            <label htmlFor="plan-name" className="block text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-2 font-display">Plan Title</label>
             <input
+              id="plan-name"
+              name="name"
               type="text"
               required
               value={name}
@@ -81,8 +83,10 @@ export default function NewPlan() {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
             <div>
-              <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-2 font-display">Rate Limit (Requests / Min)</label>
+              <label htmlFor="plan-rpm" className="block text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-2 font-display">Rate Limit (Requests / Min)</label>
               <input
+                id="plan-rpm"
+                name="requestsPerMin"
                 type="number"
                 required
                 min={1}
@@ -93,10 +97,12 @@ export default function NewPlan() {
             </div>
 
             <div>
-              <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-2 font-display">Monthly Fee (USD)</label>
+              <label htmlFor="plan-price" className="block text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-2 font-display">Monthly Fee (USD)</label>
               <div className="relative">
                 <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-500 text-xs font-semibold">$</span>
                 <input
+                  id="plan-price"
+                  name="price"
                   type="number"
                   required
                   min={0}
@@ -121,7 +127,7 @@ export default function NewPlan() {
               disabled={loading}
               className="bg-primary-500 hover:bg-primary-600 text-white font-bold py-2.5 px-6 rounded-xl shadow-[0_4px_15px_rgba(139,92,246,0.25)] hover:shadow-[0_4px_20px_rgba(139,92,246,0.4)] transition-all flex items-center gap-2 cursor-pointer disabled:opacity-50 text-xs uppercase tracking-wider"
             >
-              {loading ? 'Creating...' : 'Create Plan'}
+              {loading ? 'Creating…' : 'Create Plan'}
             </button>
           </div>
         </form>

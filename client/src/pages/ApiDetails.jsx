@@ -134,7 +134,7 @@ export default function ApiDetails() {
     return (
       <div className="flex flex-col items-center justify-center min-h-[400px] gap-4">
         <div className="w-10 h-10 border-4 border-primary-500 border-t-transparent rounded-full animate-spin"></div>
-        <p className="text-gray-400 text-sm">Loading API specifications...</p>
+        <p className="text-gray-400 text-sm">Loading API specifications…</p>
       </div>
     );
   }
@@ -224,7 +224,7 @@ export default function ApiDetails() {
                       disabled={subscribingPlanId === plan.id}
                       className="w-full bg-primary-500 hover:bg-primary-600 disabled:opacity-50 text-white font-bold py-2.5 px-4 rounded-xl text-xs transition-all cursor-pointer shadow-[0_4px_15px_rgba(139,92,246,0.25)] relative z-10"
                     >
-                      {subscribingPlanId === plan.id ? 'Subscribing...' : 'Subscribe to Tier'}
+                      {subscribingPlanId === plan.id ? 'Subscribing…' : 'Subscribe to Tier'}
                     </button>
                   )}
                 </div>
@@ -243,8 +243,9 @@ export default function ApiDetails() {
           <div className="bg-card-dark/40 border border-border-dark rounded-2xl p-6 backdrop-blur-md space-y-6 relative overflow-hidden">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div>
-                <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-2 font-display">HTTP Method</label>
+                <label htmlFor="test-method-select" className="block text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-2 font-display">HTTP Method</label>
                 <select
+                  id="test-method-select"
                   value={testMethod}
                   onChange={(e) => setTestMethod(e.target.value)}
                   className="w-full bg-bg-dark/60 border border-border-dark focus:border-primary-500 text-white rounded-xl py-2.5 px-3.5 outline-none text-xs cursor-pointer font-mono"
@@ -258,7 +259,7 @@ export default function ApiDetails() {
 
               <div className="md:col-span-2">
                 <div className="flex justify-between items-center mb-2">
-                  <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-wider font-display">X-API-Key Header</label>
+                  <label htmlFor="test-api-key-input" className="block text-[10px] font-bold text-gray-500 uppercase tracking-wider font-display">X-API-Key Header</label>
                   <button 
                     onClick={() => setShowApiKey(!showApiKey)}
                     className="text-[10px] text-primary-400 hover:text-primary-300 font-semibold cursor-pointer transition-colors"
@@ -268,21 +269,24 @@ export default function ApiDetails() {
                 </div>
                 <div className="relative">
                   <input
+                    id="test-api-key-input"
                     type={showApiKey ? 'text' : 'password'}
-                    placeholder="Enter subscription key (apx_live_...)"
+                    placeholder="Enter subscription key (apx_live_…)"
                     value={testApiKey}
                     onChange={(e) => setTestApiKey(e.target.value)}
                     className="w-full bg-bg-dark/60 border border-border-dark focus:border-primary-500 focus:ring-1 focus:ring-primary-500 text-white rounded-xl py-2.5 px-4 outline-none text-xs font-mono placeholder:text-gray-600"
+                    autoComplete="off"
                   />
                 </div>
               </div>
             </div>
 
             <div>
-              <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-2 font-display">Gateway Request URL</label>
+              <label htmlFor="test-path-input" className="block text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-2 font-display">Gateway Request URL</label>
               <div className="flex items-center gap-1.5 bg-bg-dark/60 border border-border-dark rounded-xl px-4 py-3 font-mono text-xs overflow-x-auto scrollbar-thin">
                 <span className="text-gray-500 select-none shrink-0">{gatewayUrl}/api/{api.name}/</span>
                 <input
+                  id="test-path-input"
                   type="text"
                   placeholder="v1/data-endpoint"
                   value={testPath}
@@ -294,8 +298,9 @@ export default function ApiDetails() {
 
             {testMethod !== 'GET' && (
               <div>
-                <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-2 font-display">Request Body (JSON)</label>
+                <label htmlFor="test-body-textarea" className="block text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-2 font-display">Request Body (JSON)</label>
                 <textarea
+                  id="test-body-textarea"
                   placeholder='{ "query": "hello world" }'
                   value={testBody}
                   onChange={(e) => setTestBody(e.target.value)}
@@ -311,7 +316,7 @@ export default function ApiDetails() {
               className="w-full bg-primary-500 hover:bg-primary-600 disabled:opacity-50 text-white font-bold py-3 px-4 rounded-xl text-xs transition-all flex items-center justify-center gap-2 cursor-pointer shadow-[0_4px_20px_rgba(139,92,246,0.3)] hover:shadow-[0_4px_25px_rgba(139,92,246,0.45)]"
             >
               <Play className="w-4 h-4 fill-current" />
-              <span>{testing ? 'Routing Request...' : 'Trigger Proxy Route'}</span>
+              <span>{testing ? 'Routing Request…' : 'Trigger Proxy Route'}</span>
             </button>
 
             {testResponse && (

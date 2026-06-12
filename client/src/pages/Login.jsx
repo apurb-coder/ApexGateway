@@ -82,12 +82,16 @@ export default function Login() {
 
         <form onSubmit={handleSubmit} className="space-y-5">
           <div>
-            <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-2 font-display">Email Address</label>
+            <label htmlFor="login-email" className="block text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-2 font-display">Email Address</label>
             <div className="relative">
               <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" />
               <input
+                id="login-email"
+                name="email"
                 type="email"
                 required
+                autoComplete="email"
+                spellCheck="false"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="developer@apex.io"
@@ -98,7 +102,7 @@ export default function Login() {
 
           <div>
             <div className="flex justify-between items-center mb-2">
-              <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-wider font-display">Password</label>
+              <label htmlFor="login-password" className="block text-[10px] font-bold text-gray-500 uppercase tracking-wider font-display">Password</label>
               <Link to="/forgot-password" className="text-[10px] font-bold text-primary-400 hover:text-primary-300 transition-colors font-display">
                 Forgot Password?
               </Link>
@@ -106,8 +110,11 @@ export default function Login() {
             <div className="relative">
               <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" />
               <input
+                id="login-password"
+                name="password"
                 type={showPassword ? 'text' : 'password'}
                 required
+                autoComplete="current-password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••"
@@ -117,6 +124,7 @@ export default function Login() {
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
                 className="absolute right-3.5 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-300 transition-colors"
+                aria-label={showPassword ? 'Hide password' : 'Show password'}
               >
                 {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
               </button>
@@ -128,7 +136,7 @@ export default function Login() {
             disabled={loading}
             className="w-full bg-primary-500 hover:bg-primary-600 text-white font-bold py-3 px-4 rounded-xl shadow-[0_4px_15px_rgba(139,92,246,0.25)] hover:shadow-[0_4px_20px_rgba(139,92,246,0.4)] transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed group text-xs mt-2"
           >
-            <span>{loading ? 'Authenticating...' : 'Sign In to Portal'}</span>
+            <span>{loading ? 'Authenticating…' : 'Sign In to Portal'}</span>
             <LogIn className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
           </button>
         </form>

@@ -86,7 +86,7 @@ export default function DashboardLayout() {
         {/* Navigation */}
         <nav className="flex-1 px-4 py-6 space-y-1.5 overflow-y-auto">
           <div className="px-2.5 py-1 text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-2 font-display">
-            {!sidebarCollapsed ? (isProvider ? 'Provider Controls' : 'Developer Console') : '...'}
+            {!sidebarCollapsed ? (isProvider ? 'Provider Controls' : 'Developer Console') : '…'}
           </div>
           {menuItems.map((item) => {
             const Icon = item.icon;

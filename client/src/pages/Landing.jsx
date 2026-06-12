@@ -215,7 +215,7 @@ export default function Landing() {
               <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
             </span>
             <Zap className="w-3.5 h-3.5" />
-            <span className="text-gray-300 font-medium font-mono text-[10px]">Vite + Redis Gateway Stack Active</span>
+            <span className="text-gray-300 font-medium font-mono text-[10px]">High-Performance Proxy Online</span>
           </div>
 
           <h1 className="font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight text-white leading-[1.1]">
@@ -321,13 +321,16 @@ export default function Landing() {
                         <span className="font-mono text-gray-300">gateway.apex.io</span>
                       </div>
                       <div className="flex items-center justify-between text-xs">
-                        <span className="font-mono text-gray-500 font-semibold">X-API-Key:</span>
+                        <label htmlFor="custom-key-input" className="font-mono text-gray-500 font-semibold cursor-pointer">X-API-Key:</label>
                         <input
+                          id="custom-key-input"
+                          name="customKey"
                           type="text"
                           value={customKey}
                           onChange={(e) => setCustomKey(e.target.value)}
                           className="font-mono text-primary-400 bg-transparent border-b border-border-dark/80 outline-none focus:border-primary-500 text-right w-44 text-xs py-0.5 transition-colors"
-                          placeholder="apx_live_..."
+                          placeholder="apx_live_…"
+                          autoComplete="off"
                         />
                       </div>
                     </div>
@@ -377,7 +380,7 @@ export default function Landing() {
                   className="w-full bg-primary-500 hover:bg-primary-600 disabled:opacity-50 text-white font-bold py-3.5 px-4 rounded-xl shadow-[0_4px_15px_rgba(139,92,246,0.2)] hover:shadow-[0_4px_25px_rgba(139,92,246,0.4)] transition-all duration-300 hover:-translate-y-px flex items-center justify-center gap-2 cursor-pointer text-sm"
                 >
                   <Play className={`w-4 h-4 fill-white ${isRequesting ? 'animate-ping' : ''}`} />
-                  {isRequesting ? 'Sending Gateway Request...' : 'Trigger Request'}
+                  {isRequesting ? 'Sending Gateway Request…' : 'Trigger Request'}
                 </button>
               </div>
             </div>

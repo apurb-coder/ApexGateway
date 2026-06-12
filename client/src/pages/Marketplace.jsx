@@ -38,10 +38,12 @@ export default function Marketplace() {
         </div>
 
         <div className="relative w-full md:w-80">
-          <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" />
+          <label htmlFor="search-apis-input" className="sr-only">Search APIs</label>
+          <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" aria-hidden="true" />
           <input
+            id="search-apis-input"
             type="text"
-            placeholder="Search APIs..."
+            placeholder="Search APIs…"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="w-full bg-bg-dark/60 border border-border-dark focus:border-primary-500 focus:ring-1 focus:ring-primary-500 text-white rounded-xl py-2.5 pl-10 pr-4 outline-none transition-all text-sm placeholder:text-gray-600"

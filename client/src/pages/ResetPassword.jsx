@@ -82,12 +82,15 @@ export default function ResetPassword() {
         {!success ? (
           <form onSubmit={handleSubmit} className="space-y-5">
             <div>
-              <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-2 font-display">New Password</label>
+              <label htmlFor="reset-password" className="block text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-2 font-display">New Password</label>
               <div className="relative">
                 <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" />
                 <input
+                  id="reset-password"
+                  name="password"
                   type={showPassword ? 'text' : 'password'}
                   required
+                  autoComplete="new-password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="••••••••"
@@ -97,6 +100,7 @@ export default function ResetPassword() {
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
                   className="absolute right-3.5 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-300 transition-colors"
+                  aria-label={showPassword ? 'Hide password' : 'Show password'}
                 >
                   {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                 </button>
@@ -104,12 +108,15 @@ export default function ResetPassword() {
             </div>
 
             <div>
-              <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-2 font-display">Confirm New Password</label>
+              <label htmlFor="reset-confirm-password" className="block text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-2 font-display">Confirm New Password</label>
               <div className="relative">
                 <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" />
                 <input
+                  id="reset-confirm-password"
+                  name="confirmPassword"
                   type={showPassword ? 'text' : 'password'}
                   required
+                  autoComplete="new-password"
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
                   placeholder="••••••••"
@@ -123,7 +130,7 @@ export default function ResetPassword() {
               disabled={loading}
               className="w-full bg-primary-500 hover:bg-primary-600 text-white font-bold py-3 px-4 rounded-xl shadow-[0_4px_15px_rgba(139,92,246,0.25)] hover:shadow-[0_4px_20px_rgba(139,92,246,0.4)] transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed group text-xs mt-2"
             >
-              <span>{loading ? 'Updating Password...' : 'Reset Password'}</span>
+              <span>{loading ? 'Updating Password…' : 'Reset Password'}</span>
               <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
             </button>
           </form>
@@ -133,7 +140,7 @@ export default function ResetPassword() {
               <CheckCircle className="w-8 h-8" />
             </div>
             <p className="text-xs text-gray-400 font-sans leading-relaxed">
-              Redirecting you to the sign in page in a few seconds...
+              Redirecting you to the sign in page in a few seconds…
             </p>
           </div>
         )}

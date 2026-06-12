@@ -63,12 +63,16 @@ export default function ForgotPassword() {
         {!submitted ? (
           <form onSubmit={handleSubmit} className="space-y-5">
             <div>
-              <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-2 font-display">Email Address</label>
+              <label htmlFor="forgot-email" className="block text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-2 font-display">Email Address</label>
               <div className="relative">
                 <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" />
                 <input
+                  id="forgot-email"
+                  name="email"
                   type="email"
                   required
+                  autoComplete="email"
+                  spellCheck="false"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="developer@apex.io"
@@ -82,7 +86,7 @@ export default function ForgotPassword() {
               disabled={loading}
               className="w-full bg-primary-500 hover:bg-primary-600 text-white font-bold py-3 px-4 rounded-xl shadow-[0_4px_15px_rgba(139,92,246,0.25)] hover:shadow-[0_4px_20px_rgba(139,92,246,0.4)] transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed group text-xs mt-2"
             >
-              <span>{loading ? 'Sending Request...' : 'Send Reset Link'}</span>
+              <span>{loading ? 'Sending Request…' : 'Send Reset Link'}</span>
               <Send className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
             </button>
           </form>

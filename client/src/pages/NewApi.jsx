@@ -48,9 +48,11 @@ export default function NewApi() {
         
         <form onSubmit={handleSubmit} className="space-y-6 relative z-10">
           <div>
-            <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-2 font-display">API Service Name</label>
+            <label htmlFor="api-name" className="block text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-2 font-display">API Service Name</label>
             <div className="relative">
               <input
+                id="api-name"
+                name="name"
                 type="text"
                 required
                 value={name}
@@ -63,9 +65,11 @@ export default function NewApi() {
           </div>
 
           <div>
-            <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-2 font-display">Upstream Destination URL</label>
+            <label htmlFor="api-upstream-url" className="block text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-2 font-display">Upstream Destination URL</label>
             <div className="relative">
               <input
+                id="api-upstream-url"
+                name="upstreamUrl"
                 type="url"
                 required
                 value={upstreamUrl}
@@ -78,8 +82,10 @@ export default function NewApi() {
           </div>
 
           <div>
-            <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-2 font-display">Description</label>
+            <label htmlFor="api-description" className="block text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-2 font-display">Description</label>
             <textarea
+              id="api-description"
+              name="description"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               placeholder="Retrieves live global weather metrics, forecasts, and historical metrics."
@@ -100,7 +106,7 @@ export default function NewApi() {
               disabled={loading}
               className="bg-primary-500 hover:bg-primary-600 text-white font-bold py-2.5 px-6 rounded-xl shadow-[0_4px_15px_rgba(139,92,246,0.25)] hover:shadow-[0_4px_20px_rgba(139,92,246,0.4)] transition-all flex items-center gap-2 cursor-pointer disabled:opacity-50 text-xs uppercase tracking-wider"
             >
-              {loading ? 'Registering...' : 'Register API'}
+              {loading ? 'Registering…' : 'Register API'}
             </button>
           </div>
         </form>

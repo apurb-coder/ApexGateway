@@ -9,7 +9,7 @@ export default function PublicRoute({ children }) {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center bg-bg-dark text-white">
         <div className="w-12 h-12 border-4 border-primary-500 border-t-transparent rounded-full animate-spin mb-4"></div>
-        <p className="text-xs text-gray-400 font-display uppercase tracking-widest animate-pulse">Loading Session...</p>
+        <p className="text-xs text-gray-400 font-display uppercase tracking-widest animate-pulse">Loading Session…</p>
       </div>
     );
   }
