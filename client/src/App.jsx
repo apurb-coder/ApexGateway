@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { useAuthStore } from './store/useAuthStore';
 import ToastContainer from './components/ToastContainer';
@@ -8,6 +8,8 @@ import DashboardLayout from './layouts/DashboardLayout';
 
 import Login from './pages/Login';
 import Signup from './pages/Signup';
+import ForgotPassword from './pages/ForgotPassword';
+import ResetPassword from './pages/ResetPassword';
 import Marketplace from './pages/Marketplace';
 import ApiDetails from './pages/ApiDetails';
 import ConsumerKeys from './pages/ConsumerKeys';
@@ -30,6 +32,17 @@ function DashboardRedirect() {
 
 
 export default function App() {
+  const initAuth = useAuthStore((state) => state.initAuth);
+
+  useEffect(() => {
+    const unsubscribe = initAuth();
+    return () => {
+      if (typeof unsubscribe === 'function') {
+        unsubscribe();
+      }
+    };
+  }, [initAuth]);
+
   return (
     <Router>
       <Routes>
@@ -54,6 +67,20 @@ export default function App() {
             <PublicRoute>
               <Signup />
             </PublicRoute>
+          } 
+        />
+        <Route 
+          path="/forgot-password" 
+          element={
+            <PublicRoute>
+              <ForgotPassword />
+            </PublicRoute>
+          } 
+        />
+        <Route 
+          path="/reset-password" 
+          element={
+            <ResetPassword />
           } 
         />
 

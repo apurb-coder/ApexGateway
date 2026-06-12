@@ -1,10 +1,16 @@
 import express from 'express';
-import { register, login } from '../controllers/authController.js';
-import { validateSchema, registerSchema, loginSchema } from '../middlewares/validationMiddleware.js';
+import { register, getMe, login } from '../controllers/authController.js';
+import { authMiddleware } from '../middlewares/authMiddleware.js';
+import { validateSchema } from '../middlewares/validationMiddleware.js';
 
 const router = express.Router();
 
-router.post('/register', validateSchema(registerSchema), register);
-router.post('/login', validateSchema(loginSchema), login);
+const syncSchema = {
+  role: { required: true, type: 'string', enum: ['PROVIDER', 'CONSUMER'] }
+};
+
+router.post('/register', authMiddleware, validateSchema(syncSchema), register);
+router.get('/me', authMiddleware, getMe);
+router.post('/login', login);
 
 export default router;
