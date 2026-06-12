@@ -66,10 +66,8 @@ export default function ResetPassword() {
       <div className="w-full max-w-md bg-card-dark/40 border border-border-dark backdrop-blur-xl rounded-2xl p-8 shadow-[0_8px_32px_rgba(0,0,0,0.5)] relative z-10 gradient-border-glow">
         <div className="flex flex-col items-center mb-8">
           <Link to="/" className="flex items-center gap-2 mb-6 group">
-            <div className="w-8 h-8 rounded-lg bg-linear-to-tr from-primary-600 to-accent-500 flex items-center justify-center font-bold text-white shadow-[0_0_15px_rgba(139,92,246,0.35)] font-display text-sm group-hover:scale-105 transition-transform">
-              A
-            </div>
-            <span className="font-extrabold text-white text-base tracking-wider font-display">APEX</span>
+            <img src="/icons.png" alt="ApexGateway Logo" className="w-8 h-8 object-contain group-hover:scale-105 transition-transform" />
+            <span className="font-extrabold text-white text-base tracking-wider font-display">APEX GATEWAY</span>
           </Link>
           <h1 className="text-2xl font-extrabold tracking-tight text-white mb-2 font-display">New Password</h1>
           <p className="text-xs text-gray-400 text-center">

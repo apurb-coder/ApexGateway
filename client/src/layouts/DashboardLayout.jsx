@@ -64,16 +64,12 @@ export default function DashboardLayout() {
         <div className="h-16 flex items-center px-6 border-b border-border-dark gap-3 justify-between">
           {!sidebarCollapsed && (
             <Link to="/" className="flex items-center gap-2.5">
-              <div className="w-8 h-8 rounded-lg bg-linear-to-tr from-primary-600 to-accent-500 flex items-center justify-center font-bold text-white shadow-[0_0_15px_rgba(139,92,246,0.35)] font-display text-base">
-                A
-              </div>
-              <span className="font-extrabold text-white text-base tracking-wider font-display">APEX</span>
+              <img src="/icons.png" alt="ApexGateway Logo" className="w-8 h-8 object-contain" />
+              <span className="font-extrabold text-white text-base tracking-wider font-display">APEX GATEWAY</span>
             </Link>
           )}
           {sidebarCollapsed && (
-            <div className="w-8 h-8 mx-auto rounded-lg bg-linear-to-tr from-primary-600 to-accent-500 flex items-center justify-center font-bold text-white shadow-[0_0_15px_rgba(139,92,246,0.35)] font-display text-base">
-              A
-            </div>
+            <img src="/icons.png" alt="ApexGateway Logo" className="w-8 h-8 mx-auto object-contain" />
           )}
           <button 
             onClick={toggleSidebar}

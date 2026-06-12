@@ -104,10 +104,8 @@ export default function Landing() {
       <nav className="fixed top-0 left-0 right-0 z-50 bg-bg-dark/75 backdrop-blur-md border-b border-border-dark/80">
         <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-lg bg-linear-to-tr from-primary-600 to-primary-400 flex items-center justify-center font-bold text-white shadow-[0_0_20px_rgba(139,92,246,0.4)]">
-              A
-            </div>
-            <span className="font-display font-black text-white text-xl tracking-wider">APEX</span>
+            <img src="/icons.png" alt="ApexGateway Logo" className="w-9 h-9 object-contain" />
+            <span className="font-display font-black text-white text-xl tracking-wider">APEX GATEWAY</span>
           </div>
 
           {/* Desktop Nav */}
@@ -603,9 +601,7 @@ export default function Landing() {
           {/* Column 1 - Brand Info */}
           <div className="space-y-4">
             <div className="flex items-center gap-2.5">
-              <div className="w-8 h-8 rounded-lg bg-linear-to-tr from-primary-600 to-primary-400 flex items-center justify-center font-bold text-white shadow-[0_0_15px_rgba(139,92,246,0.3)]">
-                A
-              </div>
+              <img src="/icons.png" alt="ApexGateway Logo" className="w-8 h-8 object-contain" />
               <span className="font-display font-black text-white text-lg tracking-wider">APEX</span>
             </div>
             <p className="text-xs text-gray-500 leading-relaxed max-w-xs">
@@ -650,9 +646,6 @@ export default function Landing() {
             © {new Date().getFullYear()} ApexGateway. All rights reserved.
           </div>
           <div className="flex gap-6">
-            <a href="#" className="hover:text-gray-400 transition-colors">Privacy Policy</a>
-            <a href="#" className="hover:text-gray-400 transition-colors">Terms of Service</a>
-            <span className="text-gray-700">|</span>
             <span>Built for high-concurrency API performance</span>
           </div>
         </div>
