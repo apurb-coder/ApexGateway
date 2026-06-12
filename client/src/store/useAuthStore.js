@@ -49,13 +49,14 @@ export const useAuthStore = create((set, get) => ({
       });
     } catch (err) {
       // Backend lookup failed (e.g. not synced yet)
-      // We will provision user with default role CONSUMER on backend or create locally
+      // We will provision user with metadata role on backend or create locally
       // For fallback, use Supabase user details
+      const role = session.user?.user_metadata?.role || 'CONSUMER';
       set({
         user: {
           id: session.user.id,
           email: session.user.email,
-          role: 'CONSUMER'
+          role
         },
         token,
         isAuthenticated: true,
@@ -68,22 +69,30 @@ export const useAuthStore = create((set, get) => ({
   signUp: async (email, password, role) => {
     set({ loading: true });
     try {
-      const { data, error } = await supabase.auth.signUp({ email, password });
+      const { data, error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          data: {
+            role
+          }
+        }
+      });
       if (error) throw error;
 
       const session = data.session;
       const user = data.user;
 
-      if (user) {
+      if (user && session) {
         // Call backend to register/sync the user with selected role
-        // Even if session is not immediately active (email confirmation), sync metadata
+        // Only if session is present (email confirmation disabled)
         await apiClient.post('/auth/register', {
           id: user.id,
           email: user.email,
           role: role
-        }, session ? {
+        }, {
           headers: { Authorization: `Bearer ${session.access_token}` }
-        } : {});
+        });
       }
 
       set({ loading: false });

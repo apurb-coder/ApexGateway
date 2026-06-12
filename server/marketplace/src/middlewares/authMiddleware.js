@@ -42,13 +42,15 @@ export const authenticateUser = async (req, res, next) => {
     });
 
     if (!user) {
-      // Auto-provision with default role 'CONSUMER'
+      // Auto-provision with metadata role or fallback to 'CONSUMER'
+      const metadataRole = payload.user_metadata?.role;
+      const userRole = metadataRole === 'PROVIDER' ? 'PROVIDER' : 'CONSUMER';
       user = await prisma.user.create({
         data: {
           id: id,
           email: email || '',
           passwordHash: '', // external login
-          role: 'CONSUMER'
+          role: userRole
         }
       });
     }
