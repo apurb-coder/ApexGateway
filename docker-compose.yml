@@ -5,10 +5,8 @@ services:
     image: postgres:15-alpine
     container_name: apex-postgres
     restart: always
-    environment:
-      POSTGRES_DB: apex_gateway
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: password123
+    env_file:
+      - ./server/marketplace/.env
     ports:
       - "5433:5432"
     volumes:
@@ -33,10 +31,11 @@ services:
       dockerfile: Dockerfile
     container_name: apex-marketplace
     restart: always
+    env_file:
+      - ./server/marketplace/.env
     environment:
-      - DATABASE_URL=postgresql://postgres:password123@postgres:5432/apex_gateway?schema=public&connection_limit=15
-      - REDIS_URL=redis://redis:6379
-      - PORT=3000
+      - DB_HOST=postgres
+      - DB_PORT=5432
     ports:
       - "3000:3000"
     depends_on:
@@ -51,10 +50,13 @@ services:
       dockerfile: Dockerfile
     container_name: apex-gateway-proxy
     restart: always
+    env_file:
+      - ./server/gateway/.env
     environment:
-      - DATABASE_URL=postgresql://postgres:password123@postgres:5432/apex_gateway?schema=public&connection_limit=30
-      - REDIS_URL=redis://redis:6379
-      - PORT=4000
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
     ports:
       - "4000:4000"
     depends_on:
