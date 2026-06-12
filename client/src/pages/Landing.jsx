@@ -104,7 +104,7 @@ export default function Landing() {
       <nav className="fixed top-0 left-0 right-0 z-50 bg-bg-dark/75 backdrop-blur-md border-b border-border-dark/80">
         <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-lg bg-gradient-to-tr from-primary-600 to-primary-400 flex items-center justify-center font-bold text-white shadow-[0_0_20px_rgba(139,92,246,0.4)]">
+            <div className="w-9 h-9 rounded-lg bg-linear-to-tr from-primary-600 to-primary-400 flex items-center justify-center font-bold text-white shadow-[0_0_20px_rgba(139,92,246,0.4)]">
               A
             </div>
             <span className="font-display font-black text-white text-xl tracking-wider">APEX</span>
@@ -134,7 +134,7 @@ export default function Landing() {
             {isAuthenticated ? (
               <Link 
                 to={user?.role === 'PROVIDER' ? '/dashboard/provider/apis' : '/marketplace'}
-                className="bg-primary-500 hover:bg-primary-600 text-white font-semibold py-2 px-5 rounded-xl text-sm transition-all duration-300 hover:translate-y-[-1px] shadow-[0_4px_15px_rgba(139,92,246,0.2)] hover:shadow-[0_4px_20px_rgba(139,92,246,0.4)] flex items-center gap-2 cursor-pointer"
+                className="bg-primary-500 hover:bg-primary-600 text-white font-semibold py-2 px-5 rounded-xl text-sm transition-all duration-300 hover:-translate-y-px shadow-[0_4px_15px_rgba(139,92,246,0.2)] hover:shadow-[0_4px_20px_rgba(139,92,246,0.4)] flex items-center gap-2 cursor-pointer"
               >
                 Go to Dashboard
                 <ArrowRight className="w-4 h-4" />
@@ -146,7 +146,7 @@ export default function Landing() {
                 </Link>
                 <Link 
                   to="/signup"
-                  className="bg-primary-500 hover:bg-primary-600 text-white font-semibold py-2 px-5 rounded-xl text-sm transition-all duration-300 hover:translate-y-[-1px] shadow-[0_4px_15px_rgba(139,92,246,0.2)] hover:shadow-[0_4px_20px_rgba(139,92,246,0.4)] cursor-pointer"
+                  className="bg-primary-500 hover:bg-primary-600 text-white font-semibold py-2 px-5 rounded-xl text-sm transition-all duration-300 hover:-translate-y-px shadow-[0_4px_15px_rgba(139,92,246,0.2)] hover:shadow-[0_4px_20px_rgba(139,92,246,0.4)] cursor-pointer"
                 >
                   Get Started
                 </Link>
@@ -225,7 +225,7 @@ export default function Landing() {
 
           <h1 className="font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight text-white leading-[1.1]">
             High-Performance API Proxying <br />
-            <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary-400 via-primary-300 to-accent-300">
+            <span className="bg-clip-text text-transparent bg-linear-to-r from-primary-400 via-primary-300 to-accent-300">
               With Instant Developer Portals
             </span>
           </h1>
@@ -237,14 +237,14 @@ export default function Landing() {
           <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4 max-w-md mx-auto sm:max-w-none">
             <Link 
               to={isAuthenticated ? (user?.role === 'PROVIDER' ? '/dashboard/provider/apis' : '/marketplace') : '/signup'}
-              className="w-full sm:w-auto bg-primary-500 hover:bg-primary-600 text-white font-semibold py-3.5 px-8 rounded-xl shadow-[0_4px_20px_rgba(139,92,246,0.3)] hover:shadow-[0_4px_25px_rgba(139,92,246,0.5)] transition-all duration-300 hover:translate-y-[-1px] flex items-center justify-center gap-2 cursor-pointer text-sm"
+              className="w-full sm:w-auto bg-primary-500 hover:bg-primary-600 text-white font-semibold py-3.5 px-8 rounded-xl shadow-[0_4px_20px_rgba(139,92,246,0.3)] hover:shadow-[0_4px_25px_rgba(139,92,246,0.5)] transition-all duration-300 hover:-translate-y-px flex items-center justify-center gap-2 cursor-pointer text-sm"
             >
               Get Started Free
               <ArrowRight className="w-4 h-4" />
             </Link>
             <a 
               href="#playground" 
-              className="w-full sm:w-auto bg-card-dark/40 hover:bg-card-dark border border-border-dark hover:border-border-hover text-gray-300 hover:text-white font-semibold py-3.5 px-8 rounded-xl transition-all duration-300 hover:translate-y-[-1px] flex items-center justify-center gap-2 cursor-pointer text-sm"
+              className="w-full sm:w-auto bg-card-dark/40 hover:bg-card-dark border border-border-dark hover:border-border-hover text-gray-300 hover:text-white font-semibold py-3.5 px-8 rounded-xl transition-all duration-300 hover:-translate-y-px flex items-center justify-center gap-2 cursor-pointer text-sm"
             >
               Test Gateway Proxy
             </a>
@@ -354,7 +354,7 @@ export default function Landing() {
                           key={i}
                           className={`h-full flex-1 rounded-md transition-all duration-500 ${
                             i < tokens
-                              ? 'bg-gradient-to-r from-primary-500 to-primary-400 shadow-[0_0_12px_rgba(139,92,246,0.4)]'
+                              ? 'bg-linear-to-r from-primary-500 to-primary-400 shadow-[0_0_12px_rgba(139,92,246,0.4)]'
                               : 'bg-bg-dark border border-border-dark/80'
                           }`}
                         />
@@ -379,7 +379,7 @@ export default function Landing() {
                 <button
                   onClick={handleTestRequest}
                   disabled={isRequesting}
-                  className="w-full bg-primary-500 hover:bg-primary-600 disabled:opacity-50 text-white font-bold py-3.5 px-4 rounded-xl shadow-[0_4px_15px_rgba(139,92,246,0.2)] hover:shadow-[0_4px_25px_rgba(139,92,246,0.4)] transition-all duration-300 hover:translate-y-[-1px] flex items-center justify-center gap-2 cursor-pointer text-sm"
+                  className="w-full bg-primary-500 hover:bg-primary-600 disabled:opacity-50 text-white font-bold py-3.5 px-4 rounded-xl shadow-[0_4px_15px_rgba(139,92,246,0.2)] hover:shadow-[0_4px_25px_rgba(139,92,246,0.4)] transition-all duration-300 hover:-translate-y-px flex items-center justify-center gap-2 cursor-pointer text-sm"
                 >
                   <Play className={`w-4 h-4 fill-white ${isRequesting ? 'animate-ping' : ''}`} />
                   {isRequesting ? 'Sending Gateway Request...' : 'Trigger Request'}
@@ -574,7 +574,7 @@ export default function Landing() {
 
             {/* Pro Plan */}
             <div className="bg-card-dark/60 border-2 border-primary-500 rounded-2xl p-8 flex flex-col justify-between relative shadow-[0_10px_40px_rgba(139,92,246,0.15)] md:scale-105 z-10 gradient-border-glow-featured">
-              <div className="absolute top-0 right-6 -translate-y-1/2 bg-gradient-to-r from-primary-500 to-primary-400 text-white text-[9px] uppercase tracking-widest font-black px-3.5 py-1 rounded-full shadow-[0_4px_12px_rgba(139,92,246,0.3)]">
+              <div className="absolute top-0 right-6 -translate-y-1/2 bg-linear-to-r from-primary-500 to-primary-400 text-white text-[9px] uppercase tracking-widest font-black px-3.5 py-1 rounded-full shadow-[0_4px_12px_rgba(139,92,246,0.3)]">
                 Most Popular
               </div>
               <div>
@@ -708,7 +708,7 @@ export default function Landing() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-24 bg-gradient-to-b from-bg-dark to-primary-950/15 text-center relative px-6 border-t border-border-dark/80 overflow-hidden">
+      <section className="py-24 bg-linear-to-b from-bg-dark to-primary-950/15 text-center relative px-6 border-t border-border-dark/80 overflow-hidden">
         <div className="absolute inset-0 bg-grid-pattern bg-grid-mask opacity-30 pointer-events-none"></div>
         <div className="absolute inset-0 bg-primary-500/5 blur-[120px] pointer-events-none pulse-glow"></div>
         <div className="max-w-3xl mx-auto relative z-10">
@@ -721,7 +721,7 @@ export default function Landing() {
           <div className="mt-10 flex justify-center">
             <Link
               to="/signup"
-              className="bg-primary-500 hover:bg-primary-600 text-white font-bold py-3.5 px-8 rounded-xl shadow-[0_4px_20px_rgba(139,92,246,0.35)] hover:shadow-[0_4px_25px_rgba(139,92,246,0.55)] transition-all duration-300 hover:translate-y-[-1px] flex items-center gap-2 cursor-pointer text-sm"
+              className="bg-primary-500 hover:bg-primary-600 text-white font-bold py-3.5 px-8 rounded-xl shadow-[0_4px_20px_rgba(139,92,246,0.35)] hover:shadow-[0_4px_25px_rgba(139,92,246,0.55)] transition-all duration-300 hover:-translate-y-px flex items-center gap-2 cursor-pointer text-sm"
             >
               Create Free Account
               <ArrowRight className="w-4 h-4" />
@@ -736,7 +736,7 @@ export default function Landing() {
           {/* Column 1 - Brand Info */}
           <div className="space-y-4">
             <div className="flex items-center gap-2.5">
-              <div className="w-8 h-8 rounded-lg bg-gradient-to-tr from-primary-600 to-primary-400 flex items-center justify-center font-bold text-white shadow-[0_0_15px_rgba(139,92,246,0.3)]">
+              <div className="w-8 h-8 rounded-lg bg-linear-to-tr from-primary-600 to-primary-400 flex items-center justify-center font-bold text-white shadow-[0_0_15px_rgba(139,92,246,0.3)]">
                 A
               </div>
               <span className="font-display font-black text-white text-lg tracking-wider">APEX</span>

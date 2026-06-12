@@ -70,7 +70,7 @@ export default function ProviderApis() {
               </thead>
               <tbody className="divide-y divide-border-dark text-xs font-sans">
                 {apis.map((api) => (
-                  <tr key={api.id} className="hover:bg-white/[0.02] transition-colors group">
+                  <tr key={api.id} className="hover:bg-white/2 transition-colors group">
                     <td className="p-4 pl-6 font-bold text-white font-display text-sm group-hover:text-primary-400 transition-colors">{api.name}</td>
                     <td className="p-4 text-gray-400 font-mono text-xs max-w-xs truncate">{api.upstreamUrl}</td>
                     <td className="p-4 text-primary-400 font-bold font-display">{api.plans?.length || 0} configured</td>

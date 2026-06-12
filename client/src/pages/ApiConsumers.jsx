@@ -71,7 +71,7 @@ export default function ApiConsumers() {
               </thead>
               <tbody className="divide-y divide-border-dark text-xs font-sans">
                 {consumers.map((sub) => (
-                  <tr key={sub.id} className="hover:bg-white/[0.02] transition-colors group">
+                  <tr key={sub.id} className="hover:bg-white/2 transition-colors group">
                     <td className="p-4 pl-6 font-bold text-white">
                       <div className="flex items-center gap-2">
                         <Mail className="w-4 h-4 text-gray-500" />
