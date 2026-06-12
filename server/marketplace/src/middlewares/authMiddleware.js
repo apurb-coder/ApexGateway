@@ -3,7 +3,7 @@ import prisma from '../utils/prisma.js';
 
 // Setup JWKS and issuer/audience configuration
 const supabaseUrl = process.env.SUPABASE_URL || 'https://your-supabase-project.supabase.co';
-const jwksUrl = process.env.SUPABASE_JWKS_URL || `${supabaseUrl}/auth/v1/keys`;
+const jwksUrl = process.env.SUPABASE_JWKS_URL || `${supabaseUrl}/auth/v1/.well-known/jwks.json`;
 const jwtIssuer = process.env.SUPABASE_JWT_ISSUER || `${supabaseUrl}/auth/v1`;
 const jwtAudience = process.env.SUPABASE_JWT_AUDIENCE || 'authenticated';
 
