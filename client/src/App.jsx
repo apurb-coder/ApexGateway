@@ -12,6 +12,7 @@ import ForgotPassword from './pages/ForgotPassword';
 import ResetPassword from './pages/ResetPassword';
 import Marketplace from './pages/Marketplace';
 import ApiDetails from './pages/ApiDetails';
+import ApiDocs from './pages/ApiDocs';
 import ConsumerKeys from './pages/ConsumerKeys';
 import ConsumerAnalytics from './pages/ConsumerAnalytics';
 import ProviderApis from './pages/ProviderApis';
@@ -81,6 +82,15 @@ export default function App() {
           path="/reset-password" 
           element={
             <ResetPassword />
+          } 
+        />
+
+        <Route 
+          path="/apis/:apiId/docs" 
+          element={
+            <ProtectedRoute>
+              <ApiDocs />
+            </ProtectedRoute>
           } 
         />
 
