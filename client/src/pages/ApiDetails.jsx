@@ -12,7 +12,8 @@ import {
   Copy, 
   Check, 
   AlertTriangle, 
-  Terminal 
+  Terminal,
+  BookOpen
 } from 'lucide-react';
 
 export default function ApiDetails() {
@@ -39,7 +40,11 @@ export default function ApiDetails() {
     const fetchApiDetails = async () => {
       try {
         const res = await apiClient.get(`/apis/${apiId}`);
-        setApi(res.data.api);
+        const apiData = res.data.api;
+        setApi(apiData);
+        if (apiData.allowedMethods && apiData.allowedMethods.length > 0) {
+          setTestMethod(apiData.allowedMethods[0]);
+        }
       } catch (err) {
         console.error(err);
       } finally {
@@ -183,6 +188,16 @@ export default function ApiDetails() {
                   </span>
                 </div>
               )}
+              <div className="flex items-center gap-2">
+                <span className="text-gray-500">Allowed Methods:</span>
+                <div className="flex gap-1.5">
+                  {((api.allowedMethods && api.allowedMethods.length > 0) ? api.allowedMethods : ['GET', 'POST', 'PUT', 'DELETE']).map(m => (
+                    <span key={m} className="text-primary-400 font-bold bg-primary-500/10 border border-primary-500/20 px-1.5 py-0.5 rounded text-[9px] tracking-wide uppercase">
+                      {m}
+                    </span>
+                  ))}
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -237,6 +252,18 @@ export default function ApiDetails() {
 
         {/* Tester Column */}
         <div className="lg:col-span-2 space-y-6">
+          {api.exampleDocs && (
+            <div className="bg-card-dark/40 border border-border-dark rounded-2xl p-6 backdrop-blur-md space-y-4">
+              <div className="flex items-center gap-2 pb-2 border-b border-border-dark">
+                <BookOpen className="w-5 h-5 text-primary-400" />
+                <h2 className="text-xl font-bold text-white font-display tracking-wide">API Documentation</h2>
+              </div>
+              <div className="text-gray-300 text-xs whitespace-pre-wrap leading-relaxed font-sans bg-bg-dark/20 border border-border-dark/30 rounded-xl p-4 font-mono max-h-96 overflow-y-auto scrollbar-thin">
+                {api.exampleDocs}
+              </div>
+            </div>
+          )}
+
           <div className="flex items-center gap-2 pb-2 border-b border-border-dark">
             <Terminal className="w-5 h-5 text-primary-400" />
             <h2 className="text-xl font-bold text-white font-display tracking-wide">Gateway Playground</h2>
@@ -252,10 +279,9 @@ export default function ApiDetails() {
                   onChange={(e) => setTestMethod(e.target.value)}
                   className="w-full bg-bg-dark/60 border border-border-dark focus:border-primary-500 text-white rounded-xl py-2.5 px-3.5 outline-none text-xs cursor-pointer font-mono"
                 >
-                  <option value="GET">GET</option>
-                  <option value="POST">POST</option>
-                  <option value="PUT">PUT</option>
-                  <option value="DELETE">DELETE</option>
+                  {((api.allowedMethods && api.allowedMethods.length > 0) ? api.allowedMethods : ['GET', 'POST', 'PUT', 'DELETE']).map((method) => (
+                    <option key={method} value={method}>{method}</option>
+                  ))}
                 </select>
               </div>
 

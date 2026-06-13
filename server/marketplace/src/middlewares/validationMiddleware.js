@@ -75,7 +75,24 @@ export const loginSchema = {
 export const apiSchema = {
   name: { required: true, type: 'string', minLength: 2 },
   upstreamUrl: { required: true, type: 'string', isUrl: true },
-  description: { required: false, type: 'string' }
+  description: { required: false, type: 'string' },
+  allowedMethods: {
+    required: false,
+    custom: (val) => {
+      if (val === undefined || val === null) return null;
+      if (!Array.isArray(val)) {
+        return 'allowedMethods must be an array';
+      }
+      const validMethods = ['GET', 'POST', 'PUT', 'DELETE'];
+      for (const m of val) {
+        if (!validMethods.includes(m.toUpperCase())) {
+          return `Invalid method: ${m}. Must be GET, POST, PUT, or DELETE.`;
+        }
+      }
+      return null;
+    }
+  },
+  exampleDocs: { required: false, type: 'string' }
 };
 
 export const planSchema = {

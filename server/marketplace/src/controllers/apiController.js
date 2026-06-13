@@ -2,7 +2,7 @@ import prisma from '../utils/prisma.js';
 
 export const createApi = async (req, res) => {
   try {
-    const { name, description, upstreamUrl } = req.body;
+    const { name, description, upstreamUrl, allowedMethods, exampleDocs } = req.body;
 
     if (!name || !upstreamUrl) {
       return res.status(400).json({ error: 'Name and upstreamUrl are required' });
@@ -13,6 +13,8 @@ export const createApi = async (req, res) => {
         name,
         description,
         upstreamUrl,
+        allowedMethods: allowedMethods || ['GET', 'POST', 'PUT', 'DELETE'],
+        exampleDocs,
         providerId: req.user.id
       }
     });
