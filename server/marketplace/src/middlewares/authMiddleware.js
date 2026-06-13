@@ -109,7 +109,7 @@ export const authenticateUser = async (req, res, next) => {
 };
 
 // Optional Authentication Middleware
-export const optionalAuth = async (req, res, next) => {
+export const optionalAuth = async (req, _res, next) => {
   const authHeader = req.headers.authorization;
   if (!authHeader || !authHeader.startsWith('Bearer ')) {
     return next();

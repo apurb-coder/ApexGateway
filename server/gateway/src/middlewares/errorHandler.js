@@ -7,7 +7,7 @@ export class AppError extends Error {
   }
 }
 
-export const errorHandler = (err, req, res, next) => {
+export const errorHandler = (err, _req, res, _next) => {
   console.error(`[Gateway Error] ${err.stack || err.message}`);
 
   let statusCode = err.statusCode || 500;

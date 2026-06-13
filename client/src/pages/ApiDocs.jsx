@@ -1,11 +1,10 @@
-import React, { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 import apiClient from '../services/api';
 import { useUIStore } from '../store/useUIStore';
 import { 
   ArrowLeft, 
   Cpu, 
-  BookOpen, 
   Printer, 
   FileText,
   Compass

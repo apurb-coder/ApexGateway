@@ -1,11 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import apiClient from '../services/api';
-import { Key, ShieldAlert, CheckCircle, Cpu } from 'lucide-react';
+import { Key, ShieldAlert, CheckCircle, Cpu, Trash2 } from 'lucide-react';
 
 export default function ConsumerKeys() {
   const [subscriptions, setSubscriptions] = useState([]);
   const [loading, setLoading] = useState(true);
-  const gatewayUrl = import.meta.env.VITE_GATEWAY_API_URL || 'http://localhost:4000';
+
+  const [cancelTarget, setCancelTarget] = useState(null);
+  const [isCancelling, setIsCancelling] = useState(false);
 
   useEffect(() => {
     const fetchSubscriptions = async () => {
@@ -20,6 +23,21 @@ export default function ConsumerKeys() {
     };
     fetchSubscriptions();
   }, []);
+
+  const handleConfirmCancel = async () => {
+    if (!cancelTarget) return;
+    setIsCancelling(true);
+    try {
+      await apiClient.delete(`/subscriptions/${cancelTarget.id}`);
+      setSubscriptions(prev => prev.filter(sub => sub.id !== cancelTarget.id));
+      setCancelTarget(null);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setIsCancelling(false);
+    }
+  };
+
 
   return (
     <div className="space-y-8 animate-fadeIn">
@@ -80,11 +98,67 @@ export default function ConsumerKeys() {
                       Suspended
                     </span>
                   )}
+                  <button
+                    onClick={() => setCancelTarget({ id: sub.id, apiName: api?.name || 'Unknown API' })}
+                    className="flex items-center gap-1 px-3 py-1 bg-rose-500/10 hover:bg-rose-500/20 border border-rose-500/20 text-rose-400 rounded-full text-xs font-semibold transition-colors duration-200 cursor-pointer"
+                    title="Cancel Subscription"
+                  >
+                    <Trash2 className="w-3.5 h-3.5" />
+                    Cancel
+                  </button>
                 </div>
               </div>
             );
           })}
         </div>
+      )}
+
+      {/* Cancellation Confirmation Modal */}
+      {cancelTarget && createPortal(
+        <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/75 backdrop-blur-md animate-fadeIn">
+          <div className="bg-card-dark border border-border-dark w-full max-w-md rounded-2xl p-6 shadow-2xl relative overflow-hidden transform transition-all duration-300 animate-fadeIn">
+            {/* Ambient Red Glow */}
+            <div className="absolute -top-12 -right-12 w-24 h-24 bg-rose-500/10 rounded-full blur-2xl pointer-events-none" />
+            
+            <div className="flex items-start gap-4">
+              <div className="w-12 h-12 bg-rose-500/10 border border-rose-500/20 text-rose-400 rounded-xl flex items-center justify-center shrink-0 shadow-[0_0_15px_rgba(244,63,94,0.1)]">
+                <Trash2 className="w-6 h-6" />
+              </div>
+              <div className="space-y-2">
+                <h3 className="text-xl font-bold text-white font-display">Cancel Subscription?</h3>
+                <p className="text-gray-400 text-sm leading-relaxed">
+                  Are you sure you want to cancel your subscription to <span className="text-white font-semibold">{cancelTarget.apiName}</span>? 
+                  Your API key for this plan will be immediately invalidated and you will lose access.
+                </p>
+              </div>
+            </div>
+
+            <div className="flex items-center justify-end gap-3 mt-8">
+              <button
+                onClick={() => setCancelTarget(null)}
+                disabled={isCancelling}
+                className="px-4 py-2 bg-card-dark hover:bg-card-dark/80 border border-border-dark text-gray-300 rounded-xl text-sm font-semibold transition-colors duration-200 cursor-pointer disabled:opacity-50"
+              >
+                No, Keep
+              </button>
+              <button
+                onClick={handleConfirmCancel}
+                disabled={isCancelling}
+                className="px-4 py-2 bg-rose-600 hover:bg-rose-500 text-white rounded-xl text-sm font-semibold shadow-[0_4px_12px_rgba(225,29,72,0.2)] hover:shadow-[0_4px_20px_rgba(225,29,72,0.4)] transition-all duration-200 cursor-pointer disabled:opacity-50 flex items-center gap-2"
+              >
+                {isCancelling ? (
+                  <>
+                    <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                    Cancelling...
+                  </>
+                ) : (
+                  'Yes, Cancel'
+                )}
+              </button>
+            </div>
+          </div>
+        </div>,
+        document.body
       )}
     </div>
   );

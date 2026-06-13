@@ -8,7 +8,7 @@ export class AppError extends Error {
   }
 }
 
-export const errorHandler = (err, req, res, next) => {
+export const errorHandler = (err, _req, res, _next) => {
   console.error(`[Error] ${err.stack || err.message}`);
 
   // Default error properties

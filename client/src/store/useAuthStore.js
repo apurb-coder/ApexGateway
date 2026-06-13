@@ -25,7 +25,7 @@ export const useAuthStore = create((set, get) => ({
     });
 
     // Listen to changes
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (_event, session) => {
       if (session) {
         const isEmailUnconfirmed = session.user?.email && !session.user?.email_confirmed_at && !session.user?.confirmed_at;
         if (isEmailUnconfirmed) {
@@ -61,7 +61,7 @@ export const useAuthStore = create((set, get) => ({
         isAuthenticated: true,
         loading: false
       });
-    } catch (err) {
+    } catch {
       // Backend lookup failed (e.g. not synced yet)
       // We will provision user with metadata role on backend or create locally
       // For fallback, use Supabase user details
@@ -170,7 +170,7 @@ export const useAuthStore = create((set, get) => ({
     set({ loading: true });
     try {
       await supabase.auth.signOut();
-    } catch (err) {
+    } catch {
       // Ignore signOut errors
     } finally {
       set({ user: null, token: null, isAuthenticated: false, loading: false });

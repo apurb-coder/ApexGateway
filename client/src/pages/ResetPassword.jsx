@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuthStore } from '../store/useAuthStore';
 import { useUIStore } from '../store/useUIStore';
@@ -47,7 +47,7 @@ export default function ResetPassword() {
           navigate('/login');
         }, 3000);
       }
-    } catch (err) {
+    } catch {
       addToast('An unexpected error occurred.', 'error');
     } finally {
       setLoading(false);

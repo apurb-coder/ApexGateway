@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { useAuthStore } from '../store/useAuthStore';
 import { 
   Zap, 
@@ -9,20 +9,16 @@ import {
   ArrowRight, 
   Terminal, 
   Play, 
-  Check, 
   Menu, 
   X, 
   ChevronDown, 
   Layers, 
   Cpu, 
-  Lock, 
-  RefreshCw, 
-  ExternalLink 
+  RefreshCw
 } from 'lucide-react';
 
 export default function Landing() {
   const { isAuthenticated, user } = useAuthStore();
-  const navigate = useNavigate();
 
   // State for Mobile Menu
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);

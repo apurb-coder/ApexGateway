@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate, useParams, Link } from 'react-router-dom';
 import apiClient from '../services/api';
 import { useUIStore } from '../store/useUIStore';
@@ -43,7 +43,7 @@ export default function NewPlan() {
       });
       addToast('Pricing plan added successfully!', 'success');
       navigate('/dashboard/provider/apis');
-    } catch (err) {
+    } catch {
       // Interceptor toasts error
     } finally {
       setLoading(false);

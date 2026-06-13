@@ -36,7 +36,7 @@ export const validateSchema = (schema) => {
         if (rules.isUrl) {
           try {
             new URL(val);
-          } catch (e) {
+          } catch {
             errors.push({ field, message: `${field} must be a valid URL` });
             continue;
           }
@@ -59,17 +59,6 @@ export const validateSchema = (schema) => {
     }
     next();
   };
-};
-
-export const registerSchema = {
-  email: { required: true, type: 'string', isEmail: true },
-  password: { required: true, type: 'string', minLength: 6 },
-  role: { required: false, type: 'string', enum: ['PROVIDER', 'CONSUMER'] }
-};
-
-export const loginSchema = {
-  email: { required: true, type: 'string', isEmail: true },
-  password: { required: true, type: 'string' }
 };
 
 export const apiSchema = {

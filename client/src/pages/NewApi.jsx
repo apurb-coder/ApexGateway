@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import apiClient from '../services/api';
 import { useUIStore } from '../store/useUIStore';
@@ -45,7 +45,7 @@ export default function NewApi() {
       });
       addToast('API published successfully! Let\'s configure pricing plans.', 'success');
       navigate('/dashboard/provider/apis');
-    } catch (err) {
+    } catch {
       // Handled by Axios interceptor
     } finally {
       setLoading(false);

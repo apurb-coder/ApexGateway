@@ -79,7 +79,7 @@ export const getSubscriptions = async (req, res) => {
 
     // Never return the hashed key in list response
     const sanitized = subscriptions.map(sub => {
-      const { apiKeyHash, ...rest } = sub;
+      const { apiKeyHash: _apiKeyHash, ...rest } = sub;
       return rest;
     });
 
@@ -88,3 +88,30 @@ export const getSubscriptions = async (req, res) => {
     return res.status(500).json({ error: error.message });
   }
 };
+
+export const cancelSubscription = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const subscription = await prisma.subscription.findUnique({
+      where: { id }
+    });
+
+    if (!subscription) {
+      return res.status(404).json({ error: 'Subscription not found' });
+    }
+
+    if (subscription.consumerId !== req.user.id) {
+      return res.status(403).json({ error: 'Unauthorized to cancel this subscription' });
+    }
+
+    await prisma.subscription.delete({
+      where: { id }
+    });
+
+    return res.json({ message: 'Subscription cancelled successfully' });
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+};
+

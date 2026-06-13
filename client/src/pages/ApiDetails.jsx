@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import apiClient from '../services/api';
 import axios from 'axios';
@@ -13,10 +13,8 @@ import {
   Check, 
   AlertTriangle, 
   Terminal,
-  BookOpen,
-  ExternalLink
+  BookOpen
 } from 'lucide-react';
-import MarkdownRenderer from '../components/MarkdownRenderer';
 
 const generateSnippet = (lang, method, url, apiKey, bodyStr) => {
   const key = apiKey || 'YOUR_API_KEY';
@@ -141,7 +139,7 @@ export default function ApiDetails() {
         subscriptionId: res.data.subscriptionId
       });
       addToast('Subscribed successfully!', 'success');
-    } catch (err) {
+    } catch {
       // Axios interceptor handles the toast
     } finally {
       setSubscribingPlanId(null);

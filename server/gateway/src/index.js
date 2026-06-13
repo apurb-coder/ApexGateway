@@ -25,7 +25,7 @@ app.use((req, res, next) => {
 });
 
 // Health Check
-app.get('/health', (req, res) => {
+app.get('/health', (_req, res) => {
   res.json({ status: 'ok', service: 'gateway-proxy' });
 });
 
@@ -65,7 +65,7 @@ const apiProxy = createProxyMiddleware({
     }
     return null;
   },
-  pathRewrite: (path, req) => {
+  pathRewrite: (path, _req) => {
     // Strip '/api/:apiName' from the start of the path
     // e.g. /api/weather-service/v1/forecast -> /v1/forecast
     const match = path.match(/^\/api\/[^/]+/);
@@ -77,7 +77,7 @@ const apiProxy = createProxyMiddleware({
   },
   changeOrigin: true,
   // Handle proxy errors
-  onError: (err, req, res) => {
+  onError: (err, _req, res) => {
     console.error('Proxy Error:', err.message);
     if (!res.headersSent) {
       res.status(502).json({ error: 'Bad Gateway', message: 'Failed to connect to the target upstream service.' });

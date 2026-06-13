@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuthStore } from '../store/useAuthStore';
 import { useUIStore } from '../store/useUIStore';
-import { LogIn, Mail, Lock, ArrowRight, Eye, EyeOff } from 'lucide-react';
+import { LogIn, Mail, Lock, Eye, EyeOff } from 'lucide-react';
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -40,7 +40,7 @@ export default function Login() {
 
     setLoading(true);
     try {
-      const { data, error } = await loginUser(email, password);
+      const { error } = await loginUser(email, password);
       if (error) {
         addToast(error.message || 'Invalid email or password', 'error');
       } else {
@@ -52,7 +52,7 @@ export default function Login() {
           navigate('/marketplace');
         }
       }
-    } catch (err) {
+    } catch {
       addToast('Authentication failed. Please try again.', 'error');
     } finally {
       setLoading(false);

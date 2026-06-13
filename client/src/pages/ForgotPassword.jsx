@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuthStore } from '../store/useAuthStore';
 import { useUIStore } from '../store/useUIStore';
@@ -28,7 +28,7 @@ export default function ForgotPassword() {
         setSubmitted(true);
         addToast('Password reset link sent to your email!', 'success');
       }
-    } catch (err) {
+    } catch {
       addToast('An unexpected error occurred.', 'error');
     } finally {
       setLoading(false);

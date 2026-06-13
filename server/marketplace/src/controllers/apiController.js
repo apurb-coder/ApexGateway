@@ -41,7 +41,7 @@ export const getApis = async (req, res) => {
       const isOwner = req.user && api.providerId === req.user.id;
       const isAdmin = req.user && req.user.role === 'ADMIN';
       if (!isOwner && !isAdmin) {
-        const { upstreamUrl, ...sanitized } = api;
+        const { upstreamUrl: _upstreamUrl, ...sanitized } = api;
         return sanitized;
       }
       return api;

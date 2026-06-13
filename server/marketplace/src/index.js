@@ -27,7 +27,7 @@ app.use((req, res, next) => {
 app.use(express.json({ limit: '2mb' }));
 
 // Health Check
-app.get('/health', (req, res) => {
+app.get('/health', (_req, res) => {
   res.json({ status: 'ok', service: 'marketplace-api' });
 });
 
