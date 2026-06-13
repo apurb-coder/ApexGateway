@@ -18,6 +18,80 @@ import {
 } from 'lucide-react';
 import MarkdownRenderer from '../components/MarkdownRenderer';
 
+const generateSnippet = (lang, method, url, apiKey, bodyStr) => {
+  const key = apiKey || 'YOUR_API_KEY';
+  const cleanBody = bodyStr ? bodyStr.trim() : '';
+  const hasBody = method !== 'GET' && cleanBody;
+
+  switch (lang) {
+    case 'curl': {
+      let curlCmd = `curl --request ${method} \\\n  --url '${url}' \\\n  --header 'Content-Type: application/json' \\\n  --header 'X-API-Key: ${key}'`;
+      if (hasBody) {
+        const escapedBody = cleanBody.replace(/'/g, "'\\''");
+        curlCmd += ` \\\n  --data '${escapedBody}'`;
+      }
+      return curlCmd;
+    }
+
+    case 'js_fetch': {
+      let fetchOpts = `const options = {\n  method: '${method}',\n  headers: {\n    'Content-Type': 'application/json',\n    'X-API-Key': '${key}'\n  }`;
+      if (hasBody) {
+        try {
+          const parsed = JSON.parse(cleanBody);
+          fetchOpts += `,\n  body: JSON.stringify(${JSON.stringify(parsed, null, 2).replace(/\n/g, '\n  ')})`;
+        } catch {
+          fetchOpts += `,\n  body: JSON.stringify(${cleanBody})`;
+        }
+      }
+      fetchOpts += `\n};`;
+      return `${fetchOpts}\n\nfetch('${url}', options)\n  .then(response => response.json())\n  .then(response => console.log(response))\n  .catch(err => console.error(err));`;
+    }
+
+    case 'js_axios': {
+      let axiosOpts = `const options = {\n  method: '${method}',\n  url: '${url}',\n  headers: {\n    'Content-Type': 'application/json',\n    'X-API-Key': '${key}'\n  }`;
+      if (hasBody) {
+        try {
+          const parsed = JSON.parse(cleanBody);
+          axiosOpts += `,\n  data: ${JSON.stringify(parsed, null, 2).replace(/\n/g, '\n  ')}`;
+        } catch {
+          axiosOpts += `,\n  data: ${cleanBody}`;
+        }
+      }
+      axiosOpts += `\n};`;
+      return `import axios from 'axios';\n\n${axiosOpts}\n\naxios.request(options).then((response) => {\n  console.log(response.data);\n}).catch((error) => {\n  console.error(error);\n});`;
+    }
+
+    case 'python_requests': {
+      let pyPayload = '';
+      let pyRequestCall = `response = requests.request("${method}", url, headers=headers)`;
+      if (hasBody) {
+        try {
+          const parsed = JSON.parse(cleanBody);
+          pyPayload = `payload = ${JSON.stringify(parsed, null, 4).replace(/true/g, 'True').replace(/false/g, 'False').replace(/null/g, 'None')}\n`;
+          pyRequestCall = `response = requests.request("${method}", url, json=payload, headers=headers)`;
+        } catch {
+          pyPayload = `payload = """${cleanBody}"""\n`;
+          pyRequestCall = `response = requests.request("${method}", url, data=payload, headers=headers)`;
+        }
+      }
+      return `import requests\n\nurl = "${url}"\n\n${pyPayload}headers = {\n    "Content-Type": "application/json",\n    "X-API-Key": "${key}"\n}\n\n${pyRequestCall}\n\nprint(response.json())`;
+    }
+
+    case 'go_native': {
+      let goPayloadInit = 'payload := nil';
+      let goReqInit = `req, _ := http.NewRequest("${method}", url, nil)`;
+      if (hasBody) {
+        goPayloadInit = `payload := strings.NewReader(\`${cleanBody}\`)`;
+        goReqInit = `req, _ := http.NewRequest("${method}", url, payload)`;
+      }
+      return `package main\n\nimport (\n\t"fmt"\n\t"strings"\n\t"net/http"\n\t"io"\n)\n\nfunc main() {\n\turl := "${url}"\n\t${goPayloadInit}\n\n\t${goReqInit}\n\n\treq.Header.Add("Content-Type", "application/json")\n\treq.Header.Add("X-API-Key", "${key}")\n\n\tres, _ := http.DefaultClient.Do(req)\n\n\tdefer res.Body.Close()\n\tbody, _ := io.ReadAll(res.Body)\n\n\tfmt.Println(string(body))\n}`;
+    }
+
+    default:
+      return '';
+  }
+};
+
 export default function ApiDetails() {
   const { apiId } = useParams();
   const [api, setApi] = useState(null);
@@ -34,6 +108,8 @@ export default function ApiDetails() {
   const [showApiKey, setShowApiKey] = useState(false);
   const [testResponse, setTestResponse] = useState(null);
   const [testing, setTesting] = useState(false);
+  const [selectedSnippetLang, setSelectedSnippetLang] = useState('curl');
+  const [snippetCopied, setSnippetCopied] = useState(false);
 
   const addToast = useUIStore((state) => state.addToast);
   const { user } = useAuthStore();
@@ -177,6 +253,69 @@ export default function ApiDetails() {
             )}
           </div>
         ))}
+      </div>
+    );
+  };
+
+  const copySnippetToClipboard = (code) => {
+    navigator.clipboard.writeText(code);
+    setSnippetCopied(true);
+    addToast('Code snippet copied!', 'success');
+    setTimeout(() => setSnippetCopied(false), 2000);
+  };
+
+  const renderCodeSnippetGenerator = () => {
+    const cleanPath = testPath.startsWith('/') ? testPath.substring(1) : testPath;
+    const url = `${gatewayUrl}/api/${api.name}/${cleanPath}`;
+    const snippetCode = generateSnippet(selectedSnippetLang, testMethod, url, testApiKey, testBody);
+
+    const languages = [
+      { id: 'curl', name: 'cURL' },
+      { id: 'js_fetch', name: 'Fetch (JS)' },
+      { id: 'js_axios', name: 'Axios (JS)' },
+      { id: 'python_requests', name: 'Requests (Py)' },
+      { id: 'go_native', name: 'Go HTTP' }
+    ];
+
+    return (
+      <div className="bg-card-dark/40 border border-border-dark rounded-2xl p-6 backdrop-blur-md space-y-4 relative overflow-hidden">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-border-dark pb-4">
+          <div>
+            <h3 className="text-sm font-bold text-white font-display">Client Code Snippets</h3>
+            <p className="text-xs text-gray-500 mt-1">Generate dynamic integration code in multiple languages.</p>
+          </div>
+          <div className="flex flex-wrap gap-1 bg-bg-dark/60 p-1 rounded-xl border border-border-dark">
+            {languages.map((lang) => (
+              <button
+                key={lang.id}
+                onClick={() => setSelectedSnippetLang(lang.id)}
+                className={`px-3 py-1.5 rounded-lg text-xs font-semibold cursor-pointer transition-[background-color,color,box-shadow] duration-200 focus-visible:ring-1 focus-visible:ring-primary-500 outline-none ${
+                  selectedSnippetLang === lang.id
+                    ? 'bg-primary-500 text-white shadow-md'
+                    : 'text-gray-400 hover:text-white'
+                }`}
+              >
+                {lang.name}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <div className="relative group/code">
+          <div className="absolute right-3 top-3 z-10 flex gap-2">
+            <button
+              onClick={() => copySnippetToClipboard(snippetCode)}
+              className="p-2 bg-bg-dark/80 hover:bg-bg-dark border border-border-dark text-gray-400 hover:text-white rounded-lg transition-[background-color,color,border-color] duration-200 cursor-pointer focus-visible:ring-1 focus-visible:ring-primary-500 outline-none flex items-center justify-center"
+              aria-label="Copy code snippet"
+            >
+              {snippetCopied ? <Check className="w-4 h-4 text-emerald-400" aria-hidden="true" /> : <Copy className="w-4 h-4" aria-hidden="true" />}
+            </button>
+          </div>
+
+          <div className="bg-bg-dark/80 border border-border-dark rounded-xl p-4 overflow-x-auto max-h-80 scrollbar-thin font-mono text-xs select-all text-gray-300">
+            <pre className="whitespace-pre" translate="no">{snippetCode}</pre>
+          </div>
+        </div>
       </div>
     );
   };
@@ -397,6 +536,7 @@ export default function ApiDetails() {
             <h2 className="text-xl font-bold text-white font-display tracking-wide">Gateway Playground</h2>
           </div>
           {renderPlayground()}
+          {renderCodeSnippetGenerator()}
         </div>
       </div>
     </div>

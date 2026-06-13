@@ -34,11 +34,11 @@ export default function DashboardLayout() {
     ? [
         { name: 'Published APIs', path: '/dashboard/provider/apis', icon: Globe },
         { name: 'Register New API', path: '/dashboard/provider/apis/new', icon: PlusCircle },
+        { name: 'Metrics & Analytics', path: '/dashboard/provider/analytics', icon: BarChart3 },
       ]
     : [
         { name: 'API Marketplace', path: '/marketplace', icon: Search },
         { name: 'My Subscriptions', path: '/dashboard/consumer/keys', icon: Key },
-        { name: 'Analytics', path: '/dashboard/consumer/analytics', icon: BarChart3 },
       ];
 
   const bottomItems = [

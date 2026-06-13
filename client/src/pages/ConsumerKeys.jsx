@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import apiClient from '../services/api';
-import { Key, ShieldAlert, CheckCircle, Cpu, Copy, Check } from 'lucide-react';
+import { Key, ShieldAlert, CheckCircle, Cpu } from 'lucide-react';
 
 export default function ConsumerKeys() {
   const [subscriptions, setSubscriptions] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [copied, setCopied] = useState(false);
   const gatewayUrl = import.meta.env.VITE_GATEWAY_API_URL || 'http://localhost:4000';
 
   useEffect(() => {
@@ -21,13 +20,6 @@ export default function ConsumerKeys() {
     };
     fetchSubscriptions();
   }, []);
-
-  const handleCopyCommand = () => {
-    const codeText = `curl -X GET \\\n  ${gatewayUrl}/api/{api_name}/some-path \\\n  -H "X-API-Key: YOUR_API_KEY"`;
-    navigator.clipboard.writeText(codeText);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
-  };
 
   return (
     <div className="space-y-8 animate-fadeIn">
@@ -94,29 +86,6 @@ export default function ConsumerKeys() {
           })}
         </div>
       )}
-
-      <div className="bg-card-dark/40 border border-border-dark rounded-2xl p-6 backdrop-blur-md space-y-4">
-        <h2 className="text-lg font-bold text-white font-display">Integration Blueprint</h2>
-        <p className="text-xs text-gray-400">
-          Incorporate the X-API-Key header in HTTP requests targeting the gateway to authorize operations.
-        </p>
-        
-        <div className="relative group">
-          <div className="bg-bg-dark/80 border border-border-dark rounded-xl p-5 font-mono text-xs text-gray-300 space-y-2 leading-relaxed">
-            <div><span className="text-primary-400">curl</span> -X GET \</div>
-            <div>  {gatewayUrl}/api/<span className="text-emerald-400 font-semibold">{"{api_name}"}</span>/some-path \</div>
-            <div>  -H <span className="text-amber-400">"X-API-Key: YOUR_API_KEY"</span></div>
-          </div>
-          
-          <button 
-            onClick={handleCopyCommand}
-            className="absolute top-3.5 right-3.5 p-2 bg-card-dark border border-border-dark hover:border-primary-500 text-gray-400 hover:text-white rounded-lg transition-all cursor-pointer shadow-md"
-            title="Copy command to clipboard"
-          >
-            {copied ? <Check className="w-4 h-4 text-emerald-400" /> : <Copy className="w-4 h-4" />}
-          </button>
-        </div>
-      </div>
     </div>
   );
 }

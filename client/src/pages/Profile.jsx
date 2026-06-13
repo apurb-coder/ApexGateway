@@ -39,17 +39,7 @@ export default function Profile() {
         </div>
       </div>
 
-      <div className="bg-card-dark/40 border border-border-dark rounded-2xl p-6 backdrop-blur-md relative overflow-hidden group">
-        <div className="absolute inset-0 bg-radial-gradient from-primary-500/5 via-transparent to-transparent opacity-100 pointer-events-none" />
-        <h2 className="text-lg font-bold text-white mb-4 font-display relative z-10">API Token Usage</h2>
-        <p className="text-xs text-gray-400 mb-6 relative z-10 leading-relaxed">
-          All requests made to upstream services through ApexGateway require your personal API client token or subscription API key.
-        </p>
-        <div className="p-4 bg-bg-dark/60 border border-border-dark rounded-xl font-mono text-xs text-gray-400 flex flex-col sm:flex-row sm:items-center justify-between gap-2 relative z-10">
-          <span>Role Capability Matrix:</span>
-          <span className="text-primary-400 font-semibold uppercase">{user?.role === 'PROVIDER' ? 'Manage APIs & View Consumers' : 'Subscribe & Request Gateway APIs'}</span>
-        </div>
-      </div>
+
     </div>
   );
 }

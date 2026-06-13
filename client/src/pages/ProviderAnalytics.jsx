@@ -23,7 +23,7 @@ const mockRequestData = [
   { time: '16:00', requests: 410, latency: 55, errors: 8 },
 ];
 
-export default function ConsumerAnalytics() {
+export default function ProviderAnalytics() {
   return (
     <div className="space-y-8 animate-fadeIn">
       <div className="border-b border-border-dark pb-6">

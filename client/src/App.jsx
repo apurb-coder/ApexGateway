@@ -14,7 +14,7 @@ import Marketplace from './pages/Marketplace';
 import ApiDetails from './pages/ApiDetails';
 import ApiDocs from './pages/ApiDocs';
 import ConsumerKeys from './pages/ConsumerKeys';
-import ConsumerAnalytics from './pages/ConsumerAnalytics';
+import ProviderAnalytics from './pages/ProviderAnalytics';
 import ProviderApis from './pages/ProviderApis';
 import NewApi from './pages/NewApi';
 import NewPlan from './pages/NewPlan';
@@ -127,10 +127,10 @@ export default function App() {
             } 
           />
           <Route 
-            path="dashboard/consumer/analytics" 
+            path="dashboard/provider/analytics" 
             element={
-              <ProtectedRoute allowedRoles={['CONSUMER']}>
-                <ConsumerAnalytics />
+              <ProtectedRoute allowedRoles={['PROVIDER']}>
+                <ProviderAnalytics />
               </ProtectedRoute>
             } 
           />
