@@ -175,12 +175,14 @@ export default function ApiDetails() {
                   /api/{api.name}
                 </span>
               </div>
-              <div className="flex items-center gap-2">
-                <span className="text-gray-500">Upstream Destination:</span>
-                <span className="text-gray-300 bg-bg-dark/80 border border-border-dark px-2 py-0.5 rounded">
-                  {api.upstreamUrl}
-                </span>
-              </div>
+              {api.upstreamUrl && (
+                <div className="flex items-center gap-2">
+                  <span className="text-gray-500">Upstream Destination:</span>
+                  <span className="text-gray-300 bg-bg-dark/80 border border-border-dark px-2 py-0.5 rounded">
+                    {api.upstreamUrl}
+                  </span>
+                </div>
+              )}
             </div>
           </div>
         </div>

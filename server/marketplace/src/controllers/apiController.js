@@ -33,7 +33,19 @@ export const getApis = async (req, res) => {
         }
       }
     });
-    return res.json({ apis });
+
+    // Strip upstreamUrl for non-owners/non-admins
+    const sanitizedApis = apis.map(api => {
+      const isOwner = req.user && api.providerId === req.user.id;
+      const isAdmin = req.user && req.user.role === 'ADMIN';
+      if (!isOwner && !isAdmin) {
+        const { upstreamUrl, ...sanitized } = api;
+        return sanitized;
+      }
+      return api;
+    });
+
+    return res.json({ apis: sanitizedApis });
   } catch (error) {
     return res.status(500).json({ error: error.message });
   }
@@ -54,6 +66,12 @@ export const getApiById = async (req, res) => {
 
     if (!api) {
       return res.status(404).json({ error: 'API not found' });
+    }
+
+    const isOwner = req.user && api.providerId === req.user.id;
+    const isAdmin = req.user && req.user.role === 'ADMIN';
+    if (!isOwner && !isAdmin) {
+      delete api.upstreamUrl;
     }
 
     return res.json({ api });

@@ -108,6 +108,44 @@ export const authenticateUser = async (req, res, next) => {
   }
 };
 
+// Optional Authentication Middleware
+export const optionalAuth = async (req, res, next) => {
+  const authHeader = req.headers.authorization;
+  if (!authHeader || !authHeader.startsWith('Bearer ')) {
+    return next();
+  }
+
+  const token = authHeader.split(' ')[1];
+  if (!JWKS) {
+    return next();
+  }
+
+  try {
+    const decoded = await jose.jwtVerify(token, JWKS, {
+      issuer: jwtIssuer,
+      audience: jwtAudience,
+    });
+    const payload = decoded.payload;
+    const id = payload.sub;
+
+    const user = await prisma.user.findUnique({
+      where: { id: id }
+    });
+
+    if (user) {
+      req.user = {
+        id: user.id,
+        email: user.email,
+        role: user.role
+      };
+    }
+  } catch (error) {
+    // Silently ignore verification/database errors, treat as unauthenticated
+    console.debug('Optional auth failed:', error.message);
+  }
+  next();
+};
+
 // Alias for compatibility
 export const authMiddleware = authenticateUser;
 
