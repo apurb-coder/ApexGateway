@@ -155,7 +155,8 @@ export default function ApiDetails() {
   }
 
   return (
-    <div className="space-y-8 relative animate-fadeIn">
+    <>
+      <div className="space-y-8 relative animate-fadeIn">
       <div>
         <Link to="/marketplace" className="inline-flex items-center gap-2 text-gray-400 hover:text-white transition-colors text-sm cursor-pointer group">
           <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
@@ -374,42 +375,43 @@ export default function ApiDetails() {
           </div>
         </div>
       </div>
+    </div>
 
-      {apiKeyModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 animate-fadeIn">
-          <div className="w-full max-w-lg bg-card-dark border border-primary-500/30 rounded-2xl p-8 shadow-[0_0_50px_rgba(139,92,246,0.15)] relative z-10">
-            <div className="flex items-center gap-3 text-rose-400 mb-4 pb-2 border-b border-border-dark">
-              <AlertTriangle className="w-7 h-7 shrink-0 text-amber-500 animate-pulse" />
-              <h2 className="text-lg font-bold text-white font-display tracking-wide">One-Time Secure Key Delivery</h2>
-            </div>
-            
-            <p className="text-xs text-gray-400 mb-6 leading-relaxed">
-              Below is the raw API key for this subscription. To protect your backend, ApexGateway hashes this key and **will never display it to you again**. Please copy and store it securely now.
-            </p>
+    {apiKeyModal && (
+      <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 animate-fadeIn">
+        <div className="w-full max-w-lg bg-card-dark border border-primary-500/30 rounded-2xl p-8 shadow-[0_0_50px_rgba(139,92,246,0.15)] relative z-10">
+          <div className="flex items-center gap-3 text-rose-400 mb-4 pb-2 border-b border-border-dark">
+            <AlertTriangle className="w-7 h-7 shrink-0 text-amber-500 animate-pulse" />
+            <h2 className="text-lg font-bold text-white font-display tracking-wide">One-Time Secure Key Delivery</h2>
+          </div>
+          
+          <p className="text-xs text-gray-400 mb-6 leading-relaxed">
+            Below is the raw API key for this subscription. To protect your backend, ApexGateway hashes this key and **will never display it to you again**. Please copy and store it securely now.
+          </p>
 
-            <div className="flex items-center gap-2 bg-bg-dark/80 border border-border-dark rounded-xl p-3.5 font-mono text-xs text-white mb-6 select-all">
-              <span className="flex-1 break-all pr-2 tracking-wide font-semibold text-primary-400">{apiKeyModal.apiKey}</span>
-              <button
-                onClick={copyToClipboard}
-                className="shrink-0 p-2 bg-primary-500/10 hover:bg-primary-500/20 border border-primary-500/30 text-primary-400 rounded-lg transition-all cursor-pointer"
-              >
-                {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
-              </button>
-            </div>
-
+          <div className="flex items-center gap-2 bg-bg-dark/80 border border-border-dark rounded-xl p-3.5 font-mono text-xs text-white mb-6 select-all">
+            <span className="flex-1 break-all pr-2 tracking-wide font-semibold text-primary-400">{apiKeyModal.apiKey}</span>
             <button
-              onClick={() => {
-                setTestApiKey(apiKeyModal.apiKey);
-                setApiKeyModal(null);
-                addToast('Modal dismissed. Key has been auto-filled in the tester console.', 'info');
-              }}
-              className="w-full bg-primary-500 hover:bg-primary-600 text-white font-bold py-3 px-4 rounded-xl text-xs transition-all cursor-pointer shadow-[0_4px_15px_rgba(139,92,246,0.25)] text-center"
+              onClick={copyToClipboard}
+              className="shrink-0 p-2 bg-primary-500/10 hover:bg-primary-500/20 border border-primary-500/30 text-primary-400 rounded-lg transition-all cursor-pointer"
             >
-              I have saved it, close modal
+              {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
             </button>
           </div>
+
+          <button
+            onClick={() => {
+              setTestApiKey(apiKeyModal.apiKey);
+              setApiKeyModal(null);
+              addToast('Modal dismissed. Key has been auto-filled in the tester console.', 'info');
+            }}
+            className="w-full bg-primary-500 hover:bg-primary-600 text-white font-bold py-3 px-4 rounded-xl text-xs transition-all cursor-pointer shadow-[0_4px_15px_rgba(139,92,246,0.25)] text-center"
+          >
+            I have saved it, close modal
+          </button>
         </div>
-      )}
-    </div>
-  );
+      </div>
+    )}
+  </>
+);
 }
