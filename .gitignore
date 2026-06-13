@@ -1,4 +1,6 @@
 .agent
 .agents
 /graphify-out
-.env
+.env
+skills-lock.json
+frontend_implementation_plan(Apex).md
