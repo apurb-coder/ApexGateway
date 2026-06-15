@@ -295,4 +295,101 @@ export const getAnalyticsSummary = async (req, res) => {
   }
 };
 
+export const getApiHealth = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const api = await prisma.api.findUnique({
+      where: { id }
+    });
+
+    if (!api) {
+      return res.status(404).json({ error: 'API not found' });
+    }
+
+    if (api.providerId !== req.user.id && req.user.role !== 'ADMIN') {
+      return res.status(403).json({ error: 'Unauthorized to view health of this API' });
+    }
+
+    const oneDayAgo = new Date();
+    oneDayAgo.setDate(oneDayAgo.getDate() - 1);
+
+    const fifteenMinutesAgo = new Date();
+    fifteenMinutesAgo.setMinutes(fifteenMinutesAgo.getMinutes() - 15);
+
+    const logs24h = await prisma.apiLog.findMany({
+      where: {
+        apiId: id,
+        timestamp: { gte: oneDayAgo }
+      },
+      select: {
+        statusCode: true,
+        latencyMs: true,
+        timestamp: true
+      }
+    });
+
+    const totalRequests = logs24h.length;
+    const serverErrors = logs24h.filter(log => log.statusCode >= 500).length;
+    const uptime = totalRequests > 0 ? parseFloat(((totalRequests - serverErrors) / totalRequests * 100).toFixed(2)) : 100.00;
+
+    const totalLatency = logs24h.reduce((acc, log) => acc + log.latencyMs, 0);
+    const avgLatency = totalRequests > 0 ? Math.round(totalLatency / totalRequests) : 0;
+
+    const recentLogs = logs24h.filter(log => new Date(log.timestamp) >= fifteenMinutesAgo);
+    const recentTotal = recentLogs.length;
+    const recentErrors = recentLogs.filter(log => log.statusCode >= 500).length;
+
+    let status = 'OPERATIONAL';
+    if (api.status === 'INACTIVE') {
+      status = 'INACTIVE';
+    } else if (recentTotal > 0 && recentErrors > 0) {
+      const errorRate = recentErrors / recentTotal;
+      if (errorRate > 0.5) {
+        status = 'DOWN';
+      } else {
+        status = 'DEGRADED';
+      }
+    }
+
+    const hourlyData = {};
+    for (let i = 0; i < 24; i++) {
+      const d = new Date();
+      d.setHours(d.getHours() - i, 0, 0, 0);
+      const hourStr = d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false });
+      hourlyData[d.getTime()] = { timestamp: hourStr, latencySum: 0, count: 0 };
+    }
+
+    logs24h.forEach(log => {
+      const logDate = new Date(log.timestamp);
+      logDate.setMinutes(0, 0, 0);
+      const key = logDate.getTime();
+      if (hourlyData[key]) {
+        hourlyData[key].latencySum += log.latencyMs;
+        hourlyData[key].count += 1;
+      }
+    });
+
+    const latencyHistory = Object.keys(hourlyData)
+      .sort()
+      .map(key => {
+        const item = hourlyData[key];
+        return {
+          timestamp: item.timestamp,
+          latency: item.count > 0 ? Math.round(item.latencySum / item.count) : 0
+        };
+      });
+
+    return res.json({
+      status,
+      uptime,
+      avgLatency,
+      latencyHistory
+    });
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+};
+
+
 

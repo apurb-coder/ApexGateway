@@ -12,33 +12,59 @@ import {
 } from 'recharts';
 import { ArrowLeft, Activity, Heart, Cpu } from 'lucide-react';
 
-const mockLatencyData = [
-  { timestamp: '00:00', latency: 45 },
-  { timestamp: '04:00', latency: 48 },
-  { timestamp: '08:00', latency: 85 },
-  { timestamp: '12:00', latency: 62 },
-  { timestamp: '16:00', latency: 55 },
-  { timestamp: '20:00', latency: 50 },
-  { timestamp: '24:00', latency: 47 },
-];
+const statusConfig = {
+  OPERATIONAL: {
+    colorClass: 'text-emerald-400',
+    dotClass: 'bg-emerald-400',
+    borderHover: 'hover:border-emerald-500/30',
+    radialGradient: 'from-emerald-500/5',
+    text: 'OPERATIONAL'
+  },
+  DEGRADED: {
+    colorClass: 'text-amber-500',
+    dotClass: 'bg-amber-500',
+    borderHover: 'hover:border-amber-500/30',
+    radialGradient: 'from-amber-500/5',
+    text: 'DEGRADED'
+  },
+  DOWN: {
+    colorClass: 'text-rose-500',
+    dotClass: 'bg-rose-500',
+    borderHover: 'hover:border-rose-500/30',
+    radialGradient: 'from-rose-500/5',
+    text: 'DOWN'
+  },
+  INACTIVE: {
+    colorClass: 'text-gray-450',
+    dotClass: 'bg-gray-450',
+    borderHover: 'hover:border-gray-500/30',
+    radialGradient: 'from-gray-500/5',
+    text: 'INACTIVE'
+  }
+};
 
 export default function ApiHealth() {
   const { apiId } = useParams();
   const [api, setApi] = useState(null);
+  const [health, setHealth] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchApiDetails = async () => {
+    const fetchApiDetailsAndHealth = async () => {
       try {
-        const res = await apiClient.get(`/apis/${apiId}`);
-        setApi(res.data.api);
+        const [apiRes, healthRes] = await Promise.all([
+          apiClient.get(`/apis/${apiId}`),
+          apiClient.get(`/apis/${apiId}/health`)
+        ]);
+        setApi(apiRes.data.api);
+        setHealth(healthRes.data);
       } catch (err) {
         console.error(err);
       } finally {
         setLoading(false);
       }
     };
-    fetchApiDetails();
+    fetchApiDetailsAndHealth();
   }, [apiId]);
 
   if (loading) {
@@ -49,6 +75,9 @@ export default function ApiHealth() {
       </div>
     );
   }
+
+  const status = health?.status || 'OPERATIONAL';
+  const config = statusConfig[status] || statusConfig.OPERATIONAL;
 
   return (
     <div className="space-y-8 animate-fadeIn">
@@ -62,19 +91,20 @@ export default function ApiHealth() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div className="bg-card-dark/40 border border-border-dark hover:border-emerald-500/30 rounded-2xl p-6 backdrop-blur-md relative overflow-hidden group transition-all duration-300">
-          <div className="absolute inset-0 bg-radial-gradient from-emerald-500/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
+        <div className={`bg-card-dark/40 border border-border-dark ${config.borderHover} rounded-2xl p-6 backdrop-blur-md relative overflow-hidden group transition-all duration-300`}>
+          <div className={`absolute inset-0 bg-radial-gradient ${config.radialGradient} via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none`} />
           <div className="flex items-center justify-between text-gray-450 relative z-10">
             <span className="text-[10px] font-bold uppercase tracking-wider font-display text-gray-400">Operational Status</span>
-            <div className="w-8 h-8 rounded-lg bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400">
+            <div className={`w-8 h-8 rounded-lg bg-current/10 border border-current/20 flex items-center justify-center ${config.colorClass}`}>
               <Heart className="w-4 h-4" />
             </div>
           </div>
-          <div className="text-xl font-black text-emerald-400 mt-4 flex items-center gap-2 relative z-10 font-display tracking-wider">
-            <span className="w-2.5 h-2.5 bg-emerald-400 rounded-full animate-ping"></span>
-            <span>OPERATIONAL</span>
+          <div className={`text-xl font-black ${config.colorClass} mt-4 flex items-center gap-2 relative z-10 font-display tracking-wider`}>
+            {status === 'OPERATIONAL' && <span className={`w-2.5 h-2.5 ${config.dotClass} rounded-full animate-ping`}></span>}
+            {status !== 'OPERATIONAL' && <span className={`w-2.5 h-2.5 ${config.dotClass} rounded-full`}></span>}
+            <span>{config.text}</span>
           </div>
-          <div className="text-[10px] text-gray-500 mt-2 font-mono relative z-10">Status check: 10s ago</div>
+          <div className="text-[10px] text-gray-500 mt-2 font-mono relative z-10">Status check: 15m window</div>
         </div>
 
         <div className="bg-card-dark/40 border border-border-dark hover:border-primary-500/30 rounded-2xl p-6 backdrop-blur-md relative overflow-hidden group transition-all duration-300">
@@ -85,7 +115,9 @@ export default function ApiHealth() {
               <Activity className="w-4 h-4" />
             </div>
           </div>
-          <div className="text-3xl font-black text-white mt-4 font-display tracking-wide relative z-10">99.98%</div>
+          <div className="text-3xl font-black text-white mt-4 font-display tracking-wide relative z-10">
+            {health ? `${health.uptime.toFixed(2)}%` : '100.00%'}
+          </div>
           <div className="text-[10px] text-emerald-400 mt-2 font-mono relative z-10">SLA requirement satisfied</div>
         </div>
 
@@ -97,7 +129,9 @@ export default function ApiHealth() {
               <Cpu className="w-4 h-4" />
             </div>
           </div>
-          <div className="text-3xl font-black text-white mt-4 font-display tracking-wide relative z-10">56 ms</div>
+          <div className="text-3xl font-black text-white mt-4 font-display tracking-wide relative z-10">
+            {health ? `${health.avgLatency} ms` : '0 ms'}
+          </div>
           <div className="text-[10px] text-gray-500 mt-2 font-mono relative z-10">Measured at regional edge</div>
         </div>
       </div>
@@ -106,7 +140,7 @@ export default function ApiHealth() {
         <h3 className="text-lg font-bold text-white mb-6 font-display tracking-wide">Latency Profile (24h)</h3>
         <div className="h-80 w-full text-[10px] font-mono">
           <ResponsiveContainer width="100%" height="100%">
-            <AreaChart data={mockLatencyData}>
+            <AreaChart data={health?.latencyHistory || []}>
               <defs>
                 <linearGradient id="colorLatency" x1="0" y1="0" x2="0" y2="1">
                   <stop offset="5%" stopColor="oklch(0.55 0.18 270)" stopOpacity={0.25}/>
