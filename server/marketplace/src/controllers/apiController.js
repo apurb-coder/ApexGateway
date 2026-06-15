@@ -118,3 +118,181 @@ export const createPlan = async (req, res) => {
     return res.status(500).json({ error: error.message });
   }
 };
+
+export const updatePlan = async (req, res) => {
+  try {
+    const { apiId, planId } = req.params;
+    const { name, requestsPerMin, price } = req.body;
+
+    const plan = await prisma.plan.findUnique({
+      where: { id: planId },
+      include: { api: true }
+    });
+
+    if (!plan) {
+      return res.status(404).json({ error: 'Plan not found' });
+    }
+
+    if (plan.apiId !== apiId) {
+      return res.status(400).json({ error: 'Plan does not belong to this API' });
+    }
+
+    if (plan.api.providerId !== req.user.id && req.user.role !== 'ADMIN') {
+      return res.status(403).json({ error: 'Unauthorized to edit plans for this API' });
+    }
+
+    const updated = await prisma.plan.update({
+      where: { id: planId },
+      data: {
+        name,
+        requestsPerMin: parseInt(requestsPerMin),
+        price: parseFloat(price)
+      }
+    });
+
+    return res.json({ message: 'Plan updated successfully', plan: updated });
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+};
+
+export const deletePlan = async (req, res) => {
+  try {
+    const { apiId, planId } = req.params;
+
+    const plan = await prisma.plan.findUnique({
+      where: { id: planId },
+      include: { api: true }
+    });
+
+    if (!plan) {
+      return res.status(404).json({ error: 'Plan not found' });
+    }
+
+    if (plan.apiId !== apiId) {
+      return res.status(400).json({ error: 'Plan does not belong to this API' });
+    }
+
+    if (plan.api.providerId !== req.user.id && req.user.role !== 'ADMIN') {
+      return res.status(403).json({ error: 'Unauthorized to delete plans for this API' });
+    }
+
+    await prisma.plan.delete({
+      where: { id: planId }
+    });
+
+    return res.json({ message: 'Plan deleted successfully' });
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+};
+
+export const getAnalyticsSummary = async (req, res) => {
+  try {
+    const providerApis = await prisma.api.findMany({
+      where: { providerId: req.user.id },
+      select: { id: true, name: true }
+    });
+
+    const apiIds = providerApis.map(api => api.id);
+
+    if (apiIds.length === 0) {
+      return res.json({
+        totalRequests: 0,
+        avgLatency: 0,
+        rateLimitsHit: 0,
+        successRate: 100.0,
+        chartData: []
+      });
+    }
+
+    const totalRequests = await prisma.apiLog.count({
+      where: { apiId: { in: apiIds } }
+    });
+
+    const avgLatencyRes = await prisma.apiLog.aggregate({
+      where: { apiId: { in: apiIds } },
+      _avg: { latencyMs: true }
+    });
+    const avgLatency = avgLatencyRes._avg.latencyMs ? Math.round(avgLatencyRes._avg.latencyMs * 10) / 10 : 0;
+
+    const rateLimitsHit = await prisma.apiLog.count({
+      where: {
+        apiId: { in: apiIds },
+        statusCode: 429
+      }
+    });
+
+    const successRequests = await prisma.apiLog.count({
+      where: {
+        apiId: { in: apiIds },
+        statusCode: { lt: 400 }
+      }
+    });
+    const successRate = totalRequests > 0 ? Math.round((successRequests / totalRequests) * 1000) / 10 : 100.0;
+
+    const oneDayAgo = new Date();
+    oneDayAgo.setDate(oneDayAgo.getDate() - 1);
+
+    const logs = await prisma.apiLog.findMany({
+      where: {
+        apiId: { in: apiIds },
+        timestamp: { gte: oneDayAgo }
+      },
+      select: {
+        statusCode: true,
+        latencyMs: true,
+        timestamp: true
+      },
+      orderBy: {
+        timestamp: 'asc'
+      }
+    });
+
+    const hourlyData = {};
+    for (let i = 0; i < 24; i++) {
+      const d = new Date();
+      d.setHours(d.getHours() - i, 0, 0, 0);
+      const hourStr = d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      hourlyData[d.getTime()] = { time: hourStr, requests: 0, latencySum: 0, errors: 0, countForLatency: 0 };
+    }
+
+    logs.forEach(log => {
+      const logDate = new Date(log.timestamp);
+      logDate.setMinutes(0, 0, 0);
+      const key = logDate.getTime();
+      if (hourlyData[key]) {
+        hourlyData[key].requests += 1;
+        hourlyData[key].latencySum += log.latencyMs;
+        hourlyData[key].countForLatency += 1;
+        if (log.statusCode === 429 || log.statusCode >= 400) {
+          hourlyData[key].errors += 1;
+        }
+      }
+    });
+
+    const chartData = Object.keys(hourlyData)
+      .sort()
+      .map(key => {
+        const item = hourlyData[key];
+        return {
+          time: item.time,
+          requests: item.requests,
+          latency: item.countForLatency > 0 ? Math.round(item.latencySum / item.countForLatency) : 0,
+          errors: item.errors
+        };
+      });
+
+    return res.json({
+      totalRequests,
+      avgLatency,
+      rateLimitsHit,
+      successRate,
+      chartData
+    });
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+};
+
+

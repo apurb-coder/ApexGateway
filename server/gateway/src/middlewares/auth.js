@@ -52,6 +52,7 @@ const authMiddleware = async (req, res, next) => {
         requestsPerMin: subscription.plan.requestsPerMin,
         upstreamUrl: api.upstreamUrl,
         apiName: api.name,
+        apiId: api.id,
         allowedMethods: api.allowedMethods,
         isActive: true,
       };

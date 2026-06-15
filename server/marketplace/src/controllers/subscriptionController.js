@@ -1,5 +1,6 @@
 import crypto from 'crypto';
 import prisma from '../utils/prisma.js';
+import redis from '../utils/redis.js';
 
 export const subscribe = async (req, res) => {
   try {
@@ -103,6 +104,16 @@ export const cancelSubscription = async (req, res) => {
 
     if (subscription.consumerId !== req.user.id) {
       return res.status(403).json({ error: 'Unauthorized to cancel this subscription' });
+    }
+
+    // Invalidate API key in Redis cache
+    if (subscription.apiKeyHash) {
+      const cacheKey = `auth:key:${subscription.apiKeyHash}`;
+      try {
+        await redis.del(cacheKey);
+      } catch (redisError) {
+        console.error('Failed to invalidate Redis API key cache:', redisError);
+      }
     }
 
     await prisma.subscription.delete({

@@ -161,4 +161,37 @@ test('ApexGateway E2E Functional Suite', async (t) => {
     const data = await res.json();
     assert.ok(data.current_weather || data.current);
   });
+
+  // 4. Subscription Cancellation and Key Invalidation
+  await t.test('Subscription Cancellation - Key invalidation in Gateway', async () => {
+    // Get subscriber's subscriptions to find the subscription ID
+    let res = await fetch(`${MARKETPLACE_URL}/subscriptions`, {
+      headers: {
+        'Authorization': `Bearer ${consumerToken}`
+      }
+    });
+    assert.strictEqual(res.status, 200);
+    const { subscriptions } = await res.json();
+    const subscription = subscriptions.find(sub => sub.planId === planId);
+    assert.ok(subscription);
+    const subscriptionId = subscription.id;
+
+    // Cancel the subscription
+    res = await fetch(`${MARKETPLACE_URL}/subscriptions/${subscriptionId}`, {
+      method: 'DELETE',
+      headers: {
+        'Authorization': `Bearer ${consumerToken}`
+      }
+    });
+    assert.strictEqual(res.status, 200);
+
+    // Verify key no longer works via Gateway proxy
+    const proxyUrl = `${GATEWAY_URL}/api/${apiName}/v1/forecast?latitude=52.52&longitude=13.41&current_weather=true`;
+    res = await fetch(proxyUrl, {
+      headers: {
+        'X-API-Key': apiKey
+      }
+    });
+    assert.notStrictEqual(res.status, 200);
+  });
 });

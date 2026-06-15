@@ -80,3 +80,18 @@ model HealthCheck {
 
   @@index([apiId, timestamp])
 }
+
+model ApiLog {
+  id             String   @id @default(uuid())
+  apiId          String?
+  apiName        String?
+  subscriptionId String?
+  path           String
+  method         String
+  statusCode     Int
+  latencyMs      Int
+  timestamp      DateTime @default(now())
+
+  @@map("api_logs")
+}
+

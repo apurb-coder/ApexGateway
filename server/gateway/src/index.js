@@ -6,6 +6,7 @@ import { createProxyMiddleware } from 'http-proxy-middleware';
 import authMiddleware from './middlewares/auth.js';
 import rateLimiterMiddleware from './middlewares/rateLimiter.js';
 import redis from './utils/redis.js';
+import prisma from './utils/prisma.js';
 import { errorHandler } from './middlewares/errorHandler.js';
 
 const app = express();
@@ -37,7 +38,25 @@ app.use('/api/:apiName', (req, res, next) => {
     // Only log if auth context was established
     if (req.gatewayContext) {
       const latencyMs = Date.now() - startTime;
+      
+      // Async database insert to avoid slowing down response
+      prisma.apiLog.create({
+        data: {
+          apiId: req.gatewayContext.apiId,
+          apiName: req.gatewayContext.apiName,
+          subscriptionId: req.gatewayContext.subscriptionId,
+          path: req.originalUrl,
+          method: req.method,
+          statusCode: res.statusCode,
+          latencyMs,
+          timestamp: new Date()
+        }
+      }).catch((err) => {
+        console.error('Failed to log API request to DB:', err);
+      });
+
       const analyticsLog = {
+        apiId: req.gatewayContext.apiId,
         apiName: req.gatewayContext.apiName,
         subscriptionId: req.gatewayContext.subscriptionId,
         statusCode: res.statusCode,
