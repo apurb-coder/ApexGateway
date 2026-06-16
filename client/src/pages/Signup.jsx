@@ -85,7 +85,7 @@ export default function Signup() {
             <img src="/icons.png" alt="ApexGateway Logo" className="w-8 h-8 object-contain group-hover:scale-105 transition-transform" />
             <span className="font-extrabold text-white text-sm tracking-wider font-display uppercase">APEX GATEWAY</span>
           </Link>
-          <h1 className="text-xl font-extrabold tracking-tight text-white mb-1 font-display uppercase">// Create Account</h1>
+          <h1 className="text-xl font-extrabold tracking-tight text-white mb-1 font-display uppercase">Create Account</h1>
           <p className="text-[10px] text-gray-400 text-center font-mono">Join the secure developer marketplace.</p>
         </div>
  

@@ -47,7 +47,7 @@ export default function ProviderAnalytics() {
     return (
       <div className="space-y-8 animate-fadeIn">
         <div className="border-b border-carbon-border pb-6">
-          <h1 className="text-2xl font-extrabold tracking-tight text-white font-display uppercase">// Metrics & Analytics</h1>
+          <h1 className="text-2xl font-extrabold tracking-tight text-white font-display uppercase">Metrics & Analytics</h1>
           <p className="text-gray-400 mt-1 text-xs font-mono">Real-time usage analytics and proxy routing performance statistics.</p>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -67,7 +67,7 @@ export default function ProviderAnalytics() {
     <div className="space-y-8 animate-fadeIn">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-carbon-border pb-6">
         <div>
-          <h1 className="text-2xl font-extrabold tracking-tight text-white font-display uppercase">// Metrics & Analytics</h1>
+          <h1 className="text-2xl font-extrabold tracking-tight text-white font-display uppercase">Metrics & Analytics</h1>
           <p className="text-gray-400 mt-1 text-xs font-mono">Real-time usage analytics and proxy routing performance statistics.</p>
         </div>
         <button

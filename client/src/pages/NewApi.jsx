@@ -59,7 +59,7 @@ export default function NewApi() {
           <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
           <span>Back to My APIs</span>
         </Link>
-        <h1 className="text-2xl font-extrabold tracking-tight text-white font-display uppercase">// Register Upstream API</h1>
+        <h1 className="text-2xl font-extrabold tracking-tight text-white font-display uppercase">Register Upstream API</h1>
         <p className="text-gray-400 mt-1 text-xs font-mono">Deploy and route traffic to your microservices via ApexGateway.</p>
       </div>
 
