@@ -85,7 +85,9 @@ export default function DashboardLayout() {
           </div>
           {menuItems.map((item) => {
             const Icon = item.icon;
-            const isActive = location.pathname.startsWith(item.path);
+            const isActive = item.path === '/dashboard/provider/apis'
+              ? location.pathname.startsWith('/dashboard/provider/apis') && !location.pathname.startsWith('/dashboard/provider/apis/new')
+              : location.pathname.startsWith(item.path);
             return (
               <Link
                 key={item.name}
