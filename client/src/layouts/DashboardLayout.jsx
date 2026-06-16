@@ -59,30 +59,35 @@ export default function DashboardLayout() {
           sidebarCollapsed ? 'w-20' : 'w-64'
         }`}
       >
+        {/* Floating Toggle Button */}
+        <button 
+          onClick={toggleSidebar}
+          className="absolute -right-3.5 top-5 z-30 bg-carbon-900 border border-carbon-border text-gray-400 hover:text-white transition-all p-1.5 rounded-full cursor-pointer hover:bg-carbon-800 shadow-[0_2px_8px_rgba(0,0,0,0.5)] flex items-center justify-center"
+        >
+          {sidebarCollapsed ? <Menu className="w-3.5 h-3.5" /> : <ChevronLeft className="w-3.5 h-3.5" />}
+        </button>
+
         {/* Brand */}
-        <div className="h-16 flex items-center px-6 border-b border-carbon-border gap-3 justify-between">
-          {!sidebarCollapsed && (
-            <Link to="/" className="flex items-center gap-2.5">
-              <img src="/icons.png" alt="ApexGateway Logo" className="w-8 h-8 object-contain" />
+        <div className={`h-16 flex items-center border-b border-carbon-border ${
+          sidebarCollapsed ? 'justify-center px-4' : 'px-6 gap-2.5'
+        }`}>
+          <Link to="/" className="flex items-center gap-2.5">
+            <img src="/icons.png" alt="ApexGateway Logo" className="w-8 h-8 object-contain" />
+            {!sidebarCollapsed && (
               <span className="font-extrabold text-white text-sm tracking-wider font-display uppercase">APEX GATEWAY</span>
-            </Link>
-          )}
-          {sidebarCollapsed && (
-            <img src="/icons.png" alt="ApexGateway Logo" className="w-8 h-8 mx-auto object-contain" />
-          )}
-          <button 
-            onClick={toggleSidebar}
-            className="text-gray-400 hover:text-white transition-colors p-1.5 hover:bg-carbon-800 rounded-lg cursor-pointer border border-transparent hover:border-carbon-border"
-          >
-            {sidebarCollapsed ? <Menu className="w-4 h-4" /> : <ChevronLeft className="w-4 h-4" />}
-          </button>
+            )}
+          </Link>
         </div>
  
         {/* Navigation */}
         <nav className="flex-1 px-4 py-6 space-y-1.5 overflow-y-auto">
-          <div className="px-2.5 py-1 text-[9px] font-mono font-bold text-gray-500 uppercase tracking-widest mb-2">
-            {!sidebarCollapsed ? (isProvider ? 'Provider Controls' : 'Developer Console') : '…'}
-          </div>
+          {!sidebarCollapsed ? (
+            <div className="px-2.5 py-1 text-[9px] font-mono font-bold text-gray-500 uppercase tracking-widest mb-2">
+              {isProvider ? 'Provider Controls' : 'Developer Console'}
+            </div>
+          ) : (
+            <div className="h-px bg-carbon-border/50 my-4 mx-2"></div>
+          )}
           {menuItems.map((item) => {
             const Icon = item.icon;
             const isActive = item.path === '/dashboard/provider/apis'
@@ -92,7 +97,9 @@ export default function DashboardLayout() {
               <Link
                 key={item.name}
                 to={item.path}
-                className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-xs font-mono tracking-wide transition-all group border ${
+                className={`flex items-center rounded-lg text-xs font-mono tracking-wide transition-all group border ${
+                  sidebarCollapsed ? 'justify-center p-2.5' : 'gap-3 px-3 py-2.5'
+                } ${
                   isActive 
                     ? 'bg-electric-cobalt/10 text-white border-electric-cobalt shadow-[0_0_12px_rgba(59,130,246,0.15)]' 
                     : 'text-gray-400 hover:text-white hover:bg-carbon-800 border-transparent hover:border-carbon-border/50'
@@ -106,7 +113,9 @@ export default function DashboardLayout() {
         </nav>
  
         {/* Footer Sidebar */}
-        <div className="p-4 border-t border-carbon-border space-y-1.5">
+        <div className={`border-t border-carbon-border space-y-1.5 ${
+          sidebarCollapsed ? 'p-3' : 'p-4'
+        }`}>
           {bottomItems.map((item) => {
             const Icon = item.icon;
             const isActive = location.pathname === item.path;
@@ -114,7 +123,9 @@ export default function DashboardLayout() {
               <Link
                 key={item.name}
                 to={item.path}
-                className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-xs font-mono tracking-wide transition-all group border ${
+                className={`flex items-center rounded-lg text-xs font-mono tracking-wide transition-all group border ${
+                  sidebarCollapsed ? 'justify-center p-2.5' : 'gap-3 px-3 py-2.5'
+                } ${
                   isActive 
                     ? 'bg-electric-cobalt/10 text-white border-electric-cobalt shadow-[0_0_12px_rgba(59,130,246,0.15)]' 
                     : 'text-gray-400 hover:text-white hover:bg-carbon-800 border-transparent hover:border-carbon-border/50'
@@ -127,7 +138,9 @@ export default function DashboardLayout() {
           })}
           <button
             onClick={handleLogout}
-            className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-xs font-mono tracking-wide text-rose-450 hover:bg-rose-500/10 border border-transparent hover:border-rose-500/20 transition-all cursor-pointer group"
+            className={`w-full flex items-center rounded-lg text-xs font-mono tracking-wide text-rose-450 hover:bg-rose-500/10 border border-transparent hover:border-rose-500/20 transition-all cursor-pointer group ${
+              sidebarCollapsed ? 'justify-center p-2.5' : 'gap-3 px-3 py-2.5'
+            }`}
           >
             <LogOut className="w-4 h-4 text-rose-500" />
             {!sidebarCollapsed && <span className="font-semibold">Sign Out</span>}
