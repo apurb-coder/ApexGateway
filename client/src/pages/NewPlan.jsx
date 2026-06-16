@@ -235,7 +235,7 @@ export default function NewPlan() {
               <div className="flex items-center justify-between p-6 border-b border-carbon-border">
                 <div>
                   <h3 className="text-base font-bold text-white font-display uppercase">
-                    // {editingPlan ? 'Edit Pricing Plan' : 'Create Pricing Plan'}
+                    {editingPlan ? 'Edit Pricing Plan' : 'Create Pricing Plan'}
                   </h3>
                   <p className="text-gray-400 text-[10px] mt-0.5 font-mono">
                     {editingPlan ? 'Modify plan settings and rate limit thresholds.' : 'Define a rate limit threshold and price for your plan.'}

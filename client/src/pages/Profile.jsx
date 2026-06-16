@@ -7,7 +7,7 @@ export default function Profile() {
   return (
     <div className="space-y-8 animate-fadeIn">
       <div className="border-b border-carbon-border pb-6">
-        <h1 className="text-2xl font-extrabold tracking-tight text-white font-display uppercase">// Profile Settings</h1>
+        <h1 className="text-2xl font-extrabold tracking-tight text-white font-display uppercase">Profile Settings</h1>
         <p className="text-gray-400 mt-1 text-xs font-mono">Manage your account details and developer preferences.</p>
       </div>
 
