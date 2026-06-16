@@ -45,9 +45,9 @@ export default function ProviderApis() {
         <div className="bg-carbon-900 border border-carbon-border rounded-lg p-6 h-64 animate-pulse"></div>
       ) : apis.length === 0 ? (
         <div className="bg-carbon-900 border border-carbon-border rounded-lg p-16 text-center max-w-xl mx-auto">
-          <Globe className="w-12 h-12 text-gray-600 mx-auto mb-4 animate-pulse" />
-          <h3 className="text-lg font-bold text-white font-display">No APIs Published</h3>
-          <p className="text-gray-400 text-xs mt-1 mb-6 font-mono">Get started by registering your first service endpoint.</p>
+          <Globe className="w-12 h-12 text-gray-650 mx-auto mb-4 animate-pulse" />
+          <h3 className="text-lg font-bold text-white font-display uppercase">// No APIs Published</h3>
+          <p className="text-gray-450 text-xs mt-1 mb-6 font-mono">Get started by registering your first service endpoint.</p>
           <Link
             to="/dashboard/provider/apis/new"
             className="inline-flex items-center gap-2 px-5 py-2.5 bg-electric-cobalt/10 border border-electric-cobalt/30 hover:border-electric-cobalt/50 text-white font-mono font-bold rounded-lg text-xs tracking-wider uppercase transition-all"
@@ -70,33 +70,33 @@ export default function ProviderApis() {
               </thead>
               <tbody className="divide-y divide-carbon-border text-xs font-mono">
                 {apis.map((api) => (
-                  <tr key={api.id} className="hover:bg-carbon-850/50 transition-colors group">
+                  <tr key={api.id} className="hover:bg-carbon-950/40 transition-colors group">
                     <td className="p-4 pl-6 font-bold text-white text-xs group-hover:text-electric-cobalt transition-colors uppercase tracking-wide">{api.name}</td>
-                    <td className="p-4 text-gray-400 text-[11px] max-w-xs truncate">{api.upstreamUrl}</td>
+                    <td className="p-4 text-gray-405 text-[11px] max-w-xs truncate">{api.upstreamUrl}</td>
                     <td className="p-4 text-electric-cobalt font-bold">{api.plans?.length || 0} configured</td>
                     <td className="p-4">
-                      <span className="inline-flex items-center px-2 py-0.5 rounded text-[9px] font-bold bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 uppercase tracking-wider">
+                      <span className="inline-flex items-center px-2 py-0.5 rounded text-[9px] font-bold bg-emerald-500/10 border border-emerald-500/20 text-emerald-450 uppercase tracking-wider">
                         Active
                       </span>
                     </td>
                     <td className="p-4 pr-6 text-right space-x-2">
                       <Link
                         to={`/dashboard/provider/apis/${api.id}/plans/new`}
-                        className="inline-flex items-center gap-1 px-2.5 py-1.5 bg-electric-cobalt/10 hover:bg-electric-cobalt/20 border border-electric-cobalt/25 text-white rounded text-[9px] font-bold transition-all uppercase tracking-wider"
+                        className="inline-flex items-center gap-1 px-2.5 py-1.5 bg-electric-cobalt/10 hover:bg-electric-cobalt/20 border border-electric-cobalt/25 text-white rounded text-[9.5px] font-bold transition-all uppercase tracking-wider"
                       >
                         <DollarSign className="w-3 h-3" />
                         <span>Plans</span>
                       </Link>
                       <Link
                         to={`/dashboard/provider/apis/${api.id}/health`}
-                        className="inline-flex items-center gap-1 px-2.5 py-1.5 bg-solar-amber/10 hover:bg-solar-amber/20 border border-solar-amber/25 text-solar-amber rounded text-[9px] font-bold transition-all uppercase tracking-wider"
+                        className="inline-flex items-center gap-1 px-2.5 py-1.5 bg-solar-amber/10 hover:bg-solar-amber/20 border border-solar-amber/25 text-solar-amber rounded text-[9.5px] font-bold transition-all uppercase tracking-wider"
                       >
                         <Activity className="w-3 h-3" />
                         <span>Health</span>
                       </Link>
                       <Link
                         to={`/dashboard/provider/apis/${api.id}/consumers`}
-                        className="inline-flex items-center gap-1 px-2.5 py-1.5 bg-carbon-800 hover:bg-carbon-700 border border-carbon-border text-gray-300 rounded text-[9px] font-bold transition-all uppercase tracking-wider"
+                        className="inline-flex items-center gap-1 px-2.5 py-1.5 bg-carbon-800 hover:bg-carbon-750 border border-carbon-border text-gray-300 rounded text-[9.5px] font-bold transition-all uppercase tracking-wider"
                       >
                         <Users className="w-3 h-3" />
                         <span>Consumers</span>

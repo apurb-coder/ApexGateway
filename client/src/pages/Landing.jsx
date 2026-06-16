@@ -114,7 +114,7 @@ export default function Landing() {
   };
 
   return (
-    <div className="min-h-screen bg-bg-dark text-gray-200 selection:bg-primary-500/30 selection:text-primary-300 overflow-x-hidden">
+    <div className="min-h-screen bg-bg-dark text-gray-200 selection:bg-electric-cobalt/30 selection:text-white overflow-x-hidden">
       {/* Navigation */}
       <nav className="fixed top-0 left-0 right-0 z-50 bg-carbon-900/80 backdrop-blur-md border-b border-carbon-border/80">
         <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">

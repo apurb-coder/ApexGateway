@@ -50,12 +50,12 @@
   html, body {
     margin: 0;
     padding: 0;
-    background-color: var(--color-bg-dark);
+    background-color: var(--color-carbon-950);
     color: oklch(0.92 0.01 250);
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
     scrollbar-width: thin;
-    scrollbar-color: var(--color-border-dark) transparent;
+    scrollbar-color: var(--color-carbon-border) transparent;
     scroll-behavior: smooth;
   }
   
