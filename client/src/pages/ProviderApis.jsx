@@ -27,40 +27,40 @@ export default function ProviderApis() {
 
   return (
     <div className="space-y-8 animate-fadeIn">
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-border-dark pb-6">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-carbon-border pb-6">
         <div>
-          <h1 className="text-3xl font-extrabold tracking-tight text-white font-display">My Published APIs</h1>
-          <p className="text-gray-400 mt-1 text-sm">Manage upstream endpoints, configure subscription plans, and monitor metrics.</p>
+          <h1 className="text-2xl font-extrabold tracking-tight text-white font-display uppercase">My Published APIs</h1>
+          <p className="text-gray-450 mt-1 text-xs font-mono">Manage upstream endpoints, configure subscription plans, and monitor metrics.</p>
         </div>
         <Link
           to="/dashboard/provider/apis/new"
-          className="bg-primary-500 hover:bg-primary-600 text-white font-bold py-2.5 px-4 rounded-xl text-xs transition-all flex items-center justify-center gap-2 cursor-pointer shadow-[0_4px_15px_rgba(139,92,246,0.25)] hover:shadow-[0_4px_20px_rgba(139,92,246,0.4)] shrink-0 font-display uppercase tracking-wider"
+          className="bg-electric-cobalt hover:bg-blue-600 text-white font-mono font-bold py-2.5 px-4 rounded-lg text-xs transition-all flex items-center justify-center gap-2 cursor-pointer shadow-[0_2px_10px_rgba(59,130,246,0.15)] shrink-0 uppercase tracking-wider"
         >
           <Plus className="w-4 h-4" />
           <span>Publish API</span>
         </Link>
       </div>
-
+ 
       {loading ? (
-        <div className="bg-card-dark/20 border border-border-dark rounded-2xl p-6 h-64 animate-pulse"></div>
+        <div className="bg-carbon-900 border border-carbon-border rounded-lg p-6 h-64 animate-pulse"></div>
       ) : apis.length === 0 ? (
-        <div className="bg-card-dark/20 border border-border-dark rounded-2xl p-16 text-center max-w-xl mx-auto">
+        <div className="bg-carbon-900 border border-carbon-border rounded-lg p-16 text-center max-w-xl mx-auto">
           <Globe className="w-12 h-12 text-gray-600 mx-auto mb-4 animate-pulse" />
           <h3 className="text-lg font-bold text-white font-display">No APIs Published</h3>
-          <p className="text-gray-400 text-sm mt-1 mb-6">Get started by registering your first service endpoint.</p>
+          <p className="text-gray-400 text-xs mt-1 mb-6 font-mono">Get started by registering your first service endpoint.</p>
           <Link
             to="/dashboard/provider/apis/new"
-            className="inline-flex items-center gap-2 px-5 py-2.5 bg-primary-500/10 border border-primary-500/30 hover:border-primary-500/50 text-primary-400 font-bold rounded-xl text-xs tracking-wider uppercase transition-all"
+            className="inline-flex items-center gap-2 px-5 py-2.5 bg-electric-cobalt/10 border border-electric-cobalt/30 hover:border-electric-cobalt/50 text-white font-mono font-bold rounded-lg text-xs tracking-wider uppercase transition-all"
           >
             <span>Register First API</span>
           </Link>
         </div>
       ) : (
-        <div className="bg-card-dark/40 border border-border-dark rounded-2xl overflow-hidden backdrop-blur-md">
+        <div className="bg-carbon-900 border border-carbon-border rounded-lg overflow-hidden backdrop-blur-md">
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse">
               <thead>
-                <tr className="border-b border-border-dark bg-bg-dark/20 text-[10px] font-bold text-gray-500 uppercase tracking-wider font-display">
+                <tr className="border-b border-carbon-border bg-carbon-950/40 text-[9px] font-mono font-bold text-gray-500 uppercase tracking-widest">
                   <th className="p-4 pl-6">API Name</th>
                   <th className="p-4">Upstream Endpoint</th>
                   <th className="p-4">Plans</th>
@@ -68,37 +68,37 @@ export default function ProviderApis() {
                   <th className="p-4 pr-6 text-right">Actions</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-border-dark text-xs font-sans">
+              <tbody className="divide-y divide-carbon-border text-xs font-mono">
                 {apis.map((api) => (
-                  <tr key={api.id} className="hover:bg-white/2 transition-colors group">
-                    <td className="p-4 pl-6 font-bold text-white font-display text-sm group-hover:text-primary-400 transition-colors">{api.name}</td>
-                    <td className="p-4 text-gray-400 font-mono text-xs max-w-xs truncate">{api.upstreamUrl}</td>
-                    <td className="p-4 text-primary-400 font-bold font-display">{api.plans?.length || 0} configured</td>
+                  <tr key={api.id} className="hover:bg-carbon-850/50 transition-colors group">
+                    <td className="p-4 pl-6 font-bold text-white text-xs group-hover:text-electric-cobalt transition-colors uppercase tracking-wide">{api.name}</td>
+                    <td className="p-4 text-gray-400 text-[11px] max-w-xs truncate">{api.upstreamUrl}</td>
+                    <td className="p-4 text-electric-cobalt font-bold">{api.plans?.length || 0} configured</td>
                     <td className="p-4">
-                      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 uppercase tracking-wider font-display">
+                      <span className="inline-flex items-center px-2 py-0.5 rounded text-[9px] font-bold bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 uppercase tracking-wider">
                         Active
                       </span>
                     </td>
                     <td className="p-4 pr-6 text-right space-x-2">
                       <Link
                         to={`/dashboard/provider/apis/${api.id}/plans/new`}
-                        className="inline-flex items-center gap-1.5 px-3 py-2 bg-primary-500/10 hover:bg-primary-500/20 border border-primary-500/20 text-primary-400 rounded-lg text-[10px] font-bold transition-all font-display uppercase tracking-wider"
+                        className="inline-flex items-center gap-1 px-2.5 py-1.5 bg-electric-cobalt/10 hover:bg-electric-cobalt/20 border border-electric-cobalt/25 text-white rounded text-[9px] font-bold transition-all uppercase tracking-wider"
                       >
-                        <DollarSign className="w-3.5 h-3.5" />
+                        <DollarSign className="w-3 h-3" />
                         <span>Plans</span>
                       </Link>
                       <Link
                         to={`/dashboard/provider/apis/${api.id}/health`}
-                        className="inline-flex items-center gap-1.5 px-3 py-2 bg-amber-500/10 hover:bg-amber-500/20 border border-amber-500/20 text-amber-400 rounded-lg text-[10px] font-bold transition-all font-display uppercase tracking-wider"
+                        className="inline-flex items-center gap-1 px-2.5 py-1.5 bg-solar-amber/10 hover:bg-solar-amber/20 border border-solar-amber/25 text-solar-amber rounded text-[9px] font-bold transition-all uppercase tracking-wider"
                       >
-                        <Activity className="w-3.5 h-3.5" />
+                        <Activity className="w-3 h-3" />
                         <span>Health</span>
                       </Link>
                       <Link
                         to={`/dashboard/provider/apis/${api.id}/consumers`}
-                        className="inline-flex items-center gap-1.5 px-3 py-2 bg-blue-500/10 hover:bg-blue-500/20 border border-blue-500/20 text-blue-400 rounded-lg text-[10px] font-bold transition-all font-display uppercase tracking-wider"
+                        className="inline-flex items-center gap-1 px-2.5 py-1.5 bg-carbon-800 hover:bg-carbon-700 border border-carbon-border text-gray-300 rounded text-[9px] font-bold transition-all uppercase tracking-wider"
                       >
-                        <Users className="w-3.5 h-3.5" />
+                        <Users className="w-3 h-3" />
                         <span>Consumers</span>
                       </Link>
                     </td>

@@ -45,26 +45,26 @@ export default function DashboardLayout() {
   ];
 
   return (
-    <div className="min-h-screen bg-bg-dark flex text-gray-200 relative overflow-hidden">
+    <div className="min-h-screen bg-carbon-950 flex text-gray-250 relative overflow-hidden">
       {/* Background grid overlay */}
-      <div className="absolute inset-0 bg-grid-pattern opacity-10 bg-grid-mask pointer-events-none z-0"></div>
+      <div className="absolute inset-0 bg-grid-pattern opacity-20 bg-grid-mask pointer-events-none z-0"></div>
       
       {/* Ambient background glows */}
-      <div className="absolute -top-40 -right-40 w-96 h-96 bg-primary-500/5 rounded-full blur-[120px] pointer-events-none pulse-glow z-0"></div>
-      <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-accent-500/5 rounded-full blur-[120px] pointer-events-none pulse-glow z-0" style={{ animationDelay: '-2s' }}></div>
-
+      <div className="absolute -top-40 -right-40 w-96 h-96 bg-electric-cobalt/5 rounded-full blur-[120px] pointer-events-none z-0"></div>
+      <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-solar-amber/5 rounded-full blur-[120px] pointer-events-none z-0"></div>
+ 
       {/* Sidebar */}
       <aside 
-        className={`bg-card-dark/40 border-r border-border-dark flex flex-col transition-all duration-300 backdrop-blur-md z-20 relative ${
+        className={`bg-carbon-900 border-r border-carbon-border flex flex-col transition-all duration-300 backdrop-blur-md z-20 relative ${
           sidebarCollapsed ? 'w-20' : 'w-64'
         }`}
       >
         {/* Brand */}
-        <div className="h-16 flex items-center px-6 border-b border-border-dark gap-3 justify-between">
+        <div className="h-16 flex items-center px-6 border-b border-carbon-border gap-3 justify-between">
           {!sidebarCollapsed && (
             <Link to="/" className="flex items-center gap-2.5">
               <img src="/icons.png" alt="ApexGateway Logo" className="w-8 h-8 object-contain" />
-              <span className="font-extrabold text-white text-base tracking-wider font-display">APEX GATEWAY</span>
+              <span className="font-extrabold text-white text-sm tracking-wider font-display uppercase">APEX GATEWAY</span>
             </Link>
           )}
           {sidebarCollapsed && (
@@ -72,15 +72,15 @@ export default function DashboardLayout() {
           )}
           <button 
             onClick={toggleSidebar}
-            className="text-gray-400 hover:text-white transition-colors p-1.5 hover:bg-white/5 rounded-lg cursor-pointer"
+            className="text-gray-400 hover:text-white transition-colors p-1.5 hover:bg-carbon-800 rounded-lg cursor-pointer border border-transparent hover:border-carbon-border"
           >
             {sidebarCollapsed ? <Menu className="w-4 h-4" /> : <ChevronLeft className="w-4 h-4" />}
           </button>
         </div>
-
+ 
         {/* Navigation */}
         <nav className="flex-1 px-4 py-6 space-y-1.5 overflow-y-auto">
-          <div className="px-2.5 py-1 text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-2 font-display">
+          <div className="px-2.5 py-1 text-[9px] font-mono font-bold text-gray-500 uppercase tracking-widest mb-2">
             {!sidebarCollapsed ? (isProvider ? 'Provider Controls' : 'Developer Console') : '…'}
           </div>
           {menuItems.map((item) => {
@@ -92,21 +92,21 @@ export default function DashboardLayout() {
               <Link
                 key={item.name}
                 to={item.path}
-                className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all group ${
+                className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-xs font-mono tracking-wide transition-all group border ${
                   isActive 
-                    ? 'bg-primary-500/10 text-primary-400 border border-primary-500/20' 
-                    : 'text-gray-400 hover:text-white hover:bg-white/5 border border-transparent'
+                    ? 'bg-electric-cobalt/10 text-white border-electric-cobalt shadow-[0_0_12px_rgba(59,130,246,0.15)]' 
+                    : 'text-gray-400 hover:text-white hover:bg-carbon-800 border-transparent hover:border-carbon-border/50'
                 }`}
               >
-                <Icon className={`w-4 h-4 transition-transform group-hover:scale-105 ${isActive ? 'text-primary-400' : 'text-gray-500 group-hover:text-gray-300'}`} />
-                {!sidebarCollapsed && <span className="font-sans text-xs">{item.name}</span>}
+                <Icon className={`w-4 h-4 transition-transform group-hover:scale-105 ${isActive ? 'text-electric-cobalt' : 'text-gray-500 group-hover:text-gray-300'}`} />
+                {!sidebarCollapsed && <span className="font-semibold">{item.name}</span>}
               </Link>
             );
           })}
         </nav>
-
+ 
         {/* Footer Sidebar */}
-        <div className="p-4 border-t border-border-dark space-y-1.5">
+        <div className="p-4 border-t border-carbon-border space-y-1.5">
           {bottomItems.map((item) => {
             const Icon = item.icon;
             const isActive = location.pathname === item.path;
@@ -114,50 +114,50 @@ export default function DashboardLayout() {
               <Link
                 key={item.name}
                 to={item.path}
-                className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all group ${
+                className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-xs font-mono tracking-wide transition-all group border ${
                   isActive 
-                    ? 'bg-primary-500/10 text-primary-400 border border-primary-500/20' 
-                    : 'text-gray-400 hover:text-white hover:bg-white/5 border border-transparent'
+                    ? 'bg-electric-cobalt/10 text-white border-electric-cobalt shadow-[0_0_12px_rgba(59,130,246,0.15)]' 
+                    : 'text-gray-400 hover:text-white hover:bg-carbon-800 border-transparent hover:border-carbon-border/50'
                 }`}
               >
-                <Icon className={`w-4 h-4 text-gray-500 group-hover:text-gray-300 ${isActive ? 'text-primary-400' : ''}`} />
-                {!sidebarCollapsed && <span className="font-sans text-xs">{item.name}</span>}
+                <Icon className={`w-4 h-4 text-gray-500 group-hover:text-gray-300 ${isActive ? 'text-electric-cobalt' : ''}`} />
+                {!sidebarCollapsed && <span className="font-semibold">{item.name}</span>}
               </Link>
             );
           })}
           <button
             onClick={handleLogout}
-            className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-rose-400 hover:bg-rose-500/10 transition-all cursor-pointer group"
+            className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-xs font-mono tracking-wide text-rose-450 hover:bg-rose-500/10 border border-transparent hover:border-rose-500/20 transition-all cursor-pointer group"
           >
             <LogOut className="w-4 h-4 text-rose-500" />
-            {!sidebarCollapsed && <span className="font-sans text-xs">Sign Out</span>}
+            {!sidebarCollapsed && <span className="font-semibold">Sign Out</span>}
           </button>
         </div>
       </aside>
-
+ 
       {/* Main Content Area */}
       <div className="flex-1 flex flex-col min-h-screen relative z-10">
         {/* Header */}
-        <header className="h-16 border-b border-border-dark bg-card-dark/20 backdrop-blur-md px-8 flex items-center justify-between">
-          <div className="flex items-center gap-2 text-xs font-mono text-gray-500">
+        <header className="h-16 border-b border-carbon-border bg-carbon-900/60 backdrop-blur-md px-8 flex items-center justify-between">
+          <div className="flex items-center gap-2 text-[10px] font-mono text-gray-500 uppercase tracking-widest font-bold">
             <LayoutDashboard className="w-3.5 h-3.5" />
             <span>/</span>
-            <span className="text-gray-300 capitalize font-medium">
+            <span className="text-gray-350 capitalize">
               {location.pathname.split('/').filter(Boolean).pop()?.replace(/-/g, ' ') || 'Dashboard'}
             </span>
           </div>
-
+ 
           <div className="flex items-center gap-4">
             <div className="text-right">
-              <div className="text-sm font-bold text-white font-sans">{user?.email}</div>
-              <div className="text-[10px] text-primary-400 font-bold uppercase tracking-wider font-mono">{user?.role}</div>
+              <div className="text-xs font-mono font-bold text-white">{user?.email}</div>
+              <div className="text-[9px] text-solar-amber font-mono font-bold uppercase tracking-widest">{user?.role}</div>
             </div>
-            <div className="w-10 h-10 rounded-xl bg-primary-500/10 border border-primary-500/20 flex items-center justify-center text-primary-400 shadow-[0_0_12px_rgba(139,92,246,0.15)]">
+            <div className="w-9 h-9 rounded-lg bg-carbon-800 border border-carbon-border flex items-center justify-center text-electric-cobalt shadow-[0_0_10px_rgba(59,130,246,0.1)]">
               <User className="w-4 h-4" />
             </div>
           </div>
         </header>
-
+ 
         {/* Content Body */}
         <main className="flex-1 p-8 overflow-y-auto max-w-7xl w-full mx-auto relative z-10">
           <Outlet />
