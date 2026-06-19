@@ -1,10 +1,12 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { createPortal } from 'react-dom';
 import apiClient from '../services/api';
 import { useUIStore } from '../store/useUIStore';
 import { Key, ShieldAlert, CheckCircle, Cpu, Trash2, RefreshCw, Copy, Check, AlertTriangle } from 'lucide-react';
 
 export default function ConsumerKeys() {
+  const navigate = useNavigate();
   const [subscriptions, setSubscriptions] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -106,12 +108,15 @@ export default function ConsumerKeys() {
                 className="bg-carbon-900 border border-carbon-border rounded-lg p-6 backdrop-blur-md flex flex-col md:flex-row md:items-center justify-between gap-6 hover:border-electric-cobalt/40 transition-all duration-300 relative overflow-hidden group"
               >
                 <div className="absolute inset-0 bg-radial-gradient from-electric-cobalt/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
-                <div className="flex items-start gap-4 relative z-10">
-                  <div className="w-11 h-11 bg-carbon-800 border border-carbon-border rounded-lg flex items-center justify-center text-electric-cobalt shrink-0 shadow-[0_0_15px_rgba(59,130,246,0.08)]">
+                <div 
+                  onClick={() => api?.id && navigate(`/apis/${api.id}`)}
+                  className={`flex items-start gap-4 relative z-10 ${api?.id ? 'cursor-pointer group/api' : ''}`}
+                >
+                  <div className="w-11 h-11 bg-carbon-800 border border-carbon-border rounded-lg flex items-center justify-center text-electric-cobalt shrink-0 shadow-[0_0_15px_rgba(59,130,246,0.08)] group-hover/api:border-electric-cobalt/40 group-hover/api:shadow-[0_0_15px_rgba(59,130,246,0.15)] transition-all">
                     <Cpu className="w-5 h-5" />
                   </div>
                   <div>
-                    <h3 className="text-sm font-bold text-white font-display tracking-wide uppercase">{api?.name || 'Unknown API'}</h3>
+                    <h3 className="text-sm font-bold text-white font-display tracking-wide uppercase group-hover/api:text-electric-cobalt transition-colors">{api?.name || 'Unknown API'}</h3>
                     <p className="text-xs text-gray-400 mt-1">Plan: <span className="text-solar-amber font-mono font-bold">{plan?.name}</span> (${plan?.price}/mo)</p>
                     <div className="flex flex-wrap items-center gap-4 mt-3 text-[10px] text-gray-500 font-mono">
                       <span>Rate Limit: {plan?.requestsPerMin} req/min</span>
