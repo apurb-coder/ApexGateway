@@ -189,7 +189,7 @@ export default function ProviderWithdraw() {
                 <span className="text-[9px] font-mono font-bold uppercase tracking-widest text-gray-450 block mb-1">Available Balance</span>
                 <div className="text-3xl font-black text-white font-display tracking-wide flex items-center gap-1.5">
                   <span className="text-emerald-450">{formatCurrency(balanceData.balance)}</span>
-                  <span className="text-xs text-gray-500 font-mono font-normal tracking-normal uppercase">// Ready to Transfer</span>
+                  <span className="text-xs text-gray-500 font-mono font-normal tracking-normal uppercase">Ready to Transfer</span>
                 </div>
               </div>
 

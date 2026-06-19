@@ -185,7 +185,7 @@ export default function ConsumerKeys() {
                 <Trash2 className="w-5 h-5" />
               </div>
               <div className="space-y-2">
-                <h3 className="text-base font-bold text-white font-display uppercase tracking-wide">// Cancel Subscription?</h3>
+                <h3 className="text-base font-bold text-white font-display uppercase tracking-wide">Cancel Subscription?</h3>
                 <p className="text-gray-405 text-xs font-mono leading-relaxed">
                   Are you sure you want to cancel your subscription to <span className="text-white font-semibold">{cancelTarget.apiName}</span>? 
                   Your API key for this plan will be immediately invalidated and you will lose access.
@@ -233,7 +233,7 @@ export default function ConsumerKeys() {
                 <RefreshCw className="w-5 h-5 animate-spin" style={{ animationDuration: '3s' }} />
               </div>
               <div className="space-y-2">
-                <h3 className="text-base font-bold text-white font-display uppercase tracking-wide">// Regenerate API Key?</h3>
+                <h3 className="text-base font-bold text-white font-display uppercase tracking-wide">Regenerate API Key?</h3>
                 <p className="text-gray-405 text-xs font-mono leading-relaxed">
                   Are you sure you want to regenerate your API key for <span className="text-white font-semibold">{regenerateTarget.apiName}</span>? 
                   Your current API key will be immediately invalidated and any clients using it will lose access.
@@ -275,7 +275,7 @@ export default function ConsumerKeys() {
           <div className="w-full max-w-lg bg-carbon-900 border border-carbon-border rounded-lg p-8 shadow-[0_0_50px_rgba(59,130,246,0.15)] relative z-10">
             <div className="flex items-center gap-3 text-solar-amber mb-4 pb-2 border-b border-carbon-border">
               <AlertTriangle className="w-7 h-7 shrink-0 text-solar-amber animate-pulse" />
-              <h2 className="text-base font-bold text-white font-display uppercase tracking-wide">// One-Time Secure Key Delivery</h2>
+              <h2 className="text-base font-bold text-white font-display uppercase tracking-wide">One-Time Secure Key Delivery</h2>
             </div>
             
             <p className="text-xs text-gray-400 mb-6 leading-relaxed font-mono">

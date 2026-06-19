@@ -149,7 +149,7 @@ export default function NewPlan() {
         <div className="bg-carbon-900 border border-carbon-border rounded-lg p-16 text-center max-w-xl mx-auto backdrop-blur-md relative overflow-hidden">
           <div className="absolute inset-0 bg-radial-gradient from-electric-cobalt/5 via-transparent to-transparent opacity-100 pointer-events-none" />
           <Sparkles className="w-12 h-12 text-electric-cobalt mx-auto mb-4 animate-pulse" />
-          <h3 className="text-lg font-bold text-white font-display uppercase">// No Pricing Plans Configured</h3>
+          <h3 className="text-lg font-bold text-white font-display uppercase">No Pricing Plans Configured</h3>
           <p className="text-gray-450 text-xs mt-1 mb-6 font-mono">
             Consumers must subscribe to a pricing plan to obtain keys and query your API. Add one now!
           </p>

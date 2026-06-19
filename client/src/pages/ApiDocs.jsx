@@ -101,7 +101,7 @@ export default function ApiDocs() {
   if (!api) {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center bg-carbon-950 text-center p-8">
-        <h3 className="text-lg font-bold text-white font-display uppercase">// API Not Found</h3>
+        <h3 className="text-lg font-bold text-white font-display uppercase">API Not Found</h3>
         <p className="text-gray-405 mt-2 text-xs font-mono">The API you are looking for does not exist or has been removed.</p>
         <button 
           onClick={() => window.close()} 
@@ -189,7 +189,7 @@ export default function ApiDocs() {
             <aside className="lg:col-span-1 sticky top-28 hidden lg:block bg-carbon-900 border border-carbon-border rounded-lg p-5">
               <div className="flex items-center gap-2 mb-4 pb-2 border-b border-carbon-border">
                 <FileText className="w-4 h-4 text-electric-cobalt" />
-                <h3 className="text-[10px] font-bold text-white uppercase tracking-wider font-mono">// On this page</h3>
+                <h3 className="text-[10px] font-bold text-white uppercase tracking-wider font-mono">On this page</h3>
               </div>
               
               <nav className="space-y-1.5 max-h-[60vh] overflow-y-auto scrollbar-thin">

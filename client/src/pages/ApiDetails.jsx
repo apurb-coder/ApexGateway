@@ -280,7 +280,7 @@ export default function ApiDetails() {
       <div className="bg-carbon-900 border border-carbon-border rounded-lg p-6 backdrop-blur-md space-y-4 relative overflow-hidden">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-carbon-border pb-4">
           <div>
-            <h3 className="text-xs font-bold text-white font-mono uppercase tracking-wider">// Client Code Snippets</h3>
+            <h3 className="text-xs font-bold text-white font-mono uppercase tracking-wider">Client Code Snippets</h3>
             <p className="text-[10px] text-gray-500 mt-1 font-mono">Generate dynamic integration code in multiple languages.</p>
           </div>
           <div className="flex flex-wrap gap-1 bg-carbon-950 p-1 rounded-lg border border-carbon-border">
@@ -425,7 +425,7 @@ export default function ApiDetails() {
             </div>
 
             <div className="bg-carbon-950 border border-carbon-border rounded-lg p-4 overflow-x-auto max-h-80 scrollbar-thin relative font-mono text-xs">
-              <div className="text-[9px] text-gray-500 font-bold uppercase tracking-wider mb-2 font-mono">// Gateway Response Body</div>
+              <div className="text-[9px] text-gray-500 font-bold uppercase tracking-wider mb-2 font-mono">Gateway Response Body</div>
               <pre className="text-emerald-450 select-all leading-relaxed whitespace-pre-wrap">{JSON.stringify(testResponse.data, null, 2)}</pre>
             </div>
           </div>
@@ -446,7 +446,7 @@ export default function ApiDetails() {
   if (!api) {
     return (
       <div className="text-center py-12 bg-carbon-950 text-white font-mono">
-        <h3 className="text-lg font-bold text-white uppercase tracking-wider font-display">// API Not Found</h3>
+        <h3 className="text-lg font-bold text-white uppercase tracking-wider font-display">API Not Found</h3>
         <p className="text-gray-450 mt-2 text-xs">The API you are looking for does not exist or has been removed.</p>
         <Link to="/marketplace" className="inline-block mt-4 text-electric-cobalt hover:underline text-xs font-bold uppercase tracking-wider transition-colors focus-visible:ring-1 focus-visible:ring-electric-cobalt rounded px-1">Back to Marketplace</Link>
       </div>
@@ -524,7 +524,7 @@ export default function ApiDetails() {
         <div className="lg:col-span-1 space-y-6">
           <div className="flex items-center gap-2 pb-2 border-b border-carbon-border">
             <CreditCard className="w-5 h-5 text-electric-cobalt" />
-            <h2 className="text-sm font-mono font-bold text-white uppercase tracking-wider">// Pricing Tiers</h2>
+            <h2 className="text-sm font-mono font-bold text-white uppercase tracking-wider">Pricing Tiers</h2>
           </div>
           {renderPlans()}
         </div>
@@ -533,7 +533,7 @@ export default function ApiDetails() {
         <div className="lg:col-span-2 space-y-6">
           <div className="flex items-center gap-2 pb-2 border-b border-carbon-border">
             <Terminal className="w-5 h-5 text-electric-cobalt" />
-            <h2 className="text-sm font-mono font-bold text-white uppercase tracking-wider">// Gateway Playground</h2>
+            <h2 className="text-sm font-mono font-bold text-white uppercase tracking-wider">Gateway Playground</h2>
           </div>
           {renderPlayground()}
           {renderCodeSnippetGenerator()}
@@ -546,7 +546,7 @@ export default function ApiDetails() {
         <div className="w-full max-w-lg bg-carbon-900 border border-carbon-border rounded-lg p-8 shadow-[0_0_50px_rgba(59,130,246,0.15)] relative z-10">
           <div className="flex items-center gap-3 text-solar-amber mb-4 pb-2 border-b border-carbon-border">
             <AlertTriangle className="w-7 h-7 shrink-0 text-solar-amber animate-pulse" />
-            <h2 className="text-base font-bold text-white font-display uppercase tracking-wide">// One-Time Secure Key Delivery</h2>
+            <h2 className="text-base font-bold text-white font-display uppercase tracking-wide">One-Time Secure Key Delivery</h2>
           </div>
           
           <p className="text-xs text-gray-400 mb-6 leading-relaxed font-mono">
@@ -570,10 +570,8 @@ export default function ApiDetails() {
               setTestApiKey(apiKeyModal.apiKey);
               setApiKeyModal(null);
               if (url) {
-                addToast('Redirecting to secure Stripe Checkout...', 'info');
-                setTimeout(() => {
-                  window.location.href = url;
-                }, 800);
+                addToast('Opening secure Stripe Checkout in a new tab...', 'info');
+                window.open(url, '_blank', 'noopener,noreferrer');
               } else {
                 addToast('Modal dismissed. Key has been auto-filled in the tester console.', 'info');
               }

@@ -86,7 +86,7 @@ export default function ApiHealth() {
           <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
           <span>Back to My APIs</span>
         </Link>
-        <h1 className="text-2xl font-extrabold tracking-tight text-white font-display uppercase">// Service Health</h1>
+        <h1 className="text-2xl font-extrabold tracking-tight text-white font-display uppercase">Service Health</h1>
         <p className="text-gray-400 mt-1 text-xs font-mono">Real-time status, latency metrics, and availability logs for <span className="text-solar-amber font-bold">{api?.name}</span>.</p>
       </div>
 
@@ -137,7 +137,7 @@ export default function ApiHealth() {
       </div>
 
       <div className="bg-carbon-900 border border-carbon-border rounded-lg p-6 backdrop-blur-md">
-        <h3 className="text-sm font-mono font-bold text-white mb-6 uppercase tracking-wider">// Latency Profile (24h)</h3>
+        <h3 className="text-sm font-mono font-bold text-white mb-6 uppercase tracking-wider">Latency Profile (24h)</h3>
         <div className="h-80 w-full text-[10px] font-mono">
           <ResponsiveContainer width="100%" height="100%">
             <AreaChart data={health?.latencyHistory || []}>

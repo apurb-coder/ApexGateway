@@ -84,7 +84,7 @@ export default function ProviderAnalytics() {
         <div className="bg-solar-amber/10 border border-solar-amber/20 rounded-lg p-6 text-solar-amber flex items-start gap-4">
           <AlertTriangle className="w-6 h-6 shrink-0 mt-0.5" />
           <div>
-            <h4 className="font-bold text-white font-mono uppercase text-xs">// No API requests recorded yet</h4>
+            <h4 className="font-bold text-white font-mono uppercase text-xs">No API requests recorded yet</h4>
             <p className="text-xs text-gray-450 mt-1 font-mono leading-relaxed">
               To populate these charts, invoke your APIs through the Gateway proxy. Send requests to your API route:
             </p>

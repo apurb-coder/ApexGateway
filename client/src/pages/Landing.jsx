@@ -236,7 +236,6 @@ export default function Landing() {
                   <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
                 </span>
                 <span className="text-electric-cobalt">PROX_ENG: ONLINE</span>
-                <span className="text-carbon-700">//</span>
                 <span>REF_PX-8000</span>
               </div>
 
@@ -274,19 +273,19 @@ export default function Landing() {
               {/* Fine Print / Features List */}
               <div className="mt-12 pt-8 border-t border-carbon-border/40 w-full grid grid-cols-2 gap-4">
                 <div>
-                  <div className="text-[10px] font-mono text-gray-500 uppercase tracking-widest font-bold">// ROUTING</div>
+                  <div className="text-[10px] font-mono text-gray-500 uppercase tracking-widest font-bold">ROUTING</div>
                   <div className="text-white font-mono font-semibold text-xs mt-1">&lt; 12ms Proxy Latency</div>
                 </div>
                 <div>
-                  <div className="text-[10px] font-mono text-gray-500 uppercase tracking-widest font-bold">// SECURE</div>
+                  <div className="text-[10px] font-mono text-gray-500 uppercase tracking-widest font-bold">SECURE</div>
                   <div className="text-white font-mono font-semibold text-xs mt-1">SHA-256 One-Time Keys</div>
                 </div>
                 <div className="mt-2">
-                  <div className="text-[10px] font-mono text-gray-500 uppercase tracking-widest font-bold">// CACHING</div>
+                  <div className="text-[10px] font-mono text-gray-500 uppercase tracking-widest font-bold">CACHING</div>
                   <div className="text-white font-mono font-semibold text-xs mt-1">In-Memory Redis Buckets</div>
                 </div>
                 <div className="mt-2">
-                  <div className="text-[10px] font-mono text-gray-500 uppercase tracking-widest font-bold">// MONETIZE</div>
+                  <div className="text-[10px] font-mono text-gray-500 uppercase tracking-widest font-bold">MONETIZE</div>
                   <div className="text-white font-mono font-semibold text-xs mt-1">Custom Tier Formulator</div>
                 </div>
               </div>
@@ -304,7 +303,7 @@ export default function Landing() {
                       <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-solar-amber opacity-75"></span>
                       <span className="relative inline-flex rounded-full h-2 w-2 bg-solar-amber"></span>
                     </span>
-                    <span className="text-gray-300">APEX ROUTER CONSOLE // NODE_01</span>
+                    <span className="text-gray-300">APEX ROUTER CONSOLE - NODE_01</span>
                   </div>
                   <div className="flex items-center gap-4">
                     <span>HOST: 4000</span>
@@ -406,7 +405,7 @@ export default function Landing() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                   {/* Endpoint Select Card */}
                   <div className="bg-carbon-950/40 p-4 border border-carbon-border/50 rounded-lg">
-                    <label className="block text-[9px] font-mono font-bold uppercase tracking-widest text-gray-500 mb-2">// Select Route Target</label>
+                    <label className="block text-[9px] font-mono font-bold uppercase tracking-widest text-gray-500 mb-2">Select Route Target</label>
                     <div className="flex flex-col gap-2">
                       {['GET /weather', 'POST /checkout', 'GET /users'].map((ep) => (
                         <button
@@ -427,7 +426,7 @@ export default function Landing() {
                   {/* API Key Header Input */}
                   <div className="bg-carbon-950/40 p-4 border border-carbon-border/50 rounded-lg flex flex-col justify-between">
                     <div>
-                      <label className="block text-[9px] font-mono font-bold uppercase tracking-widest text-gray-500 mb-2">// Inject Credentials</label>
+                      <label className="block text-[9px] font-mono font-bold uppercase tracking-widest text-gray-500 mb-2">Inject Credentials</label>
                       <div className="bg-carbon-950 border border-carbon-border rounded p-2.5 space-y-2">
                         <div className="flex items-center justify-between text-[10px] font-mono">
                           <span className="text-gray-500">Header:</span>
@@ -472,7 +471,7 @@ export default function Landing() {
                   <div className="bg-carbon-900 border-b border-carbon-border/50 px-4 py-2 flex items-center justify-between text-[9px] font-mono text-gray-400">
                     <span className="font-bold flex items-center gap-1.5">
                       <Terminal className="w-3.5 h-3.5 text-solar-amber" />
-                      LOG FEED // STDOUT
+                      LOG FEED - STDOUT
                     </span>
                     <span className="text-[8px] text-carbon-700">PORT_4000</span>
                   </div>
@@ -526,7 +525,7 @@ export default function Landing() {
       <section className="py-20 border-y border-carbon-border bg-carbon-950/30 relative">
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center max-w-2xl mx-auto mb-16">
-            <span className="text-[10px] font-mono font-bold tracking-widest text-electric-cobalt uppercase">// PIPELINE STAGES</span>
+            <span className="text-[10px] font-mono font-bold tracking-widest text-electric-cobalt uppercase">PIPELINE STAGES</span>
             <h2 className="font-display text-2xl md:text-3xl font-extrabold text-white uppercase tracking-tight mt-2">
               The Proxy Architecture Lifecycle
             </h2>
@@ -578,7 +577,7 @@ export default function Landing() {
       {/* Feature Section */}
       <section id="features" className="py-24 px-6 max-w-7xl mx-auto border-t border-carbon-border">
         <div className="text-center max-w-2xl mx-auto mb-20">
-          <span className="text-[10px] font-mono font-bold tracking-widest text-solar-amber uppercase">// SERVICE FEATURES</span>
+          <span className="text-[10px] font-mono font-bold tracking-widest text-solar-amber uppercase">SERVICE FEATURES</span>
           <h2 className="font-display text-2xl md:text-3xl font-extrabold tracking-tight text-white uppercase mt-2">
             Complete API Lifecycle Management
           </h2>
@@ -659,7 +658,7 @@ export default function Landing() {
       {/* FAQ Accordion Section */}
       <section id="faq" className="py-24 px-6 max-w-4xl mx-auto border-t border-carbon-border">
         <div className="text-center mb-16">
-          <span className="text-[10px] font-mono font-bold tracking-widest text-solar-amber uppercase">// FREQUENTLY ASKED QUESTIONS</span>
+          <span className="text-[10px] font-mono font-bold tracking-widest text-solar-amber uppercase">FREQUENTLY ASKED QUESTIONS</span>
           <h2 className="font-display text-2xl md:text-3xl font-extrabold tracking-tight text-white uppercase mt-2">
             Technical FAQs
           </h2>
@@ -713,7 +712,7 @@ export default function Landing() {
         <div className="absolute inset-0 bg-grid-pattern bg-grid-mask opacity-20 pointer-events-none"></div>
         <div className="absolute inset-0 bg-electric-cobalt/5 blur-[120px] pointer-events-none"></div>
         <div className="max-w-3xl mx-auto relative z-10">
-          <span className="text-[10px] font-mono font-bold tracking-widest text-electric-cobalt uppercase">// GET STARTED NOW</span>
+          <span className="text-[10px] font-mono font-bold tracking-widest text-electric-cobalt uppercase">GET STARTED NOW</span>
           <h2 className="font-display text-2xl md:text-3xl font-extrabold text-white leading-tight uppercase mt-2">
             Start Securing & Monetizing Your APIs Today
           </h2>

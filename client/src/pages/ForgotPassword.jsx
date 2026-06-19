@@ -50,7 +50,7 @@ export default function ForgotPassword() {
             <img src="/icons.png" alt="ApexGateway Logo" className="w-8 h-8 object-contain group-hover:scale-105 transition-transform" />
             <span className="font-extrabold text-white text-sm tracking-wider font-display uppercase">APEX GATEWAY</span>
           </Link>
-          <h1 className="text-xl font-extrabold tracking-tight text-white mb-2 font-display uppercase">// Reset Password</h1>
+          <h1 className="text-xl font-extrabold tracking-tight text-white mb-2 font-display uppercase">Reset Password</h1>
           <p className="text-[10px] text-gray-400 text-center font-mono">
             {submitted 
               ? "We've sent a link to recover access to your account." 

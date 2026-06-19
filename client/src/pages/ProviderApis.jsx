@@ -46,7 +46,7 @@ export default function ProviderApis() {
       ) : apis.length === 0 ? (
         <div className="bg-carbon-900 border border-carbon-border rounded-lg p-16 text-center max-w-xl mx-auto">
           <Globe className="w-12 h-12 text-gray-650 mx-auto mb-4 animate-pulse" />
-          <h3 className="text-lg font-bold text-white font-display uppercase">// No APIs Published</h3>
+          <h3 className="text-lg font-bold text-white font-display uppercase">No APIs Published</h3>
           <p className="text-gray-450 text-xs mt-1 mb-6 font-mono">Get started by registering your first service endpoint.</p>
           <Link
             to="/dashboard/provider/apis/new"
