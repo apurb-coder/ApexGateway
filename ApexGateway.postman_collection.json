@@ -32,6 +32,16 @@
             {
               "name": "Register",
               "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
                 "method": "POST",
                 "header": [
                   {
@@ -42,7 +52,7 @@
                 ],
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"email\": \"provider@example.com\",\n  \"password\": \"password123\",\n  \"role\": \"PROVIDER\"\n}",
+                  "raw": "{\n  \"role\": \"PROVIDER\"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -63,21 +73,35 @@
               "response": []
             },
             {
-              "name": "Login",
-              "event": [
-                {
-                  "listen": "test",
-                  "script": {
-                    "exec": [
-                      "const response = pm.response.json();",
-                      "if (response.token) {",
-                      "    pm.collectionVariables.set(\"token\", response.token);",
-                      "}"
-                    ],
-                    "type": "text/javascript"
-                  }
+              "name": "Get Me",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{marketplace_url}}/auth/me",
+                  "host": [
+                    "{{marketplace_url}}"
+                  ],
+                  "path": [
+                    "auth",
+                    "me"
+                  ]
                 }
-              ],
+              },
+              "response": []
+            },
+            {
+              "name": "Login (Deprecated)",
               "request": {
                 "method": "POST",
                 "header": [
@@ -137,7 +161,7 @@
                 ],
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"name\": \"weather-service\",\n  \"description\": \"Provides live weather updates\",\n  \"upstreamUrl\": \"https://api.open-meteo.com\"\n}",
+                  "raw": "{\n  \"name\": \"weather-service\",\n  \"description\": \"Provides live weather updates\",\n  \"upstreamUrl\": \"https://api.open-meteo.com\",\n  \"allowedMethods\": [\"GET\", \"POST\"],\n  \"exampleDocs\": \"https://open-meteo.com/en/docs\"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -159,6 +183,16 @@
             {
               "name": "List APIs",
               "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
                 "method": "GET",
                 "header": [],
                 "url": {
@@ -176,6 +210,16 @@
             {
               "name": "Get API By ID",
               "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
                 "method": "GET",
                 "header": [],
                 "url": {
@@ -186,6 +230,71 @@
                   "path": [
                     "apis",
                     ":id"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "api-id-here",
+                      "description": "The unique ID of the API"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get API Analytics Summary",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{marketplace_url}}/apis/analytics/summary",
+                  "host": [
+                    "{{marketplace_url}}"
+                  ],
+                  "path": [
+                    "apis",
+                    "analytics",
+                    "summary"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get API Health",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{marketplace_url}}/apis/:id/health",
+                  "host": [
+                    "{{marketplace_url}}"
+                  ],
+                  "path": [
+                    "apis",
+                    ":id",
+                    "health"
                   ],
                   "variable": [
                     {
@@ -243,6 +352,63 @@
                       "key": "apiId",
                       "value": "api-id-here",
                       "description": "The unique ID of the API to add a plan to"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Update Plan",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"Basic Pro\",\n  \"requestsPerMin\": 120,\n  \"price\": 19.99\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{marketplace_url}}/apis/:apiId/plans/:planId",
+                  "host": [
+                    "{{marketplace_url}}"
+                  ],
+                  "path": [
+                    "apis",
+                    ":apiId",
+                    "plans",
+                    ":planId"
+                  ],
+                  "variable": [
+                    {
+                      "key": "apiId",
+                      "value": "api-id-here",
+                      "description": "The unique ID of the API"
+                    },
+                    {
+                      "key": "planId",
+                      "value": "plan-id-here",
+                      "description": "The unique ID of the Plan"
                     }
                   ]
                 }
@@ -336,6 +502,191 @@
                 }
               },
               "response": []
+            },
+            {
+              "name": "Regenerate API Key",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [],
+                "url": {
+                  "raw": "{{marketplace_url}}/subscriptions/:id/regenerate",
+                  "host": [
+                    "{{marketplace_url}}"
+                  ],
+                  "path": [
+                    "subscriptions",
+                    ":id",
+                    "regenerate"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "subscription-id-here",
+                      "description": "The unique ID of the subscription"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Cancel Subscription",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{marketplace_url}}/subscriptions/:id",
+                  "host": [
+                    "{{marketplace_url}}"
+                  ],
+                  "path": [
+                    "subscriptions",
+                    ":id"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "subscription-id-here",
+                      "description": "The unique ID of the subscription"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Payments",
+          "item": [
+            {
+              "name": "Get Earnings",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{marketplace_url}}/payments/earnings",
+                  "host": [
+                    "{{marketplace_url}}"
+                  ],
+                  "path": [
+                    "payments",
+                    "earnings"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Request Withdrawal",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"amount\": 50.00,\n  \"payoutMethod\": \"paypal\",\n  \"payoutDetails\": {\n    \"email\": \"provider-paypal@example.com\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{marketplace_url}}/payments/withdraw",
+                  "host": [
+                    "{{marketplace_url}}"
+                  ],
+                  "path": [
+                    "payments",
+                    "withdraw"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Stripe Webhook",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "stripe-signature",
+                    "value": "t=...,v1=...",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"id\": \"evt_test\",\n  \"type\": \"checkout.session.completed\",\n  \"data\": {\n    \"object\": {\n      \"id\": \"cs_test_session_id\",\n      \"payment_intent\": \"pi_test_intent_id\",\n      \"payment_status\": \"paid\"\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{marketplace_url}}/payments/webhook",
+                  "host": [
+                    "{{marketplace_url}}"
+                  ],
+                  "path": [
+                    "payments",
+                    "webhook"
+                  ]
+                }
+              },
+              "response": []
             }
           ]
         }
@@ -390,7 +741,7 @@
                 },
                 {
                   "key": "longitude",
-                  "value": "13.41"
+                  "value": "52.52"
                 },
                 {
                   "key": "current_weather",
