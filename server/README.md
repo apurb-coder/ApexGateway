@@ -6,7 +6,7 @@ Welcome to the backend architecture documentation for **ApexGateway**. The syste
 
 ## 🏗️ Services Overview
 
-![Services Overview](./Services Overview.png)
+![Services Overview](./assets/Services Overview.png)
 
 ### 1. Marketplace API (Port 3000)
 Handles administrative, payment, and metadata operations:
