@@ -20,14 +20,18 @@ enum ApiStatus {
 }
 
 model User {
-  id           String         @id @default(uuid())
-  email        String         @unique
+  id           String              @id @default(uuid())
+  email        String              @unique
   passwordHash String
-  role         Role           @default(CONSUMER)
-  createdAt    DateTime       @default(now())
-  updatedAt    DateTime       @updatedAt
+  role         Role                @default(CONSUMER)
+  createdAt    DateTime            @default(now())
+  updatedAt    DateTime            @updatedAt
   apis         Api[]
   subscriptions Subscription[]
+  
+  // New relations for tracking finances
+  earnings     Transaction[]       @relation("ProviderEarnings")
+  withdrawals  WithdrawalRequest[] @relation("ProviderWithdrawals")
 }
 
 model Api {
@@ -59,15 +63,25 @@ model Plan {
 }
 
 model Subscription {
-  id          String   @id @default(uuid())
+  id          String        @id @default(uuid())
   consumerId  String
-  consumer    User     @relation(fields: [consumerId], references: [id], onDelete: Cascade)
+  consumer    User          @relation(fields: [consumerId], references: [id], onDelete: Cascade)
   planId      String
-  plan        Plan     @relation(fields: [planId], references: [id], onDelete: Cascade)
-  apiKeyHash  String   @unique
-  isActive    Boolean  @default(true)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  plan        Plan          @relation(fields: [planId], references: [id], onDelete: Cascade)
+  apiKeyHash  String        @unique
+  
+  // Change default to false: subscriptions are inactive until paid
+  isActive    Boolean       @default(false)
+  
+  // Stripe Checkout Session correlation
+  stripeSessionId   String?   @unique
+  stripeCheckoutUrl String?
+  
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  // Relations
+  transactions Transaction[]
 }
 
 model HealthCheck {
@@ -95,3 +109,34 @@ model ApiLog {
   @@map("api_logs")
 }
 
+model Transaction {
+  id              String       @id @default(uuid())
+  subscriptionId  String
+  subscription    Subscription @relation(fields: [subscriptionId], references: [id], onDelete: Cascade)
+  providerId      String
+  provider        User         @relation("ProviderEarnings", fields: [providerId], references: [id], onDelete: Cascade)
+  amount          Decimal      @db.Decimal(10, 2) // Price paid
+  currency        String       @default("USD")
+  stripePaymentId String?      @unique            // PaymentIntent ID
+  createdAt       DateTime     @default(now())
+}
+
+enum WithdrawalStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  COMPLETED
+}
+
+model WithdrawalRequest {
+  id             String           @id @default(uuid())
+  providerId     String
+  provider       User             @relation("ProviderWithdrawals", fields: [providerId], references: [id], onDelete: Cascade)
+  amount         Decimal          @db.Decimal(10, 2)
+  status         WithdrawalStatus @default(PENDING)
+  payoutMethod   String           // "BANK_TRANSFER", "PAYPAL", "STRIPE_DIRECT"
+  payoutDetails  Json             // { bankName, accountNumber, routingNumber } or { paypalEmail }
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+  processedAt    DateTime?
+}

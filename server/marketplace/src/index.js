@@ -24,6 +24,11 @@ app.use((req, res, next) => {
   }
   next();
 });
+
+// Stripe Webhook needs raw body, mount BEFORE express.json()
+import { stripeWebhook } from './controllers/paymentController.js';
+app.post('/payments/webhook', express.raw({ type: 'application/json' }), stripeWebhook);
+
 app.use(express.json({ limit: '2mb' }));
 
 // Health Check
@@ -31,10 +36,13 @@ app.get('/health', (_req, res) => {
   res.json({ status: 'ok', service: 'marketplace-api' });
 });
 
+import paymentRoutes from './routes/paymentRoutes.js';
+
 // Mount routes
 app.use('/auth', authRoutes);
 app.use('/apis', apiRoutes);
 app.use('/subscriptions', subscriptionRoutes);
+app.use('/payments', paymentRoutes);
 
 // Error Handler
 app.use(errorHandler);

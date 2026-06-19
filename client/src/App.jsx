@@ -22,6 +22,8 @@ import ApiHealth from './pages/ApiHealth';
 import ApiConsumers from './pages/ApiConsumers';
 import Profile from './pages/Profile';
 import Landing from './pages/Landing';
+import ProviderEarnings from './pages/ProviderEarnings';
+import ProviderWithdraw from './pages/ProviderWithdraw';
 
 function DashboardRedirect() {
   const { user } = useAuthStore();
@@ -131,6 +133,22 @@ export default function App() {
             element={
               <ProtectedRoute allowedRoles={['PROVIDER']}>
                 <ProviderAnalytics />
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="dashboard/provider/earnings" 
+            element={
+              <ProtectedRoute allowedRoles={['PROVIDER']}>
+                <ProviderEarnings />
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="dashboard/provider/withdraw" 
+            element={
+              <ProtectedRoute allowedRoles={['PROVIDER']}>
+                <ProviderWithdraw />
               </ProtectedRoute>
             } 
           />

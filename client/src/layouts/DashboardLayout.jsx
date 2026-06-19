@@ -12,7 +12,9 @@ import {
   Menu, 
   ChevronLeft, 
   User, 
-  LayoutDashboard 
+  LayoutDashboard,
+  DollarSign,
+  Landmark
 } from 'lucide-react';
 
 export default function DashboardLayout() {
@@ -34,6 +36,8 @@ export default function DashboardLayout() {
         { name: 'Published APIs', path: '/dashboard/provider/apis', icon: Globe },
         { name: 'Register New API', path: '/dashboard/provider/apis/new', icon: PlusCircle },
         { name: 'Metrics & Analytics', path: '/dashboard/provider/analytics', icon: BarChart3 },
+        { name: 'Financial Earnings', path: '/dashboard/provider/earnings', icon: DollarSign },
+        { name: 'Withdraw Payouts', path: '/dashboard/provider/withdraw', icon: Landmark }
       ]
     : [
         { name: 'API Marketplace', path: '/marketplace', icon: Search },

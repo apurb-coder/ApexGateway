@@ -136,7 +136,8 @@ export default function ApiDetails() {
       const res = await apiClient.post('/subscriptions', { planId });
       setApiKeyModal({
         apiKey: res.data.apiKey,
-        subscriptionId: res.data.subscriptionId
+        subscriptionId: res.data.subscriptionId,
+        stripeCheckoutUrl: res.data.stripeCheckoutUrl
       });
       addToast('Subscribed successfully!', 'success');
     } catch {
@@ -565,13 +566,21 @@ export default function ApiDetails() {
 
           <button
             onClick={() => {
+              const url = apiKeyModal.stripeCheckoutUrl;
               setTestApiKey(apiKeyModal.apiKey);
               setApiKeyModal(null);
-              addToast('Modal dismissed. Key has been auto-filled in the tester console.', 'info');
+              if (url) {
+                addToast('Redirecting to secure Stripe Checkout...', 'info');
+                setTimeout(() => {
+                  window.location.href = url;
+                }, 800);
+              } else {
+                addToast('Modal dismissed. Key has been auto-filled in the tester console.', 'info');
+              }
             }}
             className="w-full bg-electric-cobalt hover:bg-blue-600 border border-electric-cobalt hover:border-blue-500 text-white font-mono font-bold py-3 px-4 rounded-lg text-xs transition-all cursor-pointer shadow-[0_2px_10px_rgba(59,130,246,0.15)] text-center focus-visible:ring-2 focus-visible:ring-electric-cobalt outline-none uppercase tracking-wider"
           >
-            I have saved it, close modal
+            {apiKeyModal.stripeCheckoutUrl ? 'I have saved it, proceed to payment' : 'I have saved it, close modal'}
           </button>
         </div>
       </div>
