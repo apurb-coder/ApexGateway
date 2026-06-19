@@ -3,7 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import { createPortal } from 'react-dom';
 import apiClient from '../services/api';
 import { useUIStore } from '../store/useUIStore';
-import { ArrowLeft, Plus, DollarSign, Zap, Calendar, Sparkles, X, Pencil, Trash2 } from 'lucide-react';
+import { ArrowLeft, Plus, DollarSign, Zap, Calendar, Sparkles, X, Pencil } from 'lucide-react';
 
 export default function NewPlan() {
   const { apiId } = useParams();
@@ -48,21 +48,6 @@ export default function NewPlan() {
     setRequestsPerMin(plan.requestsPerMin);
     setPrice(parseFloat(plan.price));
     setShowModal(true);
-  };
-
-  const handleDelete = async (planId) => {
-    const confirm = window.confirm(
-      'Are you sure you want to delete this pricing plan? This will immediately cancel all active subscriptions associated with it.'
-    );
-    if (!confirm) return;
-
-    try {
-      await apiClient.delete(`/apis/${apiId}/plans/${planId}`);
-      addToast('Pricing plan deleted successfully!', 'success');
-      await fetchApiData();
-    } catch (err) {
-      console.error(err);
-    }
   };
 
   const handleSubmit = async (e) => {
@@ -184,13 +169,6 @@ export default function NewPlan() {
                         title="Edit Plan"
                       >
                         <Pencil className="w-3.5 h-3.5" />
-                      </button>
-                      <button
-                        onClick={() => handleDelete(plan.id)}
-                        className="p-1.5 rounded-lg bg-rose-500/5 hover:bg-rose-500/15 text-rose-400 hover:text-rose-300 transition-all cursor-pointer"
-                        title="Delete Plan"
-                      >
-                        <Trash2 className="w-3.5 h-3.5" />
                       </button>
                     </div>
                   </div>

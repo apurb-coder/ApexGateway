@@ -156,36 +156,7 @@ export const updatePlan = async (req, res) => {
   }
 };
 
-export const deletePlan = async (req, res) => {
-  try {
-    const { apiId, planId } = req.params;
 
-    const plan = await prisma.plan.findUnique({
-      where: { id: planId },
-      include: { api: true }
-    });
-
-    if (!plan) {
-      return res.status(404).json({ error: 'Plan not found' });
-    }
-
-    if (plan.apiId !== apiId) {
-      return res.status(400).json({ error: 'Plan does not belong to this API' });
-    }
-
-    if (plan.api.providerId !== req.user.id && req.user.role !== 'ADMIN') {
-      return res.status(403).json({ error: 'Unauthorized to delete plans for this API' });
-    }
-
-    await prisma.plan.delete({
-      where: { id: planId }
-    });
-
-    return res.json({ message: 'Plan deleted successfully' });
-  } catch (error) {
-    return res.status(500).json({ error: error.message });
-  }
-};
 
 export const getAnalyticsSummary = async (req, res) => {
   try {

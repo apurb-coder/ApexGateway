@@ -1,5 +1,5 @@
 import express from 'express';
-import { createApi, getApis, getApiById, createPlan, updatePlan, deletePlan, getAnalyticsSummary, getApiHealth } from '../controllers/apiController.js';
+import { createApi, getApis, getApiById, createPlan, updatePlan, getAnalyticsSummary, getApiHealth } from '../controllers/apiController.js';
 import { authMiddleware, optionalAuth, authorize } from '../middlewares/authMiddleware.js';
 import { validateSchema, apiSchema, planSchema } from '../middlewares/validationMiddleware.js';
 
@@ -12,6 +12,5 @@ router.get('/:id/health', authMiddleware, authorize(['PROVIDER', 'ADMIN']), getA
 router.get('/:id', optionalAuth, getApiById);
 router.post('/:apiId/plans', authMiddleware, authorize(['PROVIDER', 'ADMIN']), validateSchema(planSchema), createPlan);
 router.put('/:apiId/plans/:planId', authMiddleware, authorize(['PROVIDER', 'ADMIN']), validateSchema(planSchema), updatePlan);
-router.delete('/:apiId/plans/:planId', authMiddleware, authorize(['PROVIDER', 'ADMIN']), deletePlan);
 
 export default router;
