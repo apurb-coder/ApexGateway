@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import apiClient from '../services/api';
 import { Search, Globe, ChevronRight, Cpu } from 'lucide-react';
@@ -23,10 +23,12 @@ export default function Marketplace() {
     fetchApis();
   }, []);
 
-  const filteredApis = apis.filter((api) => 
-    api.name?.toLowerCase().includes(searchQuery.toLowerCase()) || 
-    api.description?.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  const filteredApis = useMemo(() => {
+    return apis.filter((api) => 
+      api.name?.toLowerCase().includes(searchQuery.toLowerCase()) || 
+      api.description?.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+  }, [apis, searchQuery]);
 
   return (
     <div className="space-y-8 animate-fadeIn">

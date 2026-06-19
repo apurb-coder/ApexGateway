@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo, useCallback } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import apiClient from '../services/api';
 import axios from 'axios';
@@ -130,7 +130,7 @@ export default function ApiDetails() {
     fetchApiDetails();
   }, [apiId]);
 
-  const handleSubscribe = async (planId) => {
+  const handleSubscribe = useCallback(async (planId) => {
     setSubscribingPlanId(planId);
     try {
       const res = await apiClient.post('/subscriptions', { planId });
@@ -145,17 +145,17 @@ export default function ApiDetails() {
     } finally {
       setSubscribingPlanId(null);
     }
-  };
+  }, [addToast]);
 
-  const copyToClipboard = () => {
+  const copyToClipboard = useCallback(() => {
     if (!apiKeyModal?.apiKey) return;
     navigator.clipboard.writeText(apiKeyModal.apiKey);
     setCopied(true);
     addToast('API Key copied to clipboard!', 'success');
     setTimeout(() => setCopied(false), 2000);
-  };
+  }, [apiKeyModal, addToast]);
 
-  const runTest = async () => {
+  const runTest = useCallback(async () => {
     if (!testApiKey) {
       addToast('Please enter your API Key to test the gateway', 'warning');
       return;
@@ -167,7 +167,7 @@ export default function ApiDetails() {
     
     const gatewayUrl = import.meta.env.VITE_GATEWAY_API_URL || 'http://localhost:4000';
     const cleanPath = testPath.startsWith('/') ? testPath.substring(1) : testPath;
-    const url = `${gatewayUrl}/api/${api.name}/${cleanPath}`;
+    const url = `${gatewayUrl}/api/${api?.name}/${cleanPath}`;
 
     try {
       const headers = {
@@ -208,7 +208,7 @@ export default function ApiDetails() {
     } finally {
       setTesting(false);
     }
-  };
+  }, [testApiKey, testPath, testMethod, testBody, api, addToast]);
 
   const gatewayUrl = import.meta.env.VITE_GATEWAY_API_URL || 'http://localhost:4000';
 
@@ -233,7 +233,7 @@ export default function ApiDetails() {
               <h3 className="text-sm font-bold text-white font-display uppercase tracking-wide">{plan.name}</h3>
               <div className="text-2xl font-black text-electric-cobalt mt-2 font-mono">
                 ${plan.price}
-                <span className="text-xs text-gray-500 font-normal font-sans"> /mo</span>
+                <span className="text-xs text-gray-550 font-normal font-sans"> /mo</span>
               </div>
               <div className="text-[10px] text-gray-400 mt-4 font-mono flex items-center justify-between bg-carbon-950/50 border border-carbon-border px-3 py-2 rounded-lg">
                 <span className="text-gray-550">Rate Limit:</span>
@@ -256,18 +256,21 @@ export default function ApiDetails() {
     );
   };
 
-  const copySnippetToClipboard = (code) => {
+  const copySnippetToClipboard = useCallback((code) => {
     navigator.clipboard.writeText(code);
     setSnippetCopied(true);
     addToast('Code snippet copied!', 'success');
     setTimeout(() => setSnippetCopied(false), 2000);
-  };
+  }, [addToast]);
 
-  const renderCodeSnippetGenerator = () => {
+  const snippetCode = useMemo(() => {
+    if (!api) return '';
     const cleanPath = testPath.startsWith('/') ? testPath.substring(1) : testPath;
     const url = `${gatewayUrl}/api/${api.name}/${cleanPath}`;
-    const snippetCode = generateSnippet(selectedSnippetLang, testMethod, url, testApiKey, testBody);
+    return generateSnippet(selectedSnippetLang, testMethod, url, testApiKey, testBody);
+  }, [api, testPath, testMethod, testApiKey, testBody, selectedSnippetLang, gatewayUrl]);
 
+  const renderCodeSnippetGenerator = () => {
     const languages = [
       { id: 'curl', name: 'cURL' },
       { id: 'js_fetch', name: 'Fetch (JS)' },
