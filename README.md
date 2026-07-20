@@ -309,6 +309,3 @@ npm run test:ratelimit
 
 ---
 
-## 📜 License
-
-Distributed under the MIT License. See `LICENSE` for more information.
