@@ -39,40 +39,40 @@ An enterprise-grade, high-performance **API Gateway & Monetization Marketplace P
 ```mermaid
 flowchart TD
     subgraph ClientLayer ["Client Layer"]
-        UI["React 19 Dashboard\n(Port 5173)"]
+        UI["React 19 Dashboard<br/>Port 5173"]
         Consumer["API Consumer App"]
     end
 
     subgraph AuthProvider ["Authentication"]
-        Supabase["Supabase Auth Service\n(JWT Issuer)"]
+        Supabase["Supabase Auth Service<br/>JWT Issuer"]
     end
 
     subgraph BackendServices ["ApexGateway Core Services"]
-        MktAPI["Marketplace API\n(Port 3000)\n• User & Role Sync\n• API & Plan Management\n• Subscriptions & Keys\n• Stripe Ledger"]
-        GatewayProxy["Gateway Proxy\n(Port 4000)\n• X-API-Key Auth\n• Redis O(1) Auth Cache\n• Token Bucket Rate Limiting\n• Asynchronous Logging"]
+        MktAPI["Marketplace API<br/>Port 3000<br/>• User & Role Sync<br/>• API & Plan Management<br/>• Subscriptions & Keys<br/>• Stripe Ledger"]
+        GatewayProxy["Gateway Proxy<br/>Port 4000<br/>• X-API-Key Auth<br/>• Redis Fast Auth Cache<br/>• Token Bucket Rate Limiting<br/>• Asynchronous Logging"]
     end
 
     subgraph StorageLayer ["Data & Cache Layer"]
-        Postgres[(PostgreSQL 15\nPrisma ORM)]
-        Redis[(Redis 7 Cache\nRate Limiter & Analytics)]
+        Postgres[(PostgreSQL 15<br/>Prisma ORM)]
+        Redis[(Redis 7 Cache<br/>Rate Limiter & Analytics)]
     end
 
     subgraph UpstreamLayer ["External Services"]
         StripeAPI["Stripe Payments"]
-        TargetAPIs["Upstream APIs\n(Target Services)"]
+        TargetAPIs["Upstream APIs<br/>Target Services"]
     end
 
-    UI -->|Supabase Auth JWT| MktAPI
-    UI -->|Authenticate| Supabase
-    Consumer -->|X-API-Key Header\n/api/:apiName/*| GatewayProxy
+    UI -->|"Supabase Auth JWT"| MktAPI
+    UI -->|"Authenticate"| Supabase
+    Consumer -->|"X-API-Key Header<br/>/api/:apiName/*"| GatewayProxy
 
-    MktAPI -->|Verify JWT| Supabase
-    MktAPI -->|Read/Write Metadata| Postgres
-    MktAPI -->|Process Payments & Payouts| StripeAPI
+    MktAPI -->|"Verify JWT"| Supabase
+    MktAPI -->|"Read/Write Metadata"| Postgres
+    MktAPI -->|"Process Payments & Payouts"| StripeAPI
 
-    GatewayProxy -->|O(1) Key Lookup & Rate Limits| Redis
-    GatewayProxy -->|Cache Miss Fallback & Async Analytics| Postgres
-    GatewayProxy -->|Proxy Rewritten Request| TargetAPIs
+    GatewayProxy -->|"O(1) Key Lookup & Rate Limits"| Redis
+    GatewayProxy -->|"Cache Miss Fallback & Async Analytics"| Postgres
+    GatewayProxy -->|"Proxy Rewritten Request"| TargetAPIs
 ```
 
 ---
